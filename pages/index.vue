@@ -1,7 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: "report"
+  layout: "report",
 })
+
+useHead({title: "Actin"})
 </script>
 
 <template>

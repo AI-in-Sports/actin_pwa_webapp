@@ -2,6 +2,8 @@
 definePageMeta({
   layout: "report"
 })
+
+useHead({title: "Downloading report...."})
 </script>
 
 <template>
