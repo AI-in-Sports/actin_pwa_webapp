@@ -1,0 +1,11 @@
+@import "../fonts/fontface.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply font-dana duration-[0.2s];
+    }
+}

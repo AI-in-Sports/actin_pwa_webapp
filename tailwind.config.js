@@ -13,8 +13,11 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
+                dana: ["Dana", "Arial", "sans-serif"],
             },
             colors: {
+                mainBlue: "#0085FF",
+                mainDark: "#8080804D"
             }
         }
     },
