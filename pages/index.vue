@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "report",
+  middleware: ["auth"]
 })
 
 useHead({title: "Actin"})
