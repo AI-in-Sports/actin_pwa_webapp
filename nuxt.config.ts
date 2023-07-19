@@ -9,5 +9,10 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  }
+  },
+  runtimeConfig: {
+    public: {
+      EXPRESS_BACKEND: process.env.EXPRESS_BACKEND,
+    }
+  },
 })
