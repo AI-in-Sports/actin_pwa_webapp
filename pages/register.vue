@@ -2,7 +2,8 @@
 import {toast} from "vue3-toastify";
 
 definePageMeta({
-  layout: "report"
+  layout: "report",
+  middleware: ["auth"]
 })
 
 useHead({title: "Actin - Register"})
