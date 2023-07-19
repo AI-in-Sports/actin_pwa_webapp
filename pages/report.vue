@@ -7,9 +7,25 @@ definePageMeta({
 useHead({title: "Downloading report...."})
 
 const download = ref(false)
+
+const config = useRuntimeConfig()
+
+const { data, error } = useFetch(`${config.public.EXPRESS_BACKEND}/auth/info`, {
+  headers: {
+    "Authorization": `Bearer ${useCookie("token").value}`
+  }
+})
+
+const user = ref("")
+
 const logout = () => {
-  location.href = "/api/remove_session"
+  useCookie("token").value = null
+  location.reload()
 }
+
+if (error.value) logout()
+
+onMounted(() => user.value = data.value["phone"])
 </script>
 
 <template>
@@ -23,7 +39,7 @@ const logout = () => {
 
 
     <p class="flex items-center text-[18px]">
-      کاربر شماره ۰۹۹۲۸۱۹۷۹۴۹
+      کاربر شماره {{ user }}
       <span class="border-r-2 border-white h-[20px] w-[2px] mx-3"></span>
       <a @click="logout" class="hover:text-mainBlue cursor-pointer">خروج از حساب</a>
     </p>
