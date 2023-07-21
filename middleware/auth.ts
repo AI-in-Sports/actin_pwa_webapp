@@ -4,7 +4,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         const token = useCookie("token")
 
         const loginPath = ["/", "/login", "/register", "/otp/login", "/otp/register"]
-        console.log("loginPath.includes(to.path) && token.value: ", loginPath.includes(to.path) && token.value)
 
         if (loginPath.includes(to.path) && token.value)
             return navigateTo("/report")
