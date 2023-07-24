@@ -20,12 +20,33 @@ const user = ref("")
 
 const logout = () => {
   useCookie("token").value = null
+  useCookie("phone").value = null
   location.reload()
 }
 
 if (error.value) logout()
 
-onMounted(() => user.value = data.value["phone"])
+onMounted(() => {
+  user.value = data.value["phone"]
+
+  const act = useRoute().query.act
+  const toast = useNuxtApp().$showToast
+
+  switch (act) {
+    case "sid_inv":
+      toast.error("کد تست نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
+
+    case "srv_err":
+      toast.error("خطا از سمت سرور!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
+
+    case "rep_done":
+      toast.success("اطلاعات تست با موفقیت ذخیره شد!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
+
+  }
+})
 </script>
 
 <template>
