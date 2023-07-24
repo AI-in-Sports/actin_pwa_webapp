@@ -21,7 +21,7 @@ const submit = async () => {
   const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/auth/login`, {
     method: "POST",
     params: {
-      phone: phoneNumber
+      phone: phoneNumber.value
     }
   })
 
@@ -53,7 +53,13 @@ const submit = async () => {
 
     else {
       useCookie("token").value = data.value.token
-      location.reload()
+      useCookie("phone").value = phoneNumber.value
+
+      const sessionId = useCookie("signInSession").value
+
+      if(sessionId)
+        location.replace(`/scan/${sessionId}`)
+      else location.reload()
     }
   }
 }
