@@ -16,10 +16,10 @@ const isSubmit = ref(false)
 const submit = async () => {
   isSubmit.value = true
 
-  const loading = useNuxtApp().$showToast.loading("در حال ورود...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = useNuxtApp().$showToast.loading("در حال ارسال کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/auth/login`, {
-    method: "POST",
+  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send`, {
+    method: "GET",
     params: {
       phone: phoneNumber.value
     }
@@ -29,7 +29,17 @@ const submit = async () => {
   {
     isSubmit.value = false
 
-    useNuxtApp().$showToast.update(loading, {
+    if (error.value.data.status === 404)
+      useNuxtApp().$showToast.update(loading, {
+        render: "شماره تلفن در سیستم وجود ندارد!",
+        type: "error",
+        rtl: true,
+        autoClose: true,
+        closeOnClick: true,
+        isLoading: false
+      })
+
+    else useNuxtApp().$showToast.update(loading, {
       render: "فرایند با خطا مواجه شد!",
       type: "error",
       rtl: true,
@@ -41,26 +51,16 @@ const submit = async () => {
   else
   {
     isSubmit.value = false
-    if (data.value.status === 0)
-      useNuxtApp().$showToast.update(loading, {
-        render: "شماره تلفن در سیستم وجود ندارد!",
-        type: "error",
-        rtl: true,
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      })
 
-    else {
-      useCookie("token").value = data.value.token
-      useCookie("phone").value = phoneNumber.value
-
-      const sessionId = useCookie("signInSession").value
-
-      if(sessionId)
-        location.replace(`/scan/${sessionId}`)
-      else location.reload()
+    const response = data.value as {
+      sessionId: string
     }
+
+    useCookie("loginSession").value = response.sessionId
+    useCookie("process").value = "login"
+    useCookie("phone").value = phoneNumber.value
+
+    location.replace("/otp/login")
   }
 }
 </script>
