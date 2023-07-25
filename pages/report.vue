@@ -45,6 +45,9 @@ onMounted(() => {
       toast.success("اطلاعات تست با موفقیت ذخیره شد!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
       break
 
+    case "lg_done":
+      toast.success("خوش آمدید!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
   }
 })
 </script>

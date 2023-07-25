@@ -21,9 +21,9 @@ onMounted(async () => {
     location.reload()
   }
 
-  const loading = useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/report/register`, {
+  const { error } = await useFetch(`${config.public.EXPRESS_BACKEND}/report/register`, {
     method: "PUT",
     headers: {
       "Authorization": `Bearer ${useCookie("token").value}`
