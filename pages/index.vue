@@ -11,8 +11,15 @@ onMounted(() => {
   const toast = useNuxtApp().$showToast
 
   switch (act) {
+    case "usr_inv":
+      toast.error("کاربر نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
     case "sid_inv":
       toast.error("کد نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
+
+    case "lg_exp":
+      toast.error("کد ورود منقضی شده است! دوباره امتحان کنید.", { rtl: true, position: toast.POSITION.TOP_RIGHT })
       break
   }
 })
