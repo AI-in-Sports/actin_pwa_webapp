@@ -18,7 +18,7 @@ const submit = async () => {
 
   const loading = useNuxtApp().$showToast.loading("در حال ارسال کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send`, {
+  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send/login`, {
     method: "GET",
     params: {
       phone: phoneNumber.value

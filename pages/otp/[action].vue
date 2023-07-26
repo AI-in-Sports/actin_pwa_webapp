@@ -54,7 +54,7 @@ const submitForm = async () => {
   {
     isSubmit.value = false
 
-    if (error.value.data.status === 404 && error.value.data.msg === "nc") {
+    if (error.value.data.status === 404 && error.value.data.msg === "nc" || error.value.data.status === 409) {
       useCookie("loginSession").value = null
       useCookie("process").value = null
       useCookie("phone").value = null

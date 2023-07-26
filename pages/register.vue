@@ -17,10 +17,10 @@ const isSubmit = ref(false)
 const submit = async () => {
   isSubmit.value = true
 
-  const loading = useNuxtApp().$showToast.loading("در حال ثبت نام...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = useNuxtApp().$showToast.loading("در حال ارسال کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/auth/register`, {
-    method: "POST",
+  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send/register`, {
+    method: "GET",
     params: {
       phone: phoneNumber.value,
       fullName: fullName.value
@@ -31,9 +31,9 @@ const submit = async () => {
   {
     isSubmit.value = false
 
-    if (error.value.data["status"])
+    if (error.value.data.status === 409)
       useNuxtApp().$showToast.update(loading, {
-        render: "شماره تلفن در سیستم موجود است",
+        render: "شماره تلفن قبلا در سیستم ثبت شده است!",
         type: "error",
         rtl: true,
         autoClose: true,
@@ -42,25 +42,27 @@ const submit = async () => {
       })
 
     else useNuxtApp().$showToast.update(loading, {
-        render: "فرایند با خطا مواجه شد!",
-        type: "error",
-        rtl: true,
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      })
+      render: "فرایند با خطا مواجه شد!",
+      type: "error",
+      rtl: true,
+      autoClose: true,
+      closeOnClick: true,
+      isLoading: false
+    })
   }
   else
   {
-    useCookie("token").value = data.value.token
+    isSubmit.value = false
+
+    const response = data.value as {
+      sessionId: string
+    }
+
+    useCookie("loginSession").value = response.sessionId
+    useCookie("process").value = "register"
     useCookie("phone").value = phoneNumber.value
 
-    const sessionId = useCookie("signInSession").value
-
-    if(sessionId)
-      location.href = `/scan/${sessionId}`
-
-    location.reload()
+    location.replace("/otp/register")
   }
 }
 </script>
