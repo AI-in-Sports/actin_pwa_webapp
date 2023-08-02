@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-
-module.exports = {
+export default {
     content: [
         "./components/**/*.{js,vue,ts}",
         "./layouts/**/*.vue",
@@ -17,7 +16,8 @@ module.exports = {
             },
             colors: {
                 mainBlue: "#0085FF",
-                mainDark: "#8080804D"
+                mainDark: "#8080804D",
+                mainYellow: "#F8D32D"
             }
         }
     },
