@@ -120,12 +120,12 @@ onMounted(async () => {
         </p>
       </div>
 
-      <NuxtLink :to="`/result/${reports[0].testId}`" class="w-full">
-        <PrimaryButton class="flex items-center justify-center mt-5">
-          <span class="text-[16px] ml-2">دانلود نتیجه ارزیابی</span>
-          <img class="w-[26px]" src="@/assets/icons/icon_download_white.svg" alt="download">
-        </PrimaryButton>
-      </NuxtLink>
+      <PrimaryButton
+          @click="$router.push(`/result/${reports[0].testId}`)"
+          class="flex items-center justify-center mt-5">
+        <span class="text-[16px] ml-2">دانلود نتیجه ارزیابی</span>
+        <img class="w-[26px]" src="@/assets/icons/icon_download_white.svg" alt="download">
+      </PrimaryButton>
 
       <div class="flex flex-col w-full" v-if="reports.length > 1">
         <div class="flex justify-between items-center w-full mt-12">
@@ -142,11 +142,12 @@ onMounted(async () => {
         </div>
 
         <div class="flex flex-col" v-for="(item, index) in reports" :key="item.testId">
-          <NuxtLink :to="`/result/${item.testId}`" v-if="index !== 0" class="w-full">
-            <PrimaryButton class="flex items-center justify-center mt-5 text-[20px] font-normal">
-              دانلود نتیجه {{ convertJalaliToString(item.date as JalaaliDateObject) }}
-            </PrimaryButton>
-          </NuxtLink>
+          <PrimaryButton
+              class="flex items-center justify-center mt-5 text-[20px] font-normal"
+              @click="$router.push(`/result/${item.testId}`)"
+              v-if="index !== 0">
+            دانلود نتیجه {{ convertJalaliToString(item.date as JalaaliDateObject) }}
+          </PrimaryButton>
         </div>
       </div>
     </div>
