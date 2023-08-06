@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {toast} from "vue3-toastify";
+import {toast} from "vue3-toastify"
 
 definePageMeta({
   layout: "report",
