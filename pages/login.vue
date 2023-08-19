@@ -59,7 +59,7 @@ const submit = async () => {
 
     useCookie("loginSession").value = response.sessionId
     useCookie("process").value = "login"
-    useCookie("phone").value = phoneNumber.value
+    useCookie("phone").value = convertToPersianNumber(phoneNumber.value, true)
 
     location.replace("/otp/login")
   }

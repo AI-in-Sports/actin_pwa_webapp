@@ -31,6 +31,12 @@ onMounted(async () => {
 
   if (data_error) {
     console.log(data_error)
+
+    if(data_error.statusCode === 403) {
+      useCookie("token").value = null
+      location.replace("/report")
+    }
+
     if (data_error.data.status === 404)
       location.replace("/report")
 
@@ -65,7 +71,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex justify-between items-start sm:items-center w-full p-8 pb-0">
+  <div class="flex justify-between items-start sm:items-center w-full p-8 pb-0" v-if="data_success">
     <div class="flex flex-col">
       <h3 class="text-[20px] sm:text-[25px] font-black">نتیجه‌ی ارزیابی</h3>
       <p>تاریخ: {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}</p>
