@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {toast} from "vue3-toastify"
+import {convertToPersianNumber} from "~/helper"
 
 definePageMeta({
   layout: "report",
@@ -21,7 +22,7 @@ const submit = async () => {
   const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send/login`, {
     method: "GET",
     params: {
-      phone: phoneNumber.value
+      phone: convertToPersianNumber(phoneNumber.value, true)
     }
   })
 
@@ -81,7 +82,7 @@ const submit = async () => {
     </form>
 
     <NuxtLink to="/" class="flex items-center font-bold text-[20px]">
-      <img src="@/assets/icons/icon_arrow_left_white.svg" alt="<" class="w-[35px] mr-2">
+      <img src="../assets/icons/icon_arrow_long_left_white.svg" alt="<" class="w-[35px] mr-2">
       بازگشت
     </NuxtLink>
   </div>
