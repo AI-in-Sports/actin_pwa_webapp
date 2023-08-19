@@ -3,7 +3,7 @@ import {convertJalaliToString} from "~/helper"
 import Jalali ,{JalaaliDateObject} from "jalaali-js"
 
 definePageMeta({
-  layout: "report",
+  layout: "pad",
   middleware: ["normal-auth"]
 })
 
@@ -30,6 +30,7 @@ onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
   if (data_error) {
+    console.log(data_error)
     if (data_error.data.status === 404)
       location.replace("/report")
 
@@ -64,23 +65,35 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="flex justify-center items-center h-full" dir="rtl">
-    <div v-if="!isDataFetched"></div>
-
-    <div v-else-if="isPayed">
-      hiiiii
+  <div class="flex justify-between items-start sm:items-center w-full p-8 pb-0">
+    <div class="flex flex-col">
+      <h3 class="text-[20px] sm:text-[25px] font-black">نتیجه‌ی ارزیابی</h3>
+      <p>تاریخ: {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}</p>
+      <p>تست تقارن</p>
     </div>
-    <div v-else class="text-center">
-      <h3 class="text-[25px] md:text-[30px] font-bold mb-2">
-        نتیجه تست {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}
-      </h3>
-      <p class="text-[16px] md:text-[20px] mb-10">برای دیدن نتیجه ابتدا باید هزینه تست را پرداخت کنید!</p>
 
-      <NuxtLink :to="paymentUrl">
-        <PrimaryButton>پرداخت ۲۰،۰۰۰ هزار تومان</PrimaryButton>
-      </NuxtLink>
-    </div>
-  </section>
+    <img src="@/assets/images/logo.jpg" alt="logo" @click="$router.push('/report')"
+         class="h-[50px] sm:h-[70px] w-auto flex-0 flex-shrink-0 cursor-pointer hover:scale-95">
+  </div>
+
+  <article class="max-w-[500px] mx-auto w-full flex-1 flex-shrink-0 h-full">
+    <section class="flex justify-center items-center h-full" dir="rtl">
+      <div v-if="!isDataFetched"></div>
+
+      <PreviewAndDownloadReport v-else-if="isPayed" :report="data_success.report"/>
+
+      <div v-else class="text-center">
+        <h3 class="text-[25px] md:text-[30px] font-bold mb-2">
+          نتیجه تست {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}
+        </h3>
+        <p class="text-[16px] md:text-[20px] mb-10">برای دیدن نتیجه ابتدا باید هزینه تست را پرداخت کنید!</p>
+
+        <NuxtLink :to="paymentUrl">
+          <PrimaryButton>پرداخت ۲۰،۰۰۰ هزار تومان</PrimaryButton>
+        </NuxtLink>
+      </div>
+    </section>
+  </article>
 </template>
 
 <style scoped>

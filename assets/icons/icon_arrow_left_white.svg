@@ -1,10 +1,3 @@
-<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Interface, Essential/Right, Arrow">
-<g id="Group">
-<g id="Group_2">
-<path id="Path" d="M58.5601 36.0586L13.5901 36.0586" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Path_2" d="M31.5513 54.0352L13.4403 35.9992L31.5513 17.9632" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</g>
-</g>
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.7207 31.9902L30.6582 47.9277C31.7598 49.0293 33.541 49.0293 34.6309 47.9277L37.2793 45.2793C38.3809 44.1777 38.3809 42.3965 37.2793 41.3066L25.9824 30.0098L37.2793 18.7129C38.3809 17.6113 38.3809 15.8301 37.2793 14.7402L34.6426 12.0684C33.541 10.9668 31.7598 10.9668 30.6699 12.0684L14.7324 28.0059C13.6191 29.1074 13.6191 30.8887 14.7207 31.9902Z" fill="white"/>
 </svg>

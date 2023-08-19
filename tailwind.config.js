@@ -18,8 +18,10 @@ export default {
                 mainBlue: "#0085FF",
                 mainDark: "#8080804D",
                 mainYellow: "#F8D32D",
+                mainDarkYellow: "#BFAC00",
                 mainRed: "#FF6B6B",
-                mainGreen: "#00A62E"
+                mainGreen: "#00A62E",
+                mainDarkSecondary: "#101C27"
             }
         }
     },
