@@ -1,8 +1,8 @@
 import {JalaaliDateObject} from "jalaali-js";
 
-export const convertToPersianNumber = (text: string) => {
-    const persianDigits = '۰۱۲۳۴۵۶۷۸۹'
-    const englishDigits = '0123456789'
+export const convertToPersianNumber = (text: string, reverse?: boolean) => {
+    const persianDigits = reverse ? '0123456789' : '۰۱۲۳۴۵۶۷۸۹'
+    const englishDigits = reverse ? '۰۱۲۳۴۵۶۷۸۹' : '0123456789'
 
     let result = ''
     for (let i = 0; i < text.length; i++) {
