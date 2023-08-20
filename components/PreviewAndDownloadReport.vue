@@ -10,7 +10,14 @@ const props = defineProps<{
   report: any
 }>()
 
-console.log(props.report)
+const cookieHint = useCookie("isHitMapShowed")
+const isHintShowed = ref(cookieHint.value === "show")
+if (!cookieHint.value) cookieHint.value = "show"
+
+const toggleModal = () => {
+  isHintShowed.value = !isHintShowed.value
+  cookieHint.value = cookieHint.value === "show" ? "hide" : "show"
+}
 
 const activeIndex = ref(1)
 const getActiveZone = computed(() => props.report['analyze'][activeIndex.value - 1]['zones'])
@@ -26,7 +33,58 @@ const getColor = (deg: number) => {
 
 <template>
   <div class="h-full flex flex-col w-full">
-    <div class="flex-1 flex justify-center items-center">
+    <section class="z-[-100] opacity-0 fixed inset-0 w-full h-full bg-black/80 backdrop-blur-20 flex justify-center items-center" :class="{ '!z-[100] !opacity-100': isHintShowed }">
+      <div class="p-8 rounded-[16px] bg-mainDarkSecondary flex flex-col max-w-[400px] w-full items-center border-t-[2px] border-l-[2px] border-white/25">
+        <h2 class="font-bold text-[25px] flex items-center">راهنما</h2>
+
+        <div class="border-[1px] border-white/80 border-dashed w-full mt-5"></div>
+
+        <div class="flex flex-col w-full mt-8">
+          <div class="flex text-[18px]">
+            <p class="w-1/3 text-right">۰ - ۵</p>
+
+            <div class="w-1/3">
+              <img :src="arrow_green" alt="green" class="w-[24px] m-auto">
+            </div>
+
+            <p class="w-1/3 text-left">سالم</p>
+          </div>
+          <div class="flex text-[18px] mt-4">
+            <p class="w-1/3 text-right">۵ - ۱۰</p>
+
+            <img :src="arrow_orange" alt="green" class="w-[24px] m-auto">
+
+            <p class="w-1/3 text-left">کم‌خطر</p>
+          </div>
+          <div class="flex text-[18px] mt-4">
+            <p class="w-1/3 text-right">بیشتر از ۱۰</p>
+
+            <img :src="arrow_red" alt="green" class="w-[24px] m-auto">
+
+            <p class="w-1/3 text-left">دارای انحراف</p>
+          </div>
+        </div>
+
+
+
+        <div class="flex flex-col w-full pt-14 pb-6">
+          <div class="flex w-full items-start justify-start">
+            <FaIcon :icon="['fas', 'triangle-exclamation']" class="text-[18px] text-orange-400 mt-1 ml-3"/>
+
+            <p>امکان ثبت وقت فیزیوتراپی در نسحه های آینده به نرم افزار اضافه می‌شود!</p>
+          </div>
+        </div>
+
+        <PrimaryButton class="!font-medium" @click="toggleModal">بستن راهنما</PrimaryButton>
+      </div>
+    </section>
+
+    <div class="flex-1 flex justify-center items-center px-4 text-[16px]">
+      <button class="fixed right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px_0_0_14px] flex justify-center items-center bottom-[28%] md:hidden"
+              @click="toggleModal">
+        <FaIcon :icon="['far', 'circle-question']" class="text-[18px]"/>
+      </button>
+
       <div class="flex justify-center relative p-4 h-fit">
 
         <p class="absolute flex flex-col justify-center items-center text-[17px] font-medium left-6 top-[1%]">
@@ -95,7 +153,13 @@ const getColor = (deg: number) => {
         <img src="@/assets/images/skeleton.svg" alt="skeleton" class="h-fit w-2/3 pt-4"/>
       </div>
     </div>
-    <div class="bg-mainDarkSecondary p-[15px_20px_20px_20px] sm:p-[15px_28px_20px_28px] rounded-[32px_32px_0_0] border-t-[2px] border-l-[2px] border-white/25 text-center">
+    <div class="bg-mainDarkSecondary p-[15px_20px_20px_20px] sm:p-[15px_28px_20px_28px] rounded-[32px_32px_0_0] border-t-[2px] border-l-[2px] border-white/25 text-center relative">
+
+      <button class="absolute right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px] top-[-70px] md:flex justify-center items-center hover:text-mainYellow hidden border-t-[1px] border-l-[1px] border-white/25"
+              @click="toggleModal">
+        <FaIcon :icon="['far', 'circle-question']" class="text-[18px]"/>
+      </button>
+
       <p class="text-white/70">تست {{ convertToPersianNumber(activeIndex.toString()) }} از {{ convertToPersianNumber(report['analyze'].length.toString()) }}</p>
 
       <div class="flex mt-4">

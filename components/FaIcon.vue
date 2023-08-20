@@ -2,18 +2,14 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
 
 defineProps<{
-  icon: string
+  icon: any
 }>()
 </script>
 
 <template>
-  <i>
+  <i class="faIcon flex justify-center items-center">
     <ClientOnly>
       <FontAwesomeIcon :icon="icon"/>
     </ClientOnly>
   </i>
 </template>
-
-<style scoped>
-
-</style>
