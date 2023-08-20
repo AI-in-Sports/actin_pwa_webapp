@@ -34,7 +34,7 @@ const getColor = (deg: number) => {
 <template>
   <div class="h-full flex flex-col w-full">
     <section class="z-[-100] opacity-0 fixed inset-0 w-full h-full bg-black/80 backdrop-blur-20 flex justify-center items-center" :class="{ '!z-[100] !opacity-100': isHintShowed }">
-      <div class="p-8 rounded-[16px] bg-mainDarkSecondary flex flex-col max-w-[400px] w-full items-center border-t-[2px] border-l-[2px] border-white/25">
+      <div class="p-8 rounded-[16px] bg-mainDarkSecondary flex flex-col max-w-[450px] w-full items-center border-t-[2px] border-l-[2px] border-white/25">
         <h2 class="font-bold text-[25px] flex items-center">راهنما</h2>
 
         <div class="border-[1px] border-white/80 border-dashed w-full mt-5"></div>
@@ -65,13 +65,17 @@ const getColor = (deg: number) => {
           </div>
         </div>
 
-
-
-        <div class="flex flex-col w-full pt-14 pb-6">
+        <div class="flex flex-col w-full pt-10 pb-10">
           <div class="flex w-full items-start justify-start">
             <FaIcon :icon="['fas', 'triangle-exclamation']" class="text-[18px] text-orange-400 mt-1 ml-3"/>
 
             <p>امکان ثبت وقت فیزیوتراپی در نسحه های آینده به نرم افزار اضافه می‌شود!</p>
+          </div>
+
+          <div class="flex w-full items-start justify-start mt-2">
+            <FaIcon :icon="['fas', 'circle-info']" class="text-[18px] text-yellow-400 mt-1 ml-3"/>
+
+            <p>برای بازگشت به صفحه قبل روی لوگو اکتین کلیک کنید!</p>
           </div>
         </div>
 
