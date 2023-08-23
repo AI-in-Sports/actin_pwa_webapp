@@ -8,7 +8,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG EXPRESS_BACKEND
-ENV EXPRESS_BACKEND=${EXPRESS_BACKEND}
+ENV EXPRESS_BACKEND=${EXPRESS_BACKEND} NITRO_PRESET=node_cluster
 RUN yarn build
 
 FROM node:16 AS runner
