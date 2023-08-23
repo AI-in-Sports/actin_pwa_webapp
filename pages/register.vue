@@ -59,8 +59,8 @@ const submit = async () => {
       sessionId: string
     }
 
-    useCookie("loginSession").value = response.sessionId
-    useCookie("process").value = "register"
+    localStorage.setItem("loginSession", response.sessionId)
+    localStorage.setItem("process", "register")
     useCookie("phone").value = convertToPersianNumber(phoneNumber.value, true)
 
     location.replace("/otp/register")

@@ -13,18 +13,20 @@ const config = useRuntimeConfig()
 
 useHead({title: `Actin - Action ${action}`})
 
-const session = useCookie("loginSession").value
 const phone = useCookie("phone").value
 
 onMounted(() => {
+  const session = localStorage.getItem("loginSession")
+  const process = localStorage.getItem("process")
+
   if (useCookie("token").value && phone)
     location.replace("/report")
 
   if (!["login", "register"].includes(action))
     location.href = "/"
 
-  if (useCookie("process").value !== action)
-    location.replace(`/otp/${useCookie("process").value}`)
+  if (process !== action)
+    location.replace(`/otp/${process}`)
 
   if (!session || !phone) location.replace("/")
 })
@@ -41,6 +43,8 @@ const submitForm = async () => {
 
   const loading = useNuxtApp().$showToast.loading("در حال بررسی کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
+  const session = localStorage.getItem("loginSession")
+
   const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/auth/${action}`, {
     method: "POST",
     params: {
@@ -55,8 +59,8 @@ const submitForm = async () => {
     isSubmit.value = false
 
     if (error.value.data.status === 404 && error.value.data.msg === "nc" || error.value.data.status === 409) {
-      useCookie("loginSession").value = null
-      useCookie("process").value = null
+      localStorage.removeItem("loginSession")
+      localStorage.removeItem("process")
       useCookie("phone").value = null
 
       location.replace("/?act=lg_exp")
@@ -73,8 +77,8 @@ const submitForm = async () => {
       })
 
     else if (error.value.data.status === 404 && error.value.data.msg === "un") {
-      useCookie("loginSession").value = null
-      useCookie("process").value = null
+      localStorage.removeItem("loginSession")
+      localStorage.removeItem("process")
       useCookie("phone").value = null
 
       location.replace("/?act=usr_inv")
@@ -96,7 +100,8 @@ const submitForm = async () => {
     }
 
     useCookie("token").value = response.token
-    useCookie("loginSession").value = null
+    localStorage.removeItem("loginSession")
+    localStorage.removeItem("process")
 
     const sessionId = useCookie("signInSession").value
 

@@ -17,14 +17,18 @@ const paymentUrl = ref("")
 let data_error: any = null
 let data_success: any = null
 
-await useFetch(`${config.public.EXPRESS_BACKEND}/payment/report/${route.params.session_id}`, {
-  headers: {
-    "Authorization": `Bearer ${useCookie("token").value}`
-  }
-}).then(async (value) => {
-  data_error = value.error.value
-  data_success = value.data.value
-})
+if (route.params.session_id)
+  await useFetch(`${config.public.EXPRESS_BACKEND}/payment/report/${route.params.session_id}`, {
+    headers: {
+      "Authorization": `Bearer ${useCookie("token").value}`
+    }
+  }).then(async (value) => {
+    data_error = value.error.value
+    data_success = value.data.value
+
+  })
+
+else location.replace("/")
 
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })

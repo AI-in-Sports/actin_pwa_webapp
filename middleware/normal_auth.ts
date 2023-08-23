@@ -15,7 +15,7 @@ export default defineNuxtRouteMiddleware(async () => {
             token.value = null
             useCookie("phone").value = null
 
-            navigateTo("/")
+            return navigateTo("/")
         }
     }
 })
