@@ -3,14 +3,16 @@ export default defineNuxtRouteMiddleware(async () => {
     {
         const token = useCookie("token")
 
+        console.log(process.env.EXPRESS_BACKEND)
+
         const { error } = await useFetch(`${process.env.EXPRESS_BACKEND}/auth/info`, {
             headers: {
-                "Authorization": `Bearer ${useCookie("token").value}`
+                "Authorization": `Bearer ${token.value}`
             }
         })
 
         if (error.value) {
-            useCookie("token").value = null
+            token.value = null
             useCookie("phone").value = null
 
             navigateTo("/")
