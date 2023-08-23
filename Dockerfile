@@ -27,4 +27,7 @@ USER nuxtjs
 
 EXPOSE 3000
 
+ARG EXPRESS_BACKEND
+ENV EXPRESS_BACKEND=${EXPRESS_BACKEND}
+
 CMD ["node",".output/server/index.mjs"]
