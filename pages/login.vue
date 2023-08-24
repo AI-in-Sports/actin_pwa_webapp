@@ -26,10 +26,7 @@ const submit = async () => {
     }
   })
 
-  console.log(data.value)
-  console.log(error.value)
-
-  /*if (error.value)
+  if (error.value)
   {
     isSubmit.value = false
 
@@ -65,7 +62,7 @@ const submit = async () => {
     useCookie("phone").value = convertToPersianNumber(phoneNumber.value, true)
 
     location.replace("/otp/login")
-  }*/
+  }
 }
 </script>
 
