@@ -24,6 +24,8 @@ await useFetch(`${config.public.EXPRESS_BACKEND}/payment/verify`, {
   data_success = value.data.value
 })
 
+useHead({title: paymentStatus.value === "" ? 'Waiting for response...' : (paymentStatus.value === 'valid' ? 'Successful payment' : 'Unsuccessful payment')})
+
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
@@ -52,21 +54,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section dir="rtl" class="flex justify-center items-center h-full">
+  <section dir="rtl" class="flex justify-center items-center h-full" v-if="paymentStatus !== ''">
     <div v-if="paymentStatus === 'valid'" class="w-full text-center">
-      <h3 class="text-[22px] md:text-[30px] font-bold mb-10">
+      <h3 class="text-[20px] md:text-[30px] font-bold mb-10 flex items-center justify-center">
         پرداخت با موفقیت انجام شد!
-        <FaIcon icon="circle-check" class="text-mainGreen"/>
+        <FaIcon icon="circle-check" class="text-mainGreen mr-3 text-[22px] md:text-[30px]"/>
       </h3>
 
       <NuxtLink :to="`/result/${data_success['report_id']}`">
-        <PrimaryButton>مشاهده نتیجه تست</PrimaryButton>
+        <PrimaryButton class="font-normal p-[10px] md:font-bold md:p-[13px]">مشاهده نتیجه تست</PrimaryButton>
       </NuxtLink>
     </div>
     <div v-else class="w-full text-center">
-      <h3 class="text-[25px] md:text-[30px] font-bold mb-10">
+      <h3 class="text-[20px] md:text-[30px] font-bold mb-10 flex items-center justify-center">
         پرداخت با خطا مواجه شد!
-        <FaIcon icon="circle-xmark" class="text-mainRed"/>
+        <FaIcon icon="circle-xmark" class="text-mainRed mr-3 text-[22px] md:text-[30px]"/>
       </h3>
 
       <NuxtLink :to="`/result/${data_success['report_id']}`">

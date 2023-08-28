@@ -33,7 +33,7 @@ const getColor = (deg: number) => {
 
 <template>
   <div class="h-full flex flex-col w-full">
-    <section class="z-[-100] opacity-0 fixed inset-0 w-full h-full bg-black/80 backdrop-blur-20 flex justify-center items-center" :class="{ '!z-[100] !opacity-100': isHintShowed }">
+    <section class="z-[-100] opacity-0 fixed inset-0 w-full h-full bg-black/80 backdrop-blur-20 flex justify-center items-center p-4" :class="{ '!z-[100] !opacity-100': isHintShowed }">
       <div class="p-8 rounded-[16px] bg-mainDarkSecondary flex flex-col max-w-[450px] w-full items-center border-t-[2px] border-l-[2px] border-white/25">
         <h2 class="font-bold text-[25px] flex items-center">راهنما</h2>
 
@@ -157,6 +157,7 @@ const getColor = (deg: number) => {
         <img src="@/assets/images/skeleton.svg" alt="skeleton" class="h-fit w-2/3 pt-4"/>
       </div>
     </div>
+
     <div class="bg-mainDarkSecondary p-[15px_20px_20px_20px] sm:p-[15px_28px_20px_28px] rounded-[32px_32px_0_0] border-t-[2px] border-l-[2px] border-white/25 text-center relative">
 
       <button class="absolute right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px] top-[-70px] md:flex justify-center items-center hover:text-mainYellow hidden border-t-[1px] border-l-[1px] border-white/25"
