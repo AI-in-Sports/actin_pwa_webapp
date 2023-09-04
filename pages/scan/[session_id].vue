@@ -41,6 +41,10 @@ onMounted(async () => {
 
         location.replace("/report?act=srv_err")
 
+      else if (error.value.data.status === 403)
+
+        location.replace("/report?act=sid_tkn")
+
       else location.replace("/report?act=sid_inv")
 
     else location.replace("/report?act=srv_err")

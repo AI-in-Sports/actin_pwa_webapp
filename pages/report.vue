@@ -37,6 +37,10 @@ onMounted(async () => {
       toast.error("کد تست نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
       break
 
+    case "sid_tkn":
+      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      break
+
     case "srv_err":
       toast.error("خطا از سمت سرور!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
       break
