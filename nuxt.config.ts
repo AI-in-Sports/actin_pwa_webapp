@@ -14,6 +14,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       EXPRESS_BACKEND: process.env.EXPRESS_BACKEND,
+      ELASTIC_HOST: process.env.ELASTIC_HOST,
+      ELASTIC_USERNAME: process.env.ELASTIC_USERNAME,
+      ELASTIC_PASSWORD: process.env.ELASTIC_PASSWORD
     }
   },
   pwa: {

@@ -9,5 +9,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             return navigateTo("/report")
         else if (!token.value && to.path === "/report")
             return navigateTo("/")
+        else return
     }
 })
