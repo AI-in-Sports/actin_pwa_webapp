@@ -1,4 +1,5 @@
 import {ApmVuePlugin} from "@elastic/apm-rum-vue/dist/es"
+import { AgentConfigOptions } from "@elastic/apm-rum"
 
 export default defineNuxtPlugin((nuxtApp) => {
     const router = useRouter()
@@ -8,9 +9,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         router,
         config: {
             serviceName: 'pwa',
-            serverUrl: config.public.ELASTIC_HOST,
+            serverUrl: config.public.ELASTIC_APM,
             serviceVersion: '1.0.0',
-            logLevel: 'debug'
-        }
+            logLevel: 'debug',
+            environment: 'pwa_env',
+            sendCredentials: true
+        } as AgentConfigOptions
     })
 })
