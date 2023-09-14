@@ -25,7 +25,6 @@ if (route.params.session_id)
   }).then(async (value) => {
     data_error = value.error.value
     data_success = value.data.value
-
   })
 
 else location.replace("/")

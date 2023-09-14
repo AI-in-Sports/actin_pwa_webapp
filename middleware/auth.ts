@@ -1,14 +1,17 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
-    if(process.server)
-    {
+export default defineNuxtRouteMiddleware( (toRoute, from) => {
+    if (process.server) {
         const token = useCookie("token")
 
         const loginPath = ["/", "/login", "/register", "/otp/login", "/otp/register"]
 
-        if (loginPath.includes(to.path) && token.value)
+        if (from.path === "/" && !token.value) return
+
+        if (loginPath.includes(toRoute.path) && token.value)
             return navigateTo("/report")
-        else if (!token.value && to.path === "/report")
+
+        if (!token.value && toRoute.path === "/report")
             return navigateTo("/")
+
         else return
     }
 })
