@@ -3,8 +3,6 @@ export default defineNuxtRouteMiddleware(async () => {
     {
         const token = useCookie("token")
 
-        console.log(process.env.EXPRESS_BACKEND)
-
         const { error } = await useFetch(`${process.env.EXPRESS_BACKEND}/auth/info`, {
             headers: {
                 "Authorization": `Bearer ${token.value}`
