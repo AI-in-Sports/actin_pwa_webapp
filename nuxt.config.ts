@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@vite-pwa/nuxt'],
+  modules: ['@vite-pwa/nuxt', "nuxt3-leaflet"],
   css: [
     "~/assets/style/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css"
