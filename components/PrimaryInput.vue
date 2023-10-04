@@ -35,7 +35,7 @@ const onInput = (event: Event) => {
       :type="type" :required="required" :placeholder="placeholder"
       :name="name" :value="value" ref="el"
       @input="onInput($event)" :disabled="disabled"
-      class="px-[20px] py-[16px] bg-mainDark rounded-full outline-none placeholder:text-right disabled:opacity-70">
+      class="px-[20px] py-[16px] bg-mainDark rounded-[15px] placeholder:text-black outline-none placeholder:text-right disabled:opacity-70">
 </template>
 
 <style scoped lang="sass">

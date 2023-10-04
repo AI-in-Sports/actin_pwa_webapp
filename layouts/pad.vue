@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <main class="bg-black h-[100dvh] flex flex-col items-center text-white" dir="rtl">
+  <main class="bg-[#f5f5f5] h-[100dvh] flex flex-col items-center text-black" dir="rtl">
     <slot/>
   </main>
 </template>

@@ -82,7 +82,7 @@ const submit = async () => {
     </form>
 
     <NuxtLink to="/" class="flex items-center font-bold text-[20px]">
-      <img src="../assets/icons/icon_arrow_long_left_white.svg" alt="<" class="w-[35px] mr-2">
+      <img src="../assets/icons/icon_arrow_long_left_black.svg" alt="<" class="w-[35px] mr-2">
       بازگشت
     </NuxtLink>
   </div>

@@ -81,7 +81,7 @@ onMounted(async () => {
       <p>تست تقارن</p>
     </div>
 
-    <img src="@/assets/images/logo.jpg" alt="logo" @click="$router.push('/report')"
+    <img src="@/assets/images/logo_tr_white.png" alt="logo" @click="$router.push('/report')"
          class="h-[50px] sm:h-[70px] w-auto flex-0 flex-shrink-0 cursor-pointer hover:scale-95">
   </div>
 

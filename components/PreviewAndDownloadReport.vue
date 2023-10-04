@@ -150,7 +150,7 @@ const getColor = (deg: number) => {
 
     <div class="bg-mainDarkSecondary p-[15px_20px_20px_20px] sm:p-[15px_28px_20px_28px] rounded-[32px_32px_0_0] border-t-[2px] border-l-[2px] border-white/25 text-center relative">
 
-      <button class="absolute right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px] top-[-70px] md:flex justify-center items-center hover:text-mainYellow hidden border-t-[1px] border-l-[1px] border-white/25"
+      <button class="absolute right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px] top-[-70px] md:flex justify-center text-white items-center hover:text-mainYellow hidden border-t-[1px] border-l-[1px] border-white/25"
               @click="toggleModal">
         <FaIcon :icon="['far', 'circle-question']" class="text-[18px]"/>
       </button>
@@ -158,20 +158,20 @@ const getColor = (deg: number) => {
       <p class="text-white/70">تست {{ convertToPersianNumber(activeIndex.toString()) }} از {{ convertToPersianNumber(report['analyze'].length.toString()) }}</p>
 
       <div class="flex mt-4">
-        <PrimaryIconButton :icon="arrow_right" alt=">" class="!rounded-[15px]" :disabled="activeIndex === 1"/>
+        <PrimaryIconButton :icon="arrow_right" alt=">" :disabled="activeIndex === 1"/>
 
         <div class="flex-1 w-full mx-2 flex flex-col">
-          <PrimaryButton class="flex items-center justify-center mb-2 !rounded-[15px]">
+          <PrimaryButton class="flex items-center justify-center mb-2">
             <span class="text-[15px] ml-2">دانلود فایل نتیجه</span>
             <img class="w-[22px]" src="@/assets/icons/icon_download_big_white.svg" alt="download">
           </PrimaryButton>
 
-          <PrimaryButton class="flex items-center justify-center bg-mainDarkYellow !rounded-[15px]" @click="$router.push(`/physio/${report['session_id']}`)">
+          <PrimaryButton class="flex items-center justify-center bg-mainDarkYellow" @click="$router.push(`/physio/${report['session_id']}`)">
             <span class="text-[15px]">رزرو وقت فیزیوتراپی</span>
           </PrimaryButton>
         </div>
 
-        <PrimaryIconButton :icon="arrow_left" alt="<" class="!rounded-[15px]" :disabled="activeIndex === report['analyze'].length"/>
+        <PrimaryIconButton :icon="arrow_left" alt="<" :disabled="activeIndex === report['analyze'].length"/>
       </div>
     </div>
   </div>

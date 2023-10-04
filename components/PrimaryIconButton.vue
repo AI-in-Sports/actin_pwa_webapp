@@ -10,8 +10,8 @@ defineProps<{
 <template>
   <button
       :type="type" :disabled="disabled"
-      class="primaryButton bg-mainBlue rounded-[96px] p-[13px] font-bold text-[20px] border-t-2 border-l-2 border-white/40
-              disabled:bg-mainBlue/60 hover:enabled:scale-95 hover:enabled:focus:scale-95">
+      class="primaryButton bg-mainBlue rounded-[15px] p-[13px] font-bold text-[20px] border-t-2 border-l-2 border-white/40
+              disabled:bg-mainBlue/60 hover:enabled:scale-[0.96] hover:enabled:focus:scale-[0.96]">
     <img :src="icon" :alt="alt" class="h-[24px] w-[24px]">
   </button>
 </template>

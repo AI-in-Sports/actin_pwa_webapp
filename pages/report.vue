@@ -163,7 +163,7 @@ onMounted(async () => {
     <ClientOnly>
       <p class="flex items-center text-[16px]">
         کاربر شماره {{ user }}
-        <span class="border-r-2 border-white h-[20px] w-[2px] mx-3"></span>
+        <span class="border-r-2 border-black h-[20px] w-[2px] mx-3"></span>
         <a @click="logout" class="hover:text-mainBlue cursor-pointer">خروج از حساب</a>
       </p>
     </ClientOnly>
