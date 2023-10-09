@@ -1,67 +1,17 @@
 <script setup lang="ts">
-import icon_map_recommend from "~/assets/map/icon_map_recommend.svg"
-import icon_map_st1 from "~/assets/map/icon_map_st1.svg"
-//import icon_map_st2 from "~/assets/map/icon_map_st2.svg"
-import icon_map_st3 from "~/assets/map/icon_map_st3.svg"
-import {Ref} from "vue/dist/vue"
+import { Map, MapDoctorList } from "#components"
 
 definePageMeta({
   layout: "pad",
   middleware: ["normal-auth"]
 })
 
-const zoom = ref(10)
-const defaultLocation: Ref<[number, number]> = ref([35.72920336162293, 51.33802912176813])
+const isSwitchTabMenuShow = ref(false)
+const selectedTab = ref(0)
 
-const cookieHint = useCookie("isMapHitMapShowed")
-if (!cookieHint.value) cookieHint.value = "show"
-const isHintShowed = ref(cookieHint.value === "show")
-
-const toggleModal = () => {
-  isHintShowed.value = !isHintShowed.value
-  cookieHint.value = cookieHint.value === "show" ? "hide" : "show"
-}
-
-interface Pointer {
-  point: [number, number],
-  flag: "special" | "active" | "deactivate",
-  dr: {
-    fullName: string,
-    speciality: string
-  }
-}
-
-const pointers = ref([
-  {
-    point: [35.701274598429166, 51.319979230557045],
-    flag: "special",
-    dr: {
-      fullName: "دکتر شهاب شهیدی شهیدی شهیدی",
-      speciality: "متخصص فیزیوتراپی"
-    }
-  },
-  {
-    point: [35.7006034411002, 51.31518191815049],
-    flag: "active",
-    dr: {
-      fullName: "دکتر شهاب شهیدی",
-      speciality: "متخصص یه ور دیگه"
-    }
-  },
-  {
-    point: [35.69987969875934, 51.337724293688964],
-    flag: "deactivate",
-    dr: {
-      fullName: "شهید دکتر شهابی",
-      speciality: "متخصص قلب"
-    }
-  }
-] as Pointer[])
-
-const changeZoom = (location: [number, number]) => {
-  defaultLocation.value = location
-  setTimeout(() => zoom.value = 20, 500)
-}
+const views = ref([
+    Map, MapDoctorList
+])
 
 useHead({title: "Actin - Choose physio"})
 </script>
@@ -69,76 +19,41 @@ useHead({title: "Actin - Choose physio"})
 <template>
   <div class="h-[100vh] w-full relative flex justify-center items-center">
     <section class="absolute sm:max-w-[500px] h-[64px] sm:w-full rounded-lg bg-black/80 z-[500] inset-5 sm:inset-auto sm:top-5 flex justify-between px-2 py-3 items-center">
-      <div class="w-1/3 flex h-full justify-start" @click="$router.replace(`/result/${$route.params.session_id}`)">
+      <div class="flex h-full justify-start" @click="$router.replace(`/result/${$route.params.session_id}`)">
         <FaIcon :icon="['fas', 'arrow-right']" class="text-[18px] hover:bg-gray-100/30 cursor-pointer p-3 rounded"/>
       </div>
 
-      <p class="w-1/3 text-center md:font-bold text-[16px]">انتخاب پزشک</p>
+      <div class="flex items-center mr-2 ml-auto h-full px-2 cursor-pointer hover:bg-gray-100/30 rounded relative"
+           @click="isSwitchTabMenuShow = !isSwitchTabMenuShow">
+        <p class="font-bold text-[16px] ml-2">نقشه‌ی مراکز درمانی</p>
+        <FaIcon :icon="['fas', 'angle-down']" class="text-[18px]"/>
 
-      <div class="w-1/3 flex h-full justify-end" @click="$router.replace('/report')">
+        <div class="absolute opacity-100 z-[600] bg-[#2c2c2c] rounded-lg p-[8px] border-[#DBDBDB] border-[1px] w-full inset-0 bottom-auto flex flex-col"
+             :class="{ '!z-[-100] !opacity-0': !isSwitchTabMenuShow }">
+          <div class="flex items-center justify-between">
+            <p class="font-bold">نحوه‌ی نمایش</p>
+
+            <FaIcon :icon="['fas', 'angle-down']" class="text-[18px]"/>
+          </div>
+
+          <div class="flex items-center mt-2 p-1" @click.self="selectedTab = 1">
+            <i class="bg-white h-3 w-3 rounded-lg ml-2" :class="{ 'opacity-0': selectedTab != 1 }"></i>
+            لیست پزشکان
+          </div>
+          <div class="flex items-center p-1" @click.self="selectedTab = 0">
+            <i class="bg-white h-3 w-3 rounded-lg ml-2" :class="{ 'opacity-0': selectedTab != 0 }"></i>
+            نقشه‌ی مراکز درمانی
+          </div>
+        </div>
+      </div>
+
+      <div class="flex h-full justify-end" @click="$router.replace('/report')">
         <img src="~/assets/images/logo_tr.png" alt="Actin" class="h-full hover:bg-gray-100/30 cursor-pointer rounded">
       </div>
     </section>
 
-    <HintModal :isHintShowed="isHintShowed" @toggleModal="toggleModal">
-      <div class="flex flex-col w-full pt-5 pb-10">
-        <div class="flex w-full items-center justify-start mb-2">
-          <img :src="icon_map_recommend" alt="map_marker" class="h-[40px] ml-3">
 
-          <p>پزشک های منتخب اکتین!</p>
-        </div>
-        <div class="flex w-full items-center justify-start mb-2">
-          <img :src="icon_map_st1" alt="map_marker" class="h-[40px] ml-3">
-
-          <p>پزشک های در دسترس</p>
-        </div>
-        <div class="flex w-full items-center justify-start">
-          <img :src="icon_map_st3" alt="map_marker" class="h-[40px] ml-3">
-
-          <p>پزشک های خارج از دسترس</p>
-        </div>
-
-        <HintLine/>
-
-        <div class="flex w-full items-start justify-start mt-4">
-          <FaIcon :icon="['fas', 'circle-info']" class="text-[18px] text-yellow-400 mt-1 ml-3"/>
-
-          <p>برای بازگشت به صفحه قبل روی لوگو اکتین کلیک کنید!</p>
-        </div>
-
-        <div class="flex w-full items-start justify-start mt-2">
-          <FaIcon :icon="['fas', 'circle-info']" class="text-[18px] text-yellow-400 mt-1 ml-3"/>
-
-          <p>برای باز کردن پروفایل هر پزشک روی نشان مربوط به آن کلیک کنید!</p>
-        </div>
-      </div>
-    </HintModal>
-
-    <button class="fixed right-0 p-[15px_16px] bg-mainDarkSecondary z-100 rounded-[14px_0_0_14px] flex justify-center items-center bottom-[28%] z-[500] over:text-mainYellow" @click="toggleModal">
-      <FaIcon :icon="['far', 'circle-question']" class="text-[18px]"/>
-    </button>
-
-<!--    <button class="fixed left-5 bottom-5 h-[50px] w-[50px] bg-black/80 rounded-lg z-[500] flex justify-center items-center hover:bg-black/90 cursor-pointer">
-      <FaIcon :icon="['fas', 'location-crosshairs']" class="text-[24px]"/>
-    </button>-->
-
-    <p class="fixed">در حال بارگیری نقشه...</p>
-
-    <client-only>
-      <LMap v-model:zoom="zoom" v-model:center="defaultLocation" :options="{zoomControl: false}">
-        <LTileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&amp;copy; <a target=&quot;blank&quot; href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors | &amp;copy; <a target=&quot;blank&quot; href=&quot;https://actinhealth.ir/&quot;>Actin Health</a>"
-            layer-type="base"
-            name="OpenStreetMap"/>
-
-        <MapCard
-            v-for="(point, index) in pointers" :key="index"
-            :location="point.point" :flag="point.flag"
-            :zoom="zoom" @changeZoom="changeZoom" :dr="point.dr"/>
-      </LMap>
-    </client-only>
-
+    <component :is="views[selectedTab]"/>
   </div>
 </template>
 

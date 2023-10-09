@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
 import {config, library} from "@fortawesome/fontawesome-svg-core"
 import {
+    faAngleDown,
     faArrowRight,
     faCheckDouble,
     faCircleCheck, faCircleInfo, faLocationCrosshairs,
@@ -15,7 +16,7 @@ library.add(
     faCheckDouble, faStar, faCircleCheck, faXmarkCircle,
     faCircleQuestion, faTriangleExclamation, faCircleInfo,
     faArrowRight, faLocationCrosshairs, faCircleUser,
-    faStethoscope
+    faStethoscope, faAngleDown
 )
 
 export default defineNuxtPlugin((nuxtApp) => {
