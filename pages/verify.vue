@@ -44,7 +44,7 @@ onMounted(async () => {
       toast.clearAll()
 
       if((route.query.Status === "OK" && paymentStatus.value === "invalid") ||(route.query.Status === "NOK" && paymentStatus.value === "valid"))
-        location.replace(`/result/${data_success['report_id']}`)
+        location.replace(`/result/${value.data['report_id']}`)
     }
   })
 })
