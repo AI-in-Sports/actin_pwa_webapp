@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import axios from "axios"
+
 definePageMeta({
   layout: "report",
   middleware: ["normal-auth"]
@@ -9,47 +11,42 @@ const route = useRoute()
 const toast = useNuxtApp().$showToast
 const paymentStatus = ref("")
 
-let data_error: any = null
 let data_success: any = null
-
-await useFetch(`${config.public.EXPRESS_BACKEND}/payment/verify`, {
-  headers: {
-    "Authorization": `Bearer ${useCookie("token").value}`
-  },
-  params: {
-    authority: route.query.Authority
-  }
-}).then(async (value) => {
-  data_error = value.error.value
-  data_success = value.data.value
-})
 
 useHead({title: paymentStatus.value === "" ? 'Waiting for response...' : (paymentStatus.value === 'valid' ? 'Successful payment' : 'Unsuccessful payment')})
 
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  if (data_error){
-    if (data_error.data.status === 404)
+  await axios(`${config.public.EXPRESS_BACKEND}/payment/verify`, {
+    headers: {
+      "Authorization": `Bearer ${useCookie("token").value}`
+    },
+    params: {
+      authority: route.query.Authority
+    }
+  }).then(async (value) => {
+    if (value.data.status === 404)
       location.replace("/report")
 
-    else if (data_error.data.status === 500)
+    else if (value.data.status === 500)
       useNuxtApp().$showToast.update(loading, {
-        render: data_error.data.message,
+        render: value.data.message,
         type: "error",
         rtl: true,
         autoClose: true,
         closeOnClick: true,
         isLoading: false
       })
-  }
-  else {
-    paymentStatus.value = data_success.message
-    toast.clearAll()
-  }
 
-  if((route.query.Status === "OK" && paymentStatus.value === "invalid") ||(route.query.Status === "NOK" && paymentStatus.value === "valid"))
-    location.replace(`/result/${data_success['report_id']}`)
+    else {
+      paymentStatus.value = data_success.message
+      toast.clearAll()
+
+      if((route.query.Status === "OK" && paymentStatus.value === "invalid") ||(route.query.Status === "NOK" && paymentStatus.value === "valid"))
+        location.replace(`/result/${data_success['report_id']}`)
+    }
+  })
 })
 </script>
 
