@@ -1,5 +1,11 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   modules: ['@vite-pwa/nuxt', "nuxt3-leaflet"],
   css: [
     "~/assets/style/main.css",
