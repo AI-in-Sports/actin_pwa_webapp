@@ -40,7 +40,7 @@ onMounted(async () => {
       })
 
     else {
-      paymentStatus.value = data_success.message
+      paymentStatus.value = value.data.message
       toast.clearAll()
 
       if((route.query.Status === "OK" && paymentStatus.value === "invalid") ||(route.query.Status === "NOK" && paymentStatus.value === "valid"))
