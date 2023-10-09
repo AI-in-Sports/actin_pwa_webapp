@@ -1,11 +1,11 @@
-import {ApmVuePlugin} from "@elastic/apm-rum-vue/dist/es"
+//import {ApmVuePlugin} from "@elastic/apm-rum-vue/dist/es"
 import { AgentConfigOptions } from "@elastic/apm-rum"
 
 export default defineNuxtPlugin((nuxtApp) => {
     const router = useRouter()
     const config = useRuntimeConfig()
 
-    nuxtApp.vueApp.use(ApmVuePlugin, {
+    /*nuxtApp.vueApp.use(ApmVuePlugin, {
         router,
         config: {
             serviceName: 'pwa',
@@ -15,5 +15,5 @@ export default defineNuxtPlugin((nuxtApp) => {
             environment: 'pwa_env',
             sendCredentials: true
         } as AgentConfigOptions
-    })
+    })*/
 })
