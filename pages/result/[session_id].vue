@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {convertJalaliToString} from "~/helper"
 import Jalali ,{JalaaliDateObject} from "jalaali-js"
+import axios from "axios";
 
 definePageMeta({
   layout: "pad",
@@ -14,70 +15,63 @@ const isDataFetched = ref(false)
 const isPayed = ref(false)
 const paymentUrl = ref("")
 
-let data_error: any = null
-let data_success: any = null
-
-if (route.params.session_id)
-  await useFetch(`${config.public.EXPRESS_BACKEND}/payment/report/${route.params.session_id}`, {
-    headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
-    }
-  }).then(async (value) => {
-    data_error = value.error.value
-    data_success = value.data.value
-  })
-
-else location.replace("/")
+const dataFetch = ref()
 
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
 
-  if (data_error) {
-    console.log(data_error)
+  if (route.params.session_id)
+    await axios(`${config.public.EXPRESS_BACKEND}/payment/report/${route.params.session_id}`, {
+      headers: {
+        "Authorization": `Bearer ${useCookie("token").value}`
+      }
+    }).then((value) => {
+      dataFetch.value = value.data
 
-    if(data_error.statusCode === 403) {
-      useCookie("token").value = null
-      location.replace("/report")
-    }
+      if(value.data.status === 200 && value.data.message === "OK")
+        isPayed.value = true
 
-    if (data_error.data.status === 404)
-      location.replace("/report")
+      else if (value.data.status === 200 && value.data.message !== "OK")
+        paymentUrl.value = value.data.url
 
-    else if (data_error.data.status === 500)
-      useNuxtApp().$showToast.update(loading, {
-        render: data_error.data.message,
-        type: "error",
-        rtl: true,
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      })
+      else if(value.data.status === 403) {
+        useCookie("token").value = null
+        location.replace("/report")
+      }
 
-    else if (data_error.data.status === 403) {
-      useCookie("token").value = null
-      location.reload()
-    }
-  }
+      if (value.data.status === 404)
+        location.replace("/report")
 
-  else  {
-    if(data_success.status === 200 && data_success.message === "OK")
-      isPayed.value = true
+      else if (value.data.status === 500)
+        useNuxtApp().$showToast.update(loading, {
+          render: value.data.message,
+          type: "error",
+          rtl: true,
+          autoClose: true,
+          closeOnClick: true,
+          isLoading: false
+        })
 
-    else paymentUrl.value = data_success.url
+      else if (value.data.status === 403) {
+        useCookie("token").value = null
+        location.reload()
+      }
 
-    isDataFetched.value = true
-    toast.clearAll()
-  }
+      isDataFetched.value = true
+      toast.clearAll()
+    }).catch((e) => {
+      console.log(e)
+    })
 
   useHead({title: `Actin - ${isPayed.value === false ? 'Payment' : 'Test report'}`})
 })
 </script>
 
 <template>
-  <div class="flex justify-between items-start sm:items-center w-full p-8 pb-0" v-if="data_success">
+  <div class="flex justify-between items-start sm:items-center w-full p-8 pb-0" v-if="dataFetch">
     <div class="flex flex-col">
       <h3 class="text-[20px] sm:text-[25px] font-black">نتیجه‌ی ارزیابی</h3>
-      <p>تاریخ: {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}</p>
+      <p>تاریخ: {{ convertJalaliToString(Jalali.toJalaali(new Date(dataFetch['date'])) as JalaaliDateObject) }}</p>
       <p>تست تقارن</p>
     </div>
 
@@ -89,11 +83,11 @@ onMounted(async () => {
     <section class="flex justify-center items-center h-full" dir="rtl">
       <div v-if="!isDataFetched"></div>
 
-      <PreviewAndDownloadReport v-else-if="isPayed" :report="data_success.report"/>
+      <PreviewAndDownloadReport v-else-if="isPayed" :report="dataFetch.report"/>
 
       <div v-else class="text-center">
         <h3 class="text-[25px] md:text-[30px] font-bold mb-2">
-          نتیجه تست {{ convertJalaliToString(Jalali.toJalaali(new Date(data_success['date'])) as JalaaliDateObject) }}
+          نتیجه تست {{ convertJalaliToString(Jalali.toJalaali(new Date(dataFetch['date'])) as JalaaliDateObject) }}
         </h3>
         <p class="text-[16px] md:text-[20px] mb-10">برای دیدن نتیجه ابتدا باید هزینه تست را پرداخت کنید!</p>
 
