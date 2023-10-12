@@ -17,8 +17,8 @@ const toggleModal = () => {
   cookieHint.value = cookieHint.value === "show" ? "hide" : "show"
 }
 
-const activeIndex = ref(1)
-const getActiveZone = computed(() => props.report['analyze']['zones']['frontal'])
+const getActiveZone = computed(() => props.report['_source']['analyze']['zones']['frontal'])
+
 
 const getColor = (deg: number) => {
   if (deg >= 0 && deg < 5) return arrow_green
@@ -115,7 +115,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['knee']['left']))"
                alt="<" class="h-[24px] ml-2" :class="{ 'rotate-[180deg]': getActiveZone['knee']['left'] > 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['knee']['left']).toString()) }}°
+          {{ convertToPersianNumber(Math.abs(getActiveZone['knee'][0]['left']).toString()) }}°
         </span>
         </p>
 
@@ -142,7 +142,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['knee']['right']))"
                alt="<" class="h-[24px] ml-2" :class="{ 'rotate-[180deg]': getActiveZone['knee']['right'] > 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['knee']['right']).toString()) }}°
+          {{ convertToPersianNumber(Math.abs(getActiveZone['knee'][0]['right']).toString()) }}°
         </span>
         </p>
 
@@ -160,7 +160,6 @@ const soon = () => {
 <!--      <p class="text-white/70">تست {{ convertToPersianNumber(activeIndex.toString()) }} از {{ convertToPersianNumber(report['analyze'].length.toString()) }}</p>-->
 
       <div class="flex mt-4">
-<!--        <PrimaryIconButton :icon="arrow_right" alt=">" :disabled="activeIndex === 1"/>-->
 
         <div class="flex-1 w-full mx-2 flex flex-col">
           <PrimaryButton class="flex items-center justify-center mb-2" @click="soon">
@@ -172,8 +171,6 @@ const soon = () => {
             <span class="text-[15px]">رزرو وقت فیزیوتراپی</span>
           </PrimaryButton>
         </div>
-
-<!--        <PrimaryIconButton :icon="arrow_left" alt="<" :disabled="activeIndex === report['analyze'].length"/>-->
       </div>
     </div>
   </div>

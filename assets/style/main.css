@@ -8,4 +8,19 @@
     * {
         @apply font-dana duration-[0.2s];
     }
+
+    ::-webkit-scrollbar {
+       background-color: transparent;
+        width: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+        width: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #212121;
+        width: 3px;
+        @apply rounded-full
+    }
 }

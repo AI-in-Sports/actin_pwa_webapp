@@ -11,6 +11,9 @@ export default {
     ],
     theme: {
         extend: {
+            animation: {
+                'spin-slow': 'spin 2.5s linear infinite',
+            },
             fontFamily: {
                 dana: ["Dana", "Arial", "sans-serif"],
             },
