@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware(async () => {
     {
         const token = useCookie("token")
 
+        let error = null
+
         await axios
             .get(`${process.env.EXPRESS_BACKEND}/auth/info`, {
                 headers: {
@@ -14,10 +16,14 @@ export default defineNuxtRouteMiddleware(async () => {
             .then(() => {})
             .catch((reason) => {
                 console.log(reason)
-                token.value = null
-                useCookie("phone").value = null
-
-                return navigateTo("/")
+                error = true
             })
+
+        if (error) {
+            token.value = null
+            useCookie("phone").value = null
+
+            return navigateTo("/")
+        }
     }
 })
