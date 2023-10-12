@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import circle_green from "assets/images/circle_green.svg"
+/*import circle_green from "assets/images/circle_green.svg"
 import circle_red from "assets/images/circle_red.svg"
-import circle_yellow from "assets/images/circle_yellow.svg"
+import circle_yellow from "assets/images/circle_yellow.svg"*/
 
 const props = defineProps<{
   report: any
@@ -9,11 +9,11 @@ const props = defineProps<{
 
 const getActiveZone = computed(() => props.report.report['analyze']['zones']['frontal'])
 
-const getColor = (deg: number) => {
+/*const getColor = (deg: number) => {
   if (deg >= 0 && deg < 5) return circle_green
   else if (deg >= 5 && deg < 10) return circle_yellow
   else return circle_red
-}
+}*/
 </script>
 
 <template>
