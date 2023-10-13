@@ -78,6 +78,8 @@ onMounted(async () => {
 </script>
 
 <template>
+  <ReportHeader backRoute="/home">جزئیات گزارش</ReportHeader>
+
   <!-- Scroll section -->
   <div id="dataSection" class="flex w-full items-center flex-col overflow-auto px-[16px] pb-[82px]">
 
