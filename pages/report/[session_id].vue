@@ -78,14 +78,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ReportHeader backRoute="/home">جزئیات گزارش</ReportHeader>
+  <ReportHeader @click="$router.replace('/home')">جزئیات گزارش</ReportHeader>
 
   <!-- Scroll section -->
   <div id="dataSection" class="flex w-full items-center flex-col overflow-auto px-[16px] pb-[82px]">
 
     <!-- Navigation -->
-    <div class="inset-[20px] absolute top-[65px] z-50 bottom-auto flex justify-center">
-      <div class="max-w-[400px] p-[4px] rounded-[12px] bg-[#EEEEEE]/70 shadow-md flex gap-[4px] w-full backdrop-blur-xl">
+    <div class="max-w-[400px] sm:w-full sm:inset-auto left-[20px] right-[20px] absolute !top-[65px] z-50 flex justify-center">
+      <div class="p-[4px] rounded-[12px] bg-[#EEEEEE]/70 shadow-md flex gap-[4px] w-full backdrop-blur-xl">
         <div
             v-for="(item, index) in ['گزارش روبه‌رو', 'گزارش بقل']" :key="item" @click="changeView(index + 1)"
             class="w-full p-[10px] rounded-[8px] flex justify-center items-center !select-none text-[16px] text-[#212121] cursor-pointer hover:bg-white/60"
@@ -116,7 +116,9 @@ onMounted(async () => {
   </div>
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[420px]">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold">رزرو وقت فیزیوتراپی</PrimaryButton>
+    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/physio/list')">
+      رزرو وقت فیزیوتراپی
+    </PrimaryButton>
   </div>
 </template>
 

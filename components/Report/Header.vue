@@ -1,7 +1,4 @@
 <script setup lang="ts">
-defineProps<{
-  backRoute: string
-}>()
 </script>
 
 <template>
@@ -14,7 +11,7 @@ defineProps<{
     </div>
 
     <div class="w-1/4 flex items-center justify-end">
-      <FaIcon :icon="['fas', 'arrow-left']" @click="$router.replace(backRoute)"
+      <FaIcon :icon="['fas', 'arrow-left']" @click="$emit('back')"
               class="cursor-pointer text-[18px] mt-1"/>
     </div>
   </nav>

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme"
+
 export default {
     content: [
         "./components/**/*.{js,vue,ts}",
@@ -10,6 +12,9 @@ export default {
         "./error.vue"
     ],
     theme: {
+        screens: {
+            'sm': '420px',
+        },
         extend: {
             animation: {
                 'spin-slow': 'spin 2.5s linear infinite',
