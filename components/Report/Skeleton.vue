@@ -2,9 +2,12 @@
 /*import circle_green from "assets/images/circle_green.svg"
 import circle_red from "assets/images/circle_red.svg"
 import circle_yellow from "assets/images/circle_yellow.svg"*/
+import frontal from "assets/images/skeleton_frontal.png"
+import sagital from "assets/images/skeleton_sagital.png"
 
 const props = defineProps<{
-  report: any
+  report: any,
+  test: "frontal" | "sagital"
 }>()
 
 const getActiveZone = computed(() => props.report.report['analyze']['zones']['frontal'])
@@ -19,7 +22,7 @@ const getActiveZone = computed(() => props.report.report['analyze']['zones']['fr
 <template>
   <div class="bg-[#EEE] p-8 rounded-[24px] flex justify-center items-center relative">
 
-    <img src="@/assets/images/skeleton.png" alt="skeleton" class="w-2/3">
+    <img :src="test === 'frontal' ? frontal : sagital" alt="skeleton" class="w-2/3">
   </div>
 </template>
 
