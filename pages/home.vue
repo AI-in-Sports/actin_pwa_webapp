@@ -4,7 +4,7 @@ import {Ref} from "vue"
 import {convertJalaliToString} from "~/helper"
 
 definePageMeta({
-  layout: "report",
+  layout: "main",
   middleware: ["auth"]
 })
 
@@ -125,7 +125,7 @@ onMounted(async () => {
       </div>
 
       <PrimaryButton
-          @click="$router.push(`/result/${reports[0].testId}`)"
+          @click="$router.push(`/report/${reports[0].testId}`)"
           class="flex items-center justify-center mt-5">
         <span class="text-[16px] ml-2">دانلود نتیجه ارزیابی</span>
         <img class="w-[26px]" src="@/assets/icons/icon_download_white.svg" alt="download">
@@ -148,7 +148,7 @@ onMounted(async () => {
         <div class="flex flex-col" v-for="(item, index) in reports" :key="item.testId">
           <PrimaryButton
               class="flex items-center justify-center mt-5 text-[20px] font-normal"
-              @click="$router.push(`/result/${item.testId}`)"
+              @click="$router.push(`/report/${item.testId}`)"
               v-if="index !== 0">
             دانلود نتیجه {{ convertJalaliToString(item.date as JalaaliDateObject) }}
           </PrimaryButton>

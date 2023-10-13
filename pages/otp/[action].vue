@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: "report"
+  layout: "main"
 })
 
 const route = useRoute()
@@ -20,7 +20,7 @@ onMounted(() => {
   const process = localStorage.getItem("process")
 
   if (useCookie("token").value && phone)
-    location.replace("/report")
+    location.replace("/home")
 
   if (!["login", "register"].includes(action))
     location.href = "/"
@@ -107,7 +107,7 @@ const submitForm = async () => {
 
     if(sessionId)
       location.replace(`/scan/${sessionId}`)
-    else location.replace("/report?act=lg_done")
+    else location.replace("/home?act=lg_done")
   }
 }
 </script>

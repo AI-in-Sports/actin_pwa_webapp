@@ -3,7 +3,7 @@ import {toast} from "vue3-toastify";
 import {convertToPersianNumber} from "~/helper"
 
 definePageMeta({
-  layout: "report",
+  layout: "main",
   middleware: ["auth"]
 })
 

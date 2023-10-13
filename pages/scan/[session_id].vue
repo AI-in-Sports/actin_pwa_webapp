@@ -2,7 +2,7 @@
 import {toast} from "vue3-toastify"
 
 definePageMeta({
-  layout: "report",
+  layout: "main",
   middleware: ["scan"]
 })
 
@@ -39,19 +39,19 @@ onMounted(async () => {
 
       if (error.value.data.status === 500)
 
-        location.replace("/report?act=srv_err")
+        location.replace("/home?act=srv_err")
 
       else if (error.value.data.status === 403)
 
-        location.replace("/report?act=sid_tkn")
+        location.replace("/home?act=sid_tkn")
 
-      else location.replace("/report?act=sid_inv")
+      else location.replace("/home?act=sid_inv")
 
-    else location.replace("/report?act=srv_err")
+    else location.replace("/home?act=srv_err")
   }
   else {
     useCookie("signInSession").value = null
-    location.replace("/report?act=rep_done")
+    location.replace("/home?act=rep_done")
   }
 })
 </script>

@@ -2,7 +2,7 @@
 import axios from "axios"
 
 definePageMeta({
-  layout: "report",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 
@@ -27,7 +27,7 @@ onMounted(async () => {
     }
   }).then(async (value) => {
     if (value.data.status === 404)
-      location.replace("/report")
+      location.replace("/home")
 
     else if (value.data.status === 500)
       useNuxtApp().$showToast.update(loading, {
@@ -44,7 +44,7 @@ onMounted(async () => {
       toast.clearAll()
 
       if((route.query.Status === "OK" && paymentStatus.value === "invalid") ||(route.query.Status === "NOK" && paymentStatus.value === "valid"))
-        location.replace(`/result/${value.data['report_id']}`)
+        location.replace(`/report/${value.data['report_id']}`)
     }
   })
 })
