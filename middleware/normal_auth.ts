@@ -14,8 +14,7 @@ export default defineNuxtRouteMiddleware(async () => {
                 }
             })
             .then(() => {})
-            .catch((reason) => {
-                console.log(reason)
+            .catch(() => {
                 error = true
             })
 

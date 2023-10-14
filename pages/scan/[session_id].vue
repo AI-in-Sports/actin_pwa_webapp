@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {toast} from "vue3-toastify"
-
 definePageMeta({
   layout: "main",
   middleware: ["scan"]
@@ -21,7 +19,7 @@ onMounted(async () => {
     location.reload()
   }
 
-  useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...")
 
   const { error } = await useFetch(`${config.public.EXPRESS_BACKEND}/report/register`, {
     method: "PUT",

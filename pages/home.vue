@@ -34,27 +34,27 @@ onMounted(async () => {
 
   switch (act) {
     case "sid_inv":
-      toast.error("کد تست نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("کد تست نامعتبر است!")
       break
 
     case "sid_tkn":
-      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!")
       break
 
     case "srv_err":
-      toast.error("خطا از سمت سرور!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("خطا از سمت سرور!")
       break
 
     case "rep_done":
-      toast.success("اطلاعات تست با موفقیت ذخیره شد!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.success("اطلاعات تست با موفقیت ذخیره شد!")
       break
 
     case "lg_done":
-      toast.success("خوش آمدید!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.success("خوش آمدید!")
       break
   }
 
-  const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = toast.loading("در حال دریافت اطلاعات...")
 
   await new Promise(async () => {
     await useFetch(`${config.public.EXPRESS_BACKEND}/auth/info`, {
@@ -77,7 +77,6 @@ onMounted(async () => {
           toast.update(loading, {
             render: "دریافت اطلاعات با خطا مواجه شد!",
             type: "error",
-            rtl: true,
             autoClose: true,
             closeOnClick: true,
             isLoading: false

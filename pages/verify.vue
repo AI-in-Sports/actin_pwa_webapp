@@ -9,7 +9,7 @@ definePageMeta({
 const config = useRuntimeConfig()
 const route = useRoute()
 const toast = useNuxtApp().$showToast
-const paymentStatus = ref("")
+const paymentStatus = shallowRef("")
 
 let data_success: any = null
 
@@ -33,7 +33,6 @@ onMounted(async () => {
       useNuxtApp().$showToast.update(loading, {
         render: value.data.message,
         type: "error",
-        rtl: true,
         autoClose: true,
         closeOnClick: true,
         isLoading: false

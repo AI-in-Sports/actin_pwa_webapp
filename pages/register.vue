@@ -11,14 +11,14 @@ useHead({title: "Actin - Register"})
 
 const config = useRuntimeConfig()
 
-const phoneNumber = ref("")
-const fullName = ref("")
-const isSubmit = ref(false)
+const phoneNumber = shallowRef("")
+const fullName = shallowRef("")
+const isSubmit = shallowRef(false)
 
 const submit = async () => {
   isSubmit.value = true
 
-  const loading = useNuxtApp().$showToast.loading("در حال ارسال کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = useNuxtApp().$showToast.loading("در حال ارسال کد...")
 
   const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send/register`, {
     method: "GET",
@@ -36,7 +36,6 @@ const submit = async () => {
       useNuxtApp().$showToast.update(loading, {
         render: "شماره تلفن قبلا در سیستم ثبت شده است!",
         type: "error",
-        rtl: true,
         autoClose: true,
         closeOnClick: true,
         isLoading: false
@@ -45,7 +44,6 @@ const submit = async () => {
     else useNuxtApp().$showToast.update(loading, {
       render: "فرایند با خطا مواجه شد!",
       type: "error",
-      rtl: true,
       autoClose: true,
       closeOnClick: true,
       isLoading: false

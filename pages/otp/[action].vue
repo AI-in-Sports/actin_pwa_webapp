@@ -36,12 +36,12 @@ const submitForm = async () => {
 
   console.log(code.value)
   if (code.value.length < 6) {
-    toast.error("لطفا کد را کامل وارد کنید!", {rtl: true, position: toast.POSITION.TOP_RIGHT})
+    toast.error("لطفا کد را کامل وارد کنید!")
     isSubmit.value = false
     return
   }
 
-  const loading = useNuxtApp().$showToast.loading("در حال بررسی کد...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = useNuxtApp().$showToast.loading("در حال بررسی کد...")
 
   const session = localStorage.getItem("loginSession")
 
@@ -70,7 +70,6 @@ const submitForm = async () => {
       useNuxtApp().$showToast.update(loading, {
         render: "کد ورود اشتباه است!",
         type: "error",
-        rtl: true,
         autoClose: true,
         closeOnClick: true,
         isLoading: false
@@ -87,7 +86,6 @@ const submitForm = async () => {
     else useNuxtApp().$showToast.update(loading, {
       render: "فرایند با خطا مواجه شد!",
       type: "error",
-      rtl: true,
       autoClose: true,
       closeOnClick: true,
       isLoading: false

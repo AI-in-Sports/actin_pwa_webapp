@@ -29,7 +29,7 @@ const getActiveZone = computed(() => dataFetch.value.report['_source']['analyze'
 onMounted(async () => {
   await preloadComponents('FaIcon')
 
-  const loading = toast.loading("در حال دریافت اطلاعات...", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+  const loading = toast.loading("در حال دریافت اطلاعات...")
 
   if (route.params.session_id)
     await axios(`${config.public.EXPRESS_BACKEND}/report/${route.params.session_id}`, {
@@ -56,7 +56,6 @@ onMounted(async () => {
         useNuxtApp().$showToast.update(loading, {
           render: value.data.message,
           type: "error",
-          rtl: true,
           autoClose: true,
           closeOnClick: true,
           isLoading: false
@@ -87,7 +86,7 @@ onMounted(async () => {
     <div class="max-w-[400px] sm:w-full sm:inset-auto left-[20px] right-[20px] absolute !top-[65px] z-50 flex justify-center">
       <div class="p-[4px] rounded-[12px] bg-[#EEEEEE]/70 shadow-md flex gap-[4px] w-full backdrop-blur-xl">
         <div
-            v-for="(item, index) in ['گزارش روبه‌رو', 'گزارش بقل']" :key="item" @click="changeView(index + 1)"
+            v-for="(item, index) in ['گزارش روبه‌رو', 'گزارش از پهلو']" :key="item" @click="changeView(index + 1)"
             class="w-full p-[10px] rounded-[8px] flex justify-center items-center !select-none text-[16px] text-[#212121] cursor-pointer hover:bg-white/60"
             :class="{ 'bg-white shadow-[0px_4px_4px_0px] shadow-black/5': activeView === index + 1}">
           {{ item }}

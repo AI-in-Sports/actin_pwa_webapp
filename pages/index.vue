@@ -12,14 +12,14 @@ onMounted(() => {
 
   switch (act) {
     case "usr_inv":
-      toast.error("کاربر نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("کاربر نامعتبر است!")
       break
     case "sid_inv":
-      toast.error("کد نامعتبر است!", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("کد نامعتبر است!")
       break
 
     case "lg_exp":
-      toast.error("کد ورود منقضی شده است! دوباره امتحان کنید.", { rtl: true, position: toast.POSITION.TOP_RIGHT })
+      toast.error("کد ورود منقضی شده است! دوباره امتحان کنید.")
       break
   }
 })
