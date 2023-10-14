@@ -5,7 +5,7 @@ import {
     faCheckDouble, faSpinner,
     faCircleCheck, faCircleInfo, faLocationCrosshairs,
     faStar, faStethoscope, faTriangleExclamation,
-    faXmarkCircle
+    faXmarkCircle, faStarHalfStroke
 } from "@fortawesome/free-solid-svg-icons"
 import {faCircleQuestion, faCircleUser} from "@fortawesome/free-regular-svg-icons"
 
@@ -15,7 +15,7 @@ library.add(
     faCheckDouble, faStar, faCircleCheck, faXmarkCircle,
     faCircleQuestion, faTriangleExclamation, faCircleInfo,
     faArrowLeft, faLocationCrosshairs, faCircleUser,
-    faStethoscope, faAngleDown, faSpinner
+    faStethoscope, faAngleDown, faSpinner, faStarHalfStroke
 )
 
 export default defineNuxtPlugin((nuxtApp) => {
