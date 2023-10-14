@@ -28,6 +28,14 @@ onMounted(async () => {
     toast.clearAll()
   }).catch((e) => {
     console.log(e)
+
+    useNuxtApp().$showToast.update(loading, {
+      render: "خطا در دریافت اطلاعات پزشکان!",
+      type: "error",
+      autoClose: true,
+      closeOnClick: true,
+      isLoading: false
+    })
   })
 })
 

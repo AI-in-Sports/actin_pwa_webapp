@@ -5,14 +5,7 @@ const props = defineProps<{
   data: any
 }>()
 
-const getStarDetail = (): { full: number, half: boolean } => {
-  const stars = props.data['score'].toString().split('.') as string[]
-
-  return {
-    full: Number(stars[0]),
-    half: stars.length > 1
-  }
-}
+const getStarDetail = useNuxtApp().$getStarDetail(props.data['score'])
 </script>
 
 <template>
@@ -28,11 +21,11 @@ const getStarDetail = (): { full: number, half: boolean } => {
 
       <div class="flex mt-[8px] justify-between items-center">
         <div class="flex items-center">
-          <FaIcon :icon="['fas', 'star']" class="text-[#F0A300]" v-for="star in getStarDetail().full" :key="star"/>
-          <FaIcon :icon="['fas', 'star-half-stroke']" class="text-[#F0A300] scale-x-[-1]" v-if="getStarDetail().half"/>
-          <p class="text-black/60 text-[12px] mr-[4px] mt-[1px]">{{ convertToPersianNumber(props.data['score'].toString()) }}</p>
+          <FaIcon :icon="['fas', 'star']" class="text-[#F0A300]" v-for="star in getStarDetail.full" :key="star"/>
+          <FaIcon :icon="['fas', 'star-half-stroke']" class="text-[#F0A300] scale-x-[-1]" v-if="getStarDetail.half"/>
+          <p class="text-black/60 text-[12px] mr-[4px] mt-[2px]">{{ convertToPersianNumber(data['score'].toString()) }}</p>
         </div>
-        <div class="h-[18px] rounded-full bg-[#FFE6E6] flex items-center px-[8px] pb-[2px]">
+        <div class="h-[18px] rounded-full bg-[#FFE6E6] flex items-center px-[8px] pb-[2px]" v-if="data['occupation'] == 'busy'">
           <div class="bg-[#EC1515] h-[8px] w-[8px] rounded-full ml-[4px] mt-[2px]"></div>
           <p class="text-[12px] text-[#EC1515]">
             بدون زمان خالی
