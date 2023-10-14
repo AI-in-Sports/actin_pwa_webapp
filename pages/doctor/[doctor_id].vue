@@ -68,7 +68,6 @@ useHead({title: `Actin - Doctor page`})
 
         <p class="flex-1">
           {{ physio['location'] }}
-          {{ physio['location'] }}
         </p>
       </div>
     </div>
