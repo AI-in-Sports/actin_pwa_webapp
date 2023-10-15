@@ -16,12 +16,12 @@ const getHealthy = useNuxtApp().$getHealthy as (deg: number) => "healthy" | "nee
       سر شما {{ convertToPersianNumber(Math.abs(report['sagital']['forward_head']).toString()) }}° درجه به جلو تمایل دارد (عارضه سر به جلو).
     </ReportCard>
 
-    <ReportCard title="قوز کمر" :level="getHealthy(report['densepose']['H1'])">
-      کمر شما {{ convertToPersianNumber(Math.abs(report['densepose']['H1']).toString()) }}° درجه دارای قوز می‌باشد (عارضه قوز کمر).
+    <ReportCard title="قوز کمر" :level="getHealthy(report['densepose']['D1'])">
+      کمر شما {{ convertToPersianNumber(Math.abs(report['densepose']['D1']).toString()) }}° درجه دارای قوز می‌باشد (عارضه قوز کمر).
     </ReportCard>
 
-    <ReportCard title="گودی کمر" :level="getHealthy(report['densepose']['H2'])">
-      کمر شما {{ convertToPersianNumber(Math.abs(report['densepose']['H1']).toString()) }}° درجه دارای گودی می‌باشد (عارضه گودی کمر).
+    <ReportCard title="گودی کمر" :level="getHealthy(report['densepose']['D2'])">
+      کمر شما {{ convertToPersianNumber(Math.abs(report['densepose']['D2']).toString()) }}° درجه دارای گودی می‌باشد (عارضه گودی کمر).
     </ReportCard>
   </div>
 </template>

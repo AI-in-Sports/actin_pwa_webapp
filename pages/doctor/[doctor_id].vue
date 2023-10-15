@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import axios from "axios"
 import {convertToPersianNumber} from "~/helper";
+import {PhysioPagesDescription} from "#components";
 
 definePageMeta({
   layout: "result",
   middleware: ["normal-auth"]
 })
+
+const tabs = shallowRef([
+    {
+      title: 'توضیحات',
+      component: PhysioPagesDescription
+    }
+])
+const activeTab = shallowRef(0)
 
 const toast = useNuxtApp().$showToast
 const route = useRoute()
@@ -48,7 +57,7 @@ useHead({title: `Actin - Doctor page`})
 <template>
   <ReportHeader @click="$router.replace('/physio/list')">اطلاعات پزشک</ReportHeader>
 
-  <div class="max-w-[400px] w-full flex flex-col items-center" v-if="physio">
+  <div class="max-w-[400px] w-full flex flex-col items-center overflow-auto" v-if="physio">
     <img src="@/assets/images/dr_prof.png" :alt="physio['name']"
          class="w-[72px] h-[72px] rounded-full mt-[32px]">
 
@@ -64,7 +73,7 @@ useHead({title: `Actin - Doctor page`})
 
     <div class="flex flex-col mt-[24px] w-full px-[16px] text-[16px] text-[#212121]">
       <div class="flex items-start">
-        <FaIcon :icon="['fas', 'location-dot']" class="text-[#727272] text-[24px] ml-[12px] mt-1"/>
+        <FaIcon :icon="['fas', 'location-dot']" class="text-[#727272] text-[24px] ml-[12px] mt-1.5"/>
 
         <p class="flex-1">
           {{ physio['location'] }}
@@ -74,18 +83,7 @@ useHead({title: `Actin - Doctor page`})
 
     <div class="flex flex-col mt-[20px] w-full px-[16px] text-[16px] text-[#212121]">
       <div class="flex items-start">
-        <FaIcon :icon="['fas', 'mobile-screen-button']" class="text-[#727272] text-[24px] ml-[12px] mt-1"/>
-
-        <div class="flex flex-col flex-1">
-          <p class="text-[12px] mb-[2px]">شماره تلفن همراه</p>
-          <p>{{ convertToPersianNumber(physio['phone']) }}</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex flex-col mt-[20px] w-full px-[16px] text-[16px] text-[#212121]">
-      <div class="flex items-start">
-        <FaIcon :icon="['fas', 'phone-flip']" class="text-[#727272] text-[24px] ml-[12px] mt-1"/>
+        <FaIcon :icon="['fas', 'phone-flip']" class="text-[#727272] text-[24px] ml-[12px] mt-1.5"/>
 
         <div class="flex flex-col flex-1">
           <p class="text-[12px] mb-[2px]">شماره ثابت</p>
@@ -93,11 +91,21 @@ useHead({title: `Actin - Doctor page`})
         </div>
       </div>
     </div>
+
+    <div class="flex w-full px-[18px] mt-[28px] flex-col pb-[82px]">
+      <div class="flex border-b-[1px] border-b-[#F2F2F2] mb-[16px]">
+        <div v-for="item in tabs" :key="tabs[activeTab].title" class="w-fit text-[14px] text-[#212121] font-semibold border-b-[#212121] border-b-2 pb-[8px]">
+          <p>{{ item.title }}</p>
+        </div>
+      </div>
+
+      <component v-for="item in tabs" :key="tabs[activeTab].title"  :is="item.component" :data="physio['description']"/>
+    </div>
   </div>
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[420px]">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/physio/list')">
-      رزرو وقت فیزیوتراپی
+    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold">
+      ثبت نوبت
     </PrimaryButton>
   </div>
 </template>
