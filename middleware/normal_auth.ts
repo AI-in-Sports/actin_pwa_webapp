@@ -6,6 +6,7 @@ export default defineNuxtRouteMiddleware(async () => {
         const token = useCookie("token")
 
         let error = null
+        let data = null
 
         await axios
             .get(`${process.env.EXPRESS_BACKEND}/auth/info`, {
@@ -13,7 +14,9 @@ export default defineNuxtRouteMiddleware(async () => {
                     "Authorization": `Bearer ${token.value}`
                 }
             })
-            .then(() => {})
+            .then((value) => {
+                data = value.data
+            })
             .catch(() => {
                 error = true
             })
@@ -24,5 +27,7 @@ export default defineNuxtRouteMiddleware(async () => {
 
             return navigateTo("/")
         }
+
+        if (data) useCookie("user").value = data
     }
 })

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  modules: ['@vite-pwa/nuxt', "nuxt3-leaflet"],
+  modules: ['@vite-pwa/nuxt', "nuxt3-leaflet", "nuxt-swiper"],
   css: [
     "~/assets/style/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css"

@@ -15,6 +15,13 @@ export default defineNuxtPlugin(() => {
                     full: Number(stars[0]),
                     half: stars.length > 1
                 }
+            },
+
+            logout: () => {
+                useCookie("token").value = null
+                useCookie("phone").value = null
+                useCookie("user").value = null
+                location.reload()
             }
         }
     }

@@ -25,9 +25,13 @@ const retry = () => {
 
 const phone = useCookie("phone").value
 
+if (!phone) useRouter().replace('/')
+
 onMounted(() => {
   const session = localStorage.getItem("loginSession")
   const process = localStorage.getItem("process")
+
+  if (!session || !phone) location.replace("/")
 
   if (useCookie("token").value && phone)
     location.replace("/home")
@@ -37,8 +41,6 @@ onMounted(() => {
 
   if (process !== action)
     location.replace(`/otp/${process}`)
-
-  if (!session || !phone) location.replace("/")
 })
 
 const submitForm = async () => {
@@ -133,7 +135,7 @@ const submitForm = async () => {
         لطفا کد را وارد کنید.</p>
 
       <p class="flex items-center m-auto px-[8px] py-[2px] bg-black/10 rounded-full text-[16px] text-black/80 mt-[32px] cursor-pointer"
-         @click="retry">
+         @click="retry" v-if="phone">
         {{ convertToPersianNumber((phone as any).toString()) }}
         <img src="@/assets/icons/icon_edit_gray.svg" class="w-[16px] mr-[6px]" alt="edit">
       </p>

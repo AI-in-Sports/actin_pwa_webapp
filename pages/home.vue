@@ -2,31 +2,32 @@
 import jalali, {JalaaliDateObject} from "jalaali-js"
 import {Ref} from "vue"
 import {convertJalaliToString} from "~/helper"
+import s1 from "~/assets/slides/1.jpg"
+import s2 from "~/assets/slides/2.jpg"
+import s3 from "~/assets/slides/3.jpg"
+import s4 from "~/assets/slides/4.jpg"
+import s5 from "~/assets/slides/5.jpg"
+import axios from "axios"
 
 definePageMeta({
-  layout: "main",
-  middleware: ["auth"]
+  middleware:  ["normal-auth"]
 })
-
-useHead({title: "Actin test reports"})
 
 const config = useRuntimeConfig()
 
-const logout = () => {
-  useCookie("token").value = null
-  useCookie("phone").value = null
-  location.reload()
-}
+const user = useCookie("user").value
+const reports = shallowRef()
+const reservations = shallowRef()
 
-const user = useState(() => "")
+const pagination = shallowRef({el: '.swiper-pagination', type: 'bullets'})
+const slides = shallowRef([s1, s2, s3, s4, s5])
+
+const logout = useNuxtApp().$logout
 
 interface Report {
   testId: string,
   date: string | Date | JalaaliDateObject
 }
-
-// @ts-ignore
-const reports: Ref<Report[]> = ref(null)
 
 onMounted(async () => {
   const act = useRoute().query.act
@@ -56,116 +57,84 @@ onMounted(async () => {
 
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await new Promise(async () => {
-    await useFetch(`${config.public.EXPRESS_BACKEND}/auth/info`, {
-      headers: {
-        "Authorization": `Bearer ${useCookie("token").value}`
-      }
-    }).then(async (infoData) => {
-      if (infoData.error.value) logout()
-      else {
-        user.value = infoData.data.value ? (infoData.data.value as any)["phone"] : ""
+  await axios.get(`${config.public.EXPRESS_BACKEND}/report/get`, {
+    headers: {
+      "Authorization": `Bearer ${useCookie("token").value}`
+    }
+  }).then((value) => {
 
-        const { data: reportData, error: reportError } = await useFetch(`${config.public.EXPRESS_BACKEND}/report/get`, {
-          headers: {
-            "Authorization": `Bearer ${useCookie("token").value}`
-          }
-        })
+    toast.remove(loading)
 
-        if (reportError.value)
-        {
-          toast.update(loading, {
-            render: "دریافت اطلاعات با خطا مواجه شد!",
-            type: "error",
-            autoClose: true,
-            closeOnClick: true,
-            isLoading: false
-          })
+    reports.value = (value.data as Report[]).map(item => ({
+      testId: item.testId,
+      date: new Date(item.date as string)
+    }))
+  })
 
-          console.log("error:", reportError.value)
-        }
+  await axios.get(`${config.public.EXPRESS_BACKEND}/reservation/getAll`, {
+    headers: {
+      "Authorization": `Bearer ${useCookie("token").value}`
+    }
+  }).then((value) => {
 
-        else
-        {
-          toast.remove(loading)
+    toast.remove(loading)
 
-          reports.value = (reportData.value as Report[]).map(item => ({
-            testId: item.testId,
-            date: new Date(item.date as string)
-          })).sort((a, b) =>  +b.date - +a.date).map(item => ({
-            testId: item.testId,
-            date: jalali.toJalaali(item.date)
-          })) as Report[]
-        }
-      }
-    }).catch(() => logout())
+    reservations.value = value.data.data
   })
 })
+
+useHead({title: "Actin test reports"})
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-between h-full" dir="rtl">
+  <div class="flex flex-col items-center h-[100dvh]" dir="rtl">
+    
+    <header class="flex items-center px-[14px] py-[16px] w-full">
+      <div class="w-full"></div>
 
-    <div class="flex h-full justify-center items-center font-bold" v-if="reports && reports.length === 0">
-      تا به حال تستی انجام نداده اید!
-    </div>
-
-    <div class="max-w-[450px] w-full flex flex-col justify-center items-center mt-10" v-else-if="reports && reports.length !== 0">
-      <div class="flex justify-between items-center w-full">
-        <p class="flex items-center text-[18px] font-bold">
-          <FaIcon class="text-mainYellow text-[18px] ml-2" icon="star"/>
-
-          آخرین آزمون شما
-        </p>
-
-        <p>
-          {{ convertJalaliToString(reports[0].date as JalaaliDateObject) }}
-        </p>
+      <div class="w-full flex justify-center">
+        <img src="@/assets/images/logo_tr_white.png" alt="Actin" class="h-[50px] w-auto">
       </div>
 
-      <PrimaryButton
-          @click="$router.push(`/report/${reports[0].testId}`)"
-          class="flex items-center justify-center mt-5">
-        <span class="text-[16px] ml-2">دانلود نتیجه ارزیابی</span>
-        <img class="w-[26px]" src="@/assets/icons/icon_download_white.svg" alt="download">
-      </PrimaryButton>
+      <div class="w-full flex justify-end">
+        <FaIcon class="rotate-180 text-[24px] text-black/60 cursor-pointer"
+                icon="arrow-right-from-bracket" @click="logout"/>
+      </div>
+    </header>
 
-      <div class="flex flex-col w-full" v-if="reports.length > 1">
-        <div class="flex justify-between items-center w-full mt-12">
-          <p class="flex items-center text-[18px] font-bold">
-            <FaIcon class="text-mainYellow text-[18px] ml-2" icon="check-double"/>
+    <div class="w-full overflow-auto pt-[40px] flex justify-center">
+      <div class="flex flex-col max-w-[450px] w-full" v-if="user">
+        <h1 class="text-[24px] text-[#212121] font-bold w-full px-[24px]">خوش آمدید، {{ (user as any)['fullName'] }}</h1>
 
-            آزمون های قدیمی
-          </p>
-
-          <p>
-            {{ convertJalaliToString(reports[1].date as JalaaliDateObject) }} -
-            {{ convertJalaliToString(reports[reports.length - 1].date as JalaaliDateObject) }}
-          </p>
+        <div class="w-full pr-[16px] mt-[24px]">
+          <Swiper
+              :modules="[SwiperAutoplay, SwiperEffectCreative, SwiperPagination]"
+              :slides-per-view="1.2"
+              :loop="true"
+              :autoplay="{
+                delay: 8000,
+                disableOnInteraction: true,
+          }"
+              :pagination="pagination as any">
+            <SwiperSlide v-for="slide in slides" :key="slide" class="pl-[12px] cursor-grab">
+              <img :src="slide" alt="slide" class="w-full rounded-[16px]">
+            </SwiperSlide>
+          </Swiper>
         </div>
 
-        <div class="flex flex-col" v-for="(item, index) in reports" :key="item.testId">
-          <PrimaryButton
-              class="flex items-center justify-center mt-5 text-[20px] font-normal"
-              @click="$router.push(`/report/${item.testId}`)"
-              v-if="index !== 0">
-            دانلود نتیجه {{ convertJalaliToString(item.date as JalaaliDateObject) }}
-          </PrimaryButton>
+        <h2 class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">نوبت‌های من</h2>
+
+        <div v-if="reservations" class="px-[16px]">
+          <HomeReservationCard v-for="res in reservations" :key="res.name" :data="res" class="mt-[16px]"/>
+        </div>
+
+        <h2 class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">تاریخچه ارزیابی‌ها</h2>
+
+        <div v-if="reports" class="px-[16px] pb-[16px]">
+          <HomeReportCard v-for="report in reports" :key="report.testId" :data="report" class="mt-[16px]"/>
         </div>
       </div>
     </div>
-
-    <div class="flex h-full justify-center items-center font-bold" v-else>
-      در حال بارگیری...
-    </div>
-
-    <ClientOnly>
-      <p class="flex items-center text-[16px]">
-        کاربر شماره {{ user }}
-        <span class="border-r-2 border-black h-[20px] w-[2px] mx-3"></span>
-        <a @click="logout" class="hover:text-mainBlue cursor-pointer">خروج از حساب</a>
-      </p>
-    </ClientOnly>
   </div>
 </template>
 
