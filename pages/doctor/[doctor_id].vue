@@ -94,7 +94,7 @@ useHead({title: `Actin - Doctor page`})
 
     <div class="flex w-full px-[18px] mt-[28px] flex-col pb-[82px]">
       <div class="flex border-b-[1px] border-b-[#F2F2F2] mb-[16px]">
-        <div v-for="item in tabs" :key="tabs[activeTab].title" class="w-fit text-[14px] text-[#212121] font-semibold border-b-[#212121] border-b-2 pb-[8px]">
+        <div v-for="item in tabs" :key="item.title" class="w-fit text-[14px] text-[#212121] font-semibold border-b-[#212121] border-b-2 pb-[8px]">
           <p>{{ item.title }}</p>
         </div>
       </div>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import {convertToPersianNumber} from "~/helper"
+
 definePageMeta({
-  layout: "main"
+  middleware: "auth"
 })
 
 const route = useRoute()
@@ -12,6 +14,14 @@ const isSubmit = ref(false)
 const config = useRuntimeConfig()
 
 useHead({title: `Actin - Action ${action}`})
+
+const retry = () => {
+  localStorage.removeItem('loginSession')
+  localStorage.removeItem('process')
+  useCookie("phone").value = null
+
+  location.replace("/")
+}
 
 const phone = useCookie("phone").value
 
@@ -111,17 +121,32 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-between h-full" dir="rtl">
-    <div></div>
+  <div class="h-[100dvh] w-full flex flex-col items-center px-[16px] py-[20px]" dir="rtl">
+    <div class="max-w-[500px] w-full flex flex-col">
+      <div class="flex w-full justify-end">
+        <FaIcon :icon="['fas', 'arrow-left']" class="cursor-pointer text-[#666666] text-[24px]" @click="$router.go(-1)"/>
+      </div>
 
-    <form action="" dir="rtl" class="flex flex-col items-center w-full" @submit.prevent="submitForm">
-      <h3 class="font-bold text-[16px] mb-8 text-center">لطفاً کد ارسال شده به شماره {{ phone }} وارد کنید.</h3>
-      <VerificationCode class="mb-16" v-model:value="code" :disabled="isSubmit"/>
+      <h1 class="mt-[20px] text-center font-bold text-[28px] text-black/80">کد ورود</h1>
 
-      <PrimaryButton :disabled="isSubmit">ورود</PrimaryButton>
-    </form>
+      <p class="text-[16px] text-black/80 mt-[40px] text-center">کد ورود به شماره شما پیامک شد<br/>
+        لطفا کد را وارد کنید.</p>
 
-    <div></div>
+      <p class="flex items-center m-auto px-[8px] py-[2px] bg-black/10 rounded-full text-[16px] text-black/80 mt-[32px] cursor-pointer"
+         @click="retry">
+        {{ convertToPersianNumber((phone as any).toString()) }}
+        <img src="@/assets/icons/icon_edit_gray.svg" class="w-[16px] mr-[6px]" alt="edit">
+      </p>
+
+      <form action="" dir="rtl" class="flex flex-col items-center w-full mt-[32px]" @submit.prevent="submitForm">
+
+        <VerificationCode class="mb-16" v-model:value="code" :disabled="isSubmit"/>
+
+        <PrimaryButton :disabled="isSubmit">ورود</PrimaryButton>
+      </form>
+
+      <div></div>
+    </div>
   </div>
 </template>
 

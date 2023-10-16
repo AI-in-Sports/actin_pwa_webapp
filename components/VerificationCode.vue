@@ -78,7 +78,7 @@ onMounted(() =>
         type="tel" placeholder=" " maxlength="1"
         v-for="(input, index) in 6" :key="input"
         :autofocus="index === 0" :disabled="disabled"
-        class="w-[45px] h-[45px] sm:w-[50px] sm:h-[50px] bg-mainDark rounded-full mx-2 border-t-2 border-l-2 border-[#808080]/70
-         focus:outline-none text-center focus:border-[3px] focus:border-[#0085FF] text-black/50 text-[18px]">
+        class="w-[45px] h-[45px] sm:w-[50px] sm:h-[50px] rounded-full mx-2 border-[1px] border-black/20
+         focus:outline-none text-center focus:border-[2px] focus:border-black/50 text-black/50 text-[18px]">
   </div>
 </template>
