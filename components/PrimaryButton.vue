@@ -8,8 +8,8 @@ defineProps<{
 <template>
   <button
       :type="type" :disabled="disabled"
-      class="primaryButton bg-mainBlue text-white rounded-[15px] w-full p-[10px] sm:p-[13px] font-normal sm:font-bold text-[20px] border-t-2 border-l-2 border-white/40
-              disabled:bg-mainBlue/60 hover:enabled:scale-[0.96] hover:enabled:focus:scale-[0.96]">
+      class="primaryButton rounded-full bg-[#212121] border-none text-white w-full p-[10px] sm:p-[13px] font-normal sm:font-bold text-[20px] border-t-2 border-l-2 border-white/40
+              disabled:bg-[#212121]/60 hover:enabled:scale-[0.96] hover:enabled:focus:scale-[0.96]">
     <slot/>
   </button>
 </template>
