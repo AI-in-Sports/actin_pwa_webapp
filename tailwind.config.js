@@ -13,7 +13,7 @@ export default {
     ],
     theme: {
         screens: {
-            'sm': '420px',
+            'sm': '450px',
         },
         extend: {
             animation: {
