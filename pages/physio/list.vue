@@ -46,7 +46,7 @@ useHead({title: `Actin - Physiotherapists list`})
   <ReportHeader @click="$router.go(-1)">لیست پزشکان</ReportHeader>
 
   <div v-if="physioList"  class="w-full flex justify-center overflow-auto">
-    <div class="flex flex-col max-w-[400px] w-full">
+    <div class="flex flex-col max-w-[500px] w-full">
       <PhysioCard
           v-for="item in physioList" :key="item['_id']"
           :data="item"

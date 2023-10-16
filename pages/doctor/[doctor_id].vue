@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "axios"
-import {convertToPersianNumber} from "~/helper";
-import {PhysioPagesDescription} from "#components";
+import {convertToPersianNumber} from "~/helper"
+import {PhysioPagesDescription} from "#components"
 
 definePageMeta({
   layout: "result",
@@ -57,7 +57,7 @@ useHead({title: `Actin - Doctor page`})
 <template>
   <ReportHeader @click="$router.replace('/physio/list')">اطلاعات پزشک</ReportHeader>
 
-  <div class="max-w-[400px] w-full flex flex-col items-center overflow-auto" v-if="physio">
+  <div class="max-w-[450px] w-full flex flex-col items-center overflow-auto" v-if="physio">
     <img src="@/assets/images/dr_prof.png" :alt="physio['name']"
          class="w-[72px] h-[72px] rounded-full mt-[32px]">
 
@@ -103,8 +103,8 @@ useHead({title: `Actin - Doctor page`})
     </div>
   </div>
 
-  <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[420px]">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold">
+  <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]">
+    <PrimaryButton class="!font-semibold" @click="$router.replace(`/doctor/reservation/${route.params.doctor_id}`)">
       ثبت نوبت
     </PrimaryButton>
   </div>

@@ -9,7 +9,7 @@ const getHealthy = useNuxtApp().$getHealthy as (deg: number) => "healthy" | "nee
 </script>
 
 <template>
-  <div class="flex flex-col max-w-[400px]">
+  <div class="flex flex-col max-w-[450px]">
     <ReportSkeleton :report="report" test="sagital"/>
 
     <ReportCard title="سر به جلو" :level="getHealthy(report['sagital']['forward_head'])">
