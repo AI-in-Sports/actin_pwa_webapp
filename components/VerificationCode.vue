@@ -52,17 +52,17 @@ onMounted(() =>
 
     ele.addEventListener('paste', (e: any) =>
     {
-      e.preventDefault()
+
 
       let paste = e.clipboardData.getData('text')
 
-      if (paste.length <= 5 && /^\d+$/.test(paste))
+      if (paste.length <= 6 && /^\d+$/.test(paste))
       {
         for (let i = 0; i < paste.length; i++)
         {
           inputElements[i].value = paste[i]
 
-          if (i + 1 === paste.length) inputElements[i === 4 ? i : i + 1].focus()
+           inputElements[i === 5 ? i : i + 1].focus()
         }
 
         emit("update:value", getValues())
