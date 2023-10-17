@@ -24,10 +24,13 @@ export default defineNuxtRouteMiddleware(async () => {
         if (error) {
             token.value = null
             useCookie("phone").value = null
+            useCookie("user").value = null
 
             return navigateTo("/")
         }
 
         if (data) useCookie("user").value = data
+
+        return
     }
 })
