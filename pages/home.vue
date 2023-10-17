@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import jalali, {JalaaliDateObject} from "jalaali-js"
-import {Ref} from "vue"
-import {convertJalaliToString} from "~/helper"
+import {JalaaliDateObject} from "jalaali-js"
 import s1 from "~/assets/slides/1.jpg"
 import s2 from "~/assets/slides/2.jpg"
 import s3 from "~/assets/slides/3.jpg"

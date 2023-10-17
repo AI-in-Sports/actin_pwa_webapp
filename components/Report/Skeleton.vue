@@ -1,31 +1,78 @@
-<script setup lang="ts">
-/*import circle_green from "assets/images/circle_green.svg"
-import circle_red from "assets/images/circle_red.svg"
-import circle_yellow from "assets/images/circle_yellow.svg"*/
-import frontal from "assets/images/skeleton_frontal.png"
-import sagital from "assets/images/skeleton_sagital.png"
+<script lang="ts" setup>
+import Frontal from '~/assets/images/frontal_points.svg'
+import Sagital from '~/assets/images/sagital_points.svg'
 
 const props = defineProps<{
   report: any,
-  test: "frontal" | "sagital"
+  test: string
 }>()
 
-const getActiveZone = computed(() => props.report.report['analyze']['zones']['frontal'])
+const svgContent = shallowRef<string>('')
 
-/*const getColor = (deg: number) => {
-  if (deg >= 0 && deg < 5) return circle_green
-  else if (deg >= 5 && deg < 10) return circle_yellow
-  else return circle_red
-}*/
+const colors = shallowRef({
+  healthy: '#00FF38',
+  need_to_fix: '#F0A300',
+  dangerous: '#EC1515'
+})
+
+const report = props.report
+
+const healthy = useNuxtApp().$getHealthy
+
+// Simulate API data, where the keys are the circle IDs and values are the colors
+const apiData = shallowRef<{ [key: string]: string }>()
+const sagitalData = shallowRef<{ [key: string]: string }>({})
+
+if (props.test === 'frontal') {
+  apiData.value = {
+    left_knee: colors.value[healthy(report['knee'][0]['left'])],
+    right_knee: colors.value[healthy(report['knee'][0]['right'])],
+    left_hip: colors.value[healthy(report['hip']['left'])],
+    right_hip: colors.value[healthy(report['hip']['right'])],
+    left_shoulder: colors.value[healthy(report['shoulder']['left'])],
+    right_shoulder: colors.value[healthy(report['shoulder']['right'])],
+    neck: colors.value[healthy(report['neck']['left'])],
+  }
+}
+
+else sagitalData.value = {
+  forward_head: colors.value[healthy(report['sagital']['forward_head'])],
+  kyphosis: colors.value[healthy(report['densepose']['D1'])],
+  lordosis: colors.value[healthy(report['densepose']['D2'])],
+}
+
+// Load the SVG content and update circle colors when the component is mounted
+onMounted(() => {
+  fetch(props.test === 'frontal' ? Frontal : Sagital)
+      .then((response) => response.text())
+      .then((svgText) => {
+        svgContent.value = svgText
+        updateCircleColors()
+      })
+})
+
+// Update the circle colors based on API data
+const updateCircleColors = () => {
+  const svg = document.createElement('div')
+  svg.innerHTML = svgContent.value
+
+  const data = props.test === 'frontal' ? apiData.value : sagitalData.value
+
+  for (const id in data) {
+    const circle = svg.querySelectorAll(`.${id}`)
+
+    for (const round of circle) {
+      round.setAttribute('fill', data[id])
+      round.setAttribute('stroke', data[id])
+    }
+  }
+
+  svgContent.value = svg.innerHTML
+}
 </script>
 
 <template>
   <div class="bg-[#EEE] p-8 rounded-[24px] flex justify-center items-center relative">
-
-    <img :src="test === 'frontal' ? frontal : sagital" alt="skeleton" class="w-2/3">
+    <div v-html="svgContent"></div>
   </div>
 </template>
-
-<style scoped>
-
-</style>
