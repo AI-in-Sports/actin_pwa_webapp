@@ -21,16 +21,14 @@ export default defineNuxtRouteMiddleware(async () => {
                 error = true
             })
 
-        if (error) {
+        if (data) useCookie("user").value = data
+
+        else if (error) {
             token.value = null
             useCookie("phone").value = null
             useCookie("user").value = null
 
-            return navigateTo("/")
+            return navigateTo('/', { redirectCode: 301 })
         }
-
-        if (data) useCookie("user").value = data
-
-        return
     }
 })
