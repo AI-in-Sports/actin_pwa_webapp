@@ -114,7 +114,7 @@ onMounted(async () => {
                :report="activeView === 1 ? getActiveZone['frontal'] : getActiveZone"/>
   </div>
 
-  <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]">
+  <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]" v-if="config.public.DISABLE_RESERVATION !== 'false'">
     <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/physio/list')">
       رزرو وقت فیزیوتراپی
     </PrimaryButton>

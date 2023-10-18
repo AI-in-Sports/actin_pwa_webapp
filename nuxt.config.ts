@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      EXPRESS_BACKEND: process.env.EXPRESS_BACKEND
+      EXPRESS_BACKEND: process.env.EXPRESS_BACKEND,
+      DISABLE_RESERVATION: process.env.DISABLE_RESERVATION
     }
   },
   pwa: {
