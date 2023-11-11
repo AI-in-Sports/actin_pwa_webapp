@@ -1,4 +1,4 @@
-import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify'
+import Vue3Toasity, {type ToastContainerOptions, type Id} from 'vue3-toastify'
 import { toast } from 'vue3-toastify'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -11,7 +11,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     return {
         provide: {
-            showToast: toast
+            showToast: toast,
+            closeLoading: (loading: Id, msg: string) => toast.update(loading, {
+                render: msg,
+                type: "error",
+                autoClose: true,
+                closeOnClick: true,
+                isLoading: false
+            })
         }
     }
 })

@@ -15,25 +15,25 @@ const config = useRuntimeConfig()
 
 useHead({title: `Actin - Action ${action}`})
 
-const retry = () => {
+const retry = (callback: string) => {
   localStorage.removeItem('loginSession')
   localStorage.removeItem('process')
-  useCookie("phone").value = null
+  useAuthStore().logout()
 
-  location.replace("/")
+  location.replace(callback)
 }
 
-const phone = useCookie("phone").value
-
+const phone = useAuthStore().phone
 if (!phone) useRouter().replace('/')
 
 onMounted(() => {
+  console.log(useAuthStore().phone)
   const session = localStorage.getItem("loginSession")
   const process = localStorage.getItem("process")
 
-  if (!session || !phone) location.replace("/")
+ if (!session || !phone) location.replace("/")
 
-  if (useCookie("token").value && phone)
+  if (useAuthStore().token && phone)
     location.replace("/home")
 
   if (!["login", "register"].includes(action))
@@ -57,7 +57,7 @@ const submitForm = async () => {
 
   const session = localStorage.getItem("loginSession")
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/auth/${action}`, {
+  const { data, error } = await useFetch(`${config.public.APP_BACKEND}/auth/${action}`, {
     method: "POST",
     params: {
       phone: phone,
@@ -70,38 +70,17 @@ const submitForm = async () => {
   {
     isSubmit.value = false
 
-    if (error.value.data.status === 404 && error.value.data.msg === "nc" || error.value.data.status === 409) {
-      localStorage.removeItem("loginSession")
-      localStorage.removeItem("process")
-      useCookie("phone").value = null
-
-      location.replace("/?act=lg_exp")
-    }
+    if (error.value.data.status === 404 && error.value.data['msg'] === "nc" || error.value.data.status === 409)
+      retry("/?act=lg_exp")
 
     else if (error.value.data.status === 401)
-      useNuxtApp().$showToast.update(loading, {
-        render: "کد ورود اشتباه است!",
-        type: "error",
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      })
+      useNuxtApp().$closeLoading(loading, "کد ورود اشتباه است!")
 
-    else if (error.value.data.status === 404 && error.value.data.msg === "un") {
-      localStorage.removeItem("loginSession")
-      localStorage.removeItem("process")
-      useCookie("phone").value = null
-
-      location.replace("/?act=usr_inv")
+    else if (error.value.data.status === 404 && error.value.data['msg'] === "un") {
+      retry("/?act=usr_inv")
     }
 
-    else useNuxtApp().$showToast.update(loading, {
-      render: "فرایند با خطا مواجه شد!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    })
+    else useNuxtApp().$closeLoading(loading, "کد ورود اشتباه است!")
   }
   else {
     const response = data.value as {
@@ -109,15 +88,14 @@ const submitForm = async () => {
       status: number
     }
 
-    useCookie("token").value = response.token
+    useAuthStore().set("token", response.token)
     localStorage.removeItem("loginSession")
     localStorage.removeItem("process")
 
-    const sessionId = useCookie("signInSession").value
+    const sessionId = useAuthStore().reportSessionId
 
-    if(sessionId)
-      location.replace(`/scan/${sessionId}`)
-    else location.replace("/home?act=lg_done")
+    if(sessionId) location.replace(`/scan/${sessionId}?nocache=${(new Date()).getTime()}`)
+    else location.replace(`/home?act=lg_done&nocache=${(new Date()).getTime()}`)
   }
 }
 </script>
@@ -135,7 +113,7 @@ const submitForm = async () => {
         لطفا کد را وارد کنید.</p>
 
       <p class="flex items-center m-auto px-[8px] py-[2px] bg-black/10 rounded-full text-[16px] text-black/80 mt-[32px] cursor-pointer"
-         @click="retry" v-if="phone">
+         @click="retry('/')" v-if="phone">
         {{ convertToPersianNumber((phone as any).toString()) }}
         <img src="@/assets/icons/icon_edit_gray.svg" class="w-[16px] mr-[6px]" alt="edit">
       </p>

@@ -1,9 +1,11 @@
-export default defineNuxtRouteMiddleware( (toRoute, from) => {
-    if (process.server) {
-        const token = useCookie("token")
+export default defineNuxtRouteMiddleware(async () => {
+    if(process.server)
+    {
+        const token = useAuthStore().token
 
-        if (token.value !== null && typeof token.value !== 'undefined')
+        if (token !== null && typeof token !== 'undefined')
             return navigateTo('/home')
-        else return
+
+        return
     }
 })

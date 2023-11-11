@@ -22,9 +22,9 @@ const physio = ref()
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.EXPRESS_BACKEND}/reservation/get/${uuid}`, {
+  await axios(`${config.public.APP_BACKEND}/reservation/get/${uuid}`, {
     headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
+      "Authorization": useAuthStore().getToken
     }
   }).then((value) => {
     physio.value = value.data['data']
@@ -33,13 +33,7 @@ onMounted(async () => {
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$showToast.update(loading, {
-      render: "خطا در دریافت اطلاعات نوبت!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    })
+    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات نوبت!")
   })
 })
 

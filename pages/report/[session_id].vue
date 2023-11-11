@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {convertToPersianNumber} from "~/helper"
-import Jalali ,{JalaaliDateObject} from "jalaali-js"
+import Jalali ,{type JalaaliDateObject} from "jalaali-js"
 import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"
 
@@ -24,52 +24,27 @@ const changeView = (index: number) => {
 const dataFetch = ref()
 const date = ref()
 
-const getActiveZone = computed(() => dataFetch.value.report['_source']['analyze']['zones'])
+const getActiveZone = computed(() => dataFetch.value.report['analyze']['zones'])
 
 onMounted(async () => {
-  await preloadComponents('FaIcon')
-
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
   if (route.params.session_id)
-    await axios(`${config.public.EXPRESS_BACKEND}/report/${route.params.session_id}`, {
-      headers: {
-        "Authorization": `Bearer ${useCookie("token").value}`
-      },
-      params: {
-        phone: useCookie("phone").value
-      }
+    await axios(`${config.public.APP_BACKEND}/report/${route.params.session_id}`, {
+      headers: { "Authorization": useAuthStore().getToken }
     }).then((value) => {
       dataFetch.value = value.data
 
-      date.value = (Jalali.toJalaali(new Date(dataFetch.value['report']['_source']['date'])) as JalaaliDateObject)
+      date.value = (Jalali.toJalaali(new Date(dataFetch.value['report']['date'])) as JalaaliDateObject)
 
-      if(value.data.status === 403) {
-        useCookie("token").value = null
+      if (value.data.status === 404)
         location.replace("/home")
-      }
-
-      else if (value.data.status === 404)
-        location.replace("/home")
-
-      else if (value.data.status === 500)
-        useNuxtApp().$showToast.update(loading, {
-          render: value.data.message,
-          type: "error",
-          autoClose: true,
-          closeOnClick: true,
-          isLoading: false
-        })
-
-      else if (value.data.status === 403) {
-        useCookie("token").value = null
-        location.reload()
-      }
 
       isDataFetched.value = true
-      toast.clearAll()
     }).catch((e) => {
       console.log(e)
+
+      useNuxtApp().$closeLoading(loading, e["response"]["data"]["message"])
     })
 
   useHead({title: `Actin - Report page`})
@@ -99,7 +74,7 @@ onMounted(async () => {
       <span v-if="dataFetch">
         {{
           convertToPersianNumber((date as JalaaliDateObject).jd.toString()) + " " +
-          new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['report']['_source']['date'])) + " " +
+          new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['report']['date'])) + " " +
           convertToPersianNumber((date as JalaaliDateObject).jy.toString())
         }}
       </span>

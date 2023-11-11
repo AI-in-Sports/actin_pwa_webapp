@@ -14,28 +14,16 @@ const physioList = ref()
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.EXPRESS_BACKEND}/physio/physiotherapists`, {
-    headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
-    },
-    params: {
-      phone: useCookie("phone").value
-    }
+  await axios(`${config.public.APP_BACKEND}/physio/physiotherapists`, {
+    headers: { "Authorization": useAuthStore().getToken }
   }).then((value) => {
     physioList.value = value.data['physio']
-
 
     toast.clearAll()
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$showToast.update(loading, {
-      render: "خطا در دریافت اطلاعات پزشکان!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    })
+    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات پزشکان!")
   })
 })
 

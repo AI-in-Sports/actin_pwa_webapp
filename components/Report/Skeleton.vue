@@ -25,8 +25,8 @@ const sagitalData = shallowRef<{ [key: string]: string }>({})
 
 if (props.test === 'frontal') {
   apiData.value = {
-    left_knee: colors.value[healthy(report['knee'][0]['left'])],
-    right_knee: colors.value[healthy(report['knee'][0]['right'])],
+    left_knee: colors.value[healthy(report['knee']['left'])],
+    right_knee: colors.value[healthy(report['knee']['right'])],
     left_hip: colors.value[healthy(report['hip']['left'])],
     right_hip: colors.value[healthy(report['hip']['right'])],
     left_shoulder: colors.value[healthy(report['shoulder']['left'])],

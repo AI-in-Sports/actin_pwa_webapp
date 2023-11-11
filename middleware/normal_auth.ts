@@ -1,34 +1,18 @@
-import axios from "axios"
-
 export default defineNuxtRouteMiddleware(async () => {
     if(process.server)
     {
-        const token = useCookie("token")
+        const store = useAuthStore()
 
-        let error = null
-        let data = null
+        if (store.token === null || typeof store.token === 'undefined') {
+            store.logout()
 
-        await axios
-            .get(`${process.env.EXPRESS_BACKEND}/auth/info`, {
-                headers: {
-                    "Authorization": `Bearer ${token.value}`
-                }
-            })
-            .then((value) => {
-                data = value.data
-            })
-            .catch(() => {
-                error = true
-            })
-
-        if (data) useCookie("user").value = data
-
-        else if (error) {
-            token.value = null
-            useCookie("phone").value = null
-            useCookie("user").value = null
-
-            return navigateTo('/', { redirectCode: 301 })
+            return navigateTo('/')
         }
+
+        const isLoggedIn =  await store.isLoggedIn()
+
+        if (!isLoggedIn) return navigateTo("/")
+
+        return
     }
 })

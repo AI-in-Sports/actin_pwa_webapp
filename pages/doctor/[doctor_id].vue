@@ -27,12 +27,9 @@ const getStarDetail = useNuxtApp().$getStarDetail
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.EXPRESS_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
+  await axios(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
     headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
-    },
-    params: {
-      phone: useCookie("phone").value
+      "Authorization": useAuthStore().getToken
     }
   }).then((value) => {
     physio.value = value.data['physio']
@@ -41,13 +38,7 @@ onMounted(async () => {
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$showToast.update(loading, {
-      render: "خطا در دریافت اطلاعات پزشکان!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    })
+    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات پزشکان!")
   })
 })
 

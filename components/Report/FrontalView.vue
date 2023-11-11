@@ -37,14 +37,14 @@ const getHealthy = useNuxtApp().$getHealthy as (deg: number) => "healthy" | "nee
       {{ report['hip']['left'] > 0 ? 'بالا' : 'پایین' }} عدم تقارن دارد.
     </ReportCard>
 
-    <ReportCard title="زانوی راست" :level="getHealthy(report['knee'][0]['right'])">
-      زانوی راست شما {{ convertToPersianNumber(Math.abs(report['knee'][0]['right']).toString()) }}° درجه به سمت
+    <ReportCard title="زانوی راست" :level="getHealthy(report['knee']['right'])">
+      زانوی راست شما {{ convertToPersianNumber(Math.abs(report['knee']['right']).toString()) }}° درجه به سمت
       {{ report['knee']['right'] > 0 ? 'بیرون' : 'داخل' }} انحراف دارد.
     </ReportCard>
 
-    <ReportCard title="زانوی چپ" :level="getHealthy(report['knee'][0]['left'])">
-      زانوی چپ شما {{ convertToPersianNumber(Math.abs(report['knee'][0]['left']).toString()) }}° درجه به سمت
-      {{ report['knee'][0]['left'] > 0 ? 'بیرون' : 'داخل' }} انحراف دارد.
+    <ReportCard title="زانوی چپ" :level="getHealthy(report['knee']['left'])">
+      زانوی چپ شما {{ convertToPersianNumber(Math.abs(report['knee']['left']).toString()) }}° درجه به سمت
+      {{ report['knee']['left'] > 0 ? 'بیرون' : 'داخل' }} انحراف دارد.
     </ReportCard>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {convertToPersianNumber} from "~/helper"
-import {UpdateOptions} from "vue3-toastify"
+import type {UpdateOptions} from "vue3-toastify"
 
 definePageMeta({
   layout: "main",
@@ -8,11 +8,12 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const sessionId = useCookie("signInSession")
+const scanSession = useAuthStore().scanSession
 const activePage = shallowRef(0)
 const authPages = shallowRef(["ورود کاربران", "ثبت نام"])
 const isSubmit = shallowRef(false)
 const toast = useNuxtApp().$showToast
+const closeLoading = useNuxtApp().$closeLoading
 
 const phoneNumber = shallowRef("")
 const fullName = shallowRef("")
@@ -61,7 +62,7 @@ const submit = async () => {
 
   const loading = toast.loading("در حال ارسال کد...")
 
-  const { data, error } = await useFetch(`${config.public.EXPRESS_BACKEND}/otp/send/${activePage.value === 0 ? 'login' : 'register'}`, {
+  const { data, error } = await useFetch(`${config.public.APP_BACKEND}/otp/send/${activePage.value === 0 ? 'login' : 'register'}`, {
     method: "GET",
     params
   })
@@ -70,31 +71,11 @@ const submit = async () => {
   {
     isSubmit.value = false
 
-    if (error.value.data.status === 404)
-      toast.update(loading, {
-        render: "شماره تلفن در سیستم وجود ندارد!",
-        type: "error",
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      } as UpdateOptions)
+    if (error.value.data.status === 404) closeLoading(loading, "شماره تلفن در سیستم وجود ندارد!")
 
-    else if (error.value.data.status === 409)
-      toast.update(loading, {
-        render: "شماره تلفن قبلا در سیستم ثبت شده است!",
-        type: "error",
-        autoClose: true,
-        closeOnClick: true,
-        isLoading: false
-      } as UpdateOptions)
+    else if (error.value.data.status === 409) closeLoading(loading, "شماره تلفن قبلا در سیستم ثبت شده است!")
 
-    else toast.update(loading, {
-      render: "فرایند با خطا مواجه شد!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    } as UpdateOptions)
+    else closeLoading(loading, "فرایند با خطا مواجه شد!")
   }
   else
   {
@@ -104,7 +85,10 @@ const submit = async () => {
 
     localStorage.setItem("loginSession", response.sessionId)
     localStorage.setItem("process", activePage.value === 0 ? 'login' : 'register')
-    useCookie("phone").value = convertToPersianNumber(phoneNumber.value, true)
+
+    useAuthStore().set("phone", convertToPersianNumber(phoneNumber.value, true))
+
+    useAuthStore().$persist()
 
     location.replace(`/otp/${activePage.value === 0 ? 'login' : 'register'}`)
   }
@@ -124,7 +108,7 @@ useHead({title: "Actin"})
     </div>
 
     <p class="mt-[24px] text-black/80 text-[16px]">
-      لطفا جهت {{ activePage === 0 ? 'ورود' : 'ثبت‌نام' }} {{ sessionId ? 'و ادامه فرایند' : '' }} شماره موبایل خود را وارد نمایید.
+      لطفا جهت {{ activePage === 0 ? 'ورود' : 'ثبت‌نام' }} {{ scanSession ? 'و ادامه فرایند' : '' }} شماره موبایل خود را وارد نمایید.
     </p>
 
     <form action="" @submit.prevent="submit" class="flex flex-col items-center w-full px-[24px] mt-[24px]">

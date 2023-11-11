@@ -9,47 +9,45 @@ useHead({title: "Actin"})
 const config = useRuntimeConfig()
 
 onMounted(async () => {
-  const phone = useCookie("phone").value
-  const session_id = useCookie("signInSession").value
+  const phone = useAuthStore().phone
+  const session_id = useAuthStore().reportSessionId
 
   if(!phone){
-    useCookie("phone").value = null
-    useCookie("token").value = null
+    useAuthStore().logout()
     useCookie("signInSession").value = null
     location.reload()
   }
 
   useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...")
 
-  const { error } = await useFetch(`${config.public.EXPRESS_BACKEND}/report/register`, {
+  const { error } = await useFetch(`${config.public.APP_BACKEND}/report/register`, {
     method: "PUT",
     headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
+      "Authorization": useAuthStore().getToken
     },
     params: {
-      phone: phone,
       session_id: session_id
     }
   })
+
+  const callback = (act: string) =>
+      location.replace(`/home?act=${act}&nocache=${(new Date()).getTime()}`)
+
   if (error.value)
   {
     if (error.value.data.status)
 
-      if (error.value.data.status === 500)
+      if (error.value.data.status === 500) callback("srv_err")
 
-        location.replace("/home?act=srv_err")
+      else if (error.value.data.status === 403) callback("sid_tkn")
 
-      else if (error.value.data.status === 403)
+      else callback("sid_inv")
 
-        location.replace("/home?act=sid_tkn")
-
-      else location.replace("/home?act=sid_inv")
-
-    else location.replace("/home?act=srv_err")
+    else callback("srv_err")
   }
   else {
-    useCookie("signInSession").value = null
-    location.replace("/home?act=rep_done")
+    useAuthStore().del("reportSessionId")
+    callback("rep_done")
   }
 })
 </script>

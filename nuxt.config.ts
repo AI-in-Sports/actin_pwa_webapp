@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  modules: ['@vite-pwa/nuxt', "nuxt3-leaflet", "nuxt-swiper"],
+  modules: ["@vite-pwa/nuxt", "nuxt3-leaflet", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   css: [
     "~/assets/style/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css"
@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      EXPRESS_BACKEND: process.env.EXPRESS_BACKEND,
+      APP_BACKEND: process.env.APP_BACKEND,
       DISABLE_RESERVATION: process.env.DISABLE_RESERVATION
     }
   },

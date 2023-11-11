@@ -3,17 +3,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     {
         const sessionId = to.params.session_id
 
-        const token = useCookie("token")
+        const token = useAuthStore().token
 
-        if(!sessionId)
-            return navigateTo("/?act=sid_inv")
+        if(!sessionId) return navigateTo("/?act=sid_inv")
 
-        if (!token.value)
-        {
-            useCookie("signInSession").value = sessionId.toString()
-            return navigateTo("/")
-        }
+        useAuthStore().set("reportSessionId", sessionId)
 
-        useCookie("signInSession").value = sessionId.toString()
+        if (!token) return navigateTo("/")
     }
 })

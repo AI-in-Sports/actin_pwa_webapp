@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import axios from "axios"
-import {Ref} from "vue";
 import jalali from "jalaali-js"
 import {convertToPersianNumber} from "~/helper"
+import type {Ref} from "vue"
 
 definePageMeta({
   layout: "result",
@@ -41,12 +41,9 @@ for (let i = 0; i < 7; i++) {
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.EXPRESS_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
+  await axios(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
     headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
-    },
-    params: {
-      phone: useCookie("phone").value
+      "Authorization": useAuthStore().getToken
     }
   }).then((value) => {
     physio.value = value.data['physio']
@@ -55,13 +52,7 @@ onMounted(async () => {
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$showToast.update(loading, {
-      render: "خطا در دریافت اطلاعات پزشکان!",
-      type: "error",
-      autoClose: true,
-      closeOnClick: true,
-      isLoading: false
-    })
+    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات پزشکان!")
   })
 })
 
@@ -71,12 +62,11 @@ const reserve = async () => {
 
   isSubmit.value = true
 
-  await axios.post(`${config.public.EXPRESS_BACKEND}/reservation/physio`, null, {
+  await axios.post(`${config.public.APP_BACKEND}/reservation/physio`, null, {
     headers: {
-      "Authorization": `Bearer ${useCookie("token").value}`
+      "Authorization": useAuthStore().getToken
     },
     params: {
-      phone: useCookie("phone").value,
       doctor_id: route.params.doctor_id,
       date: dates.value[selectedDay.value],
       time: times.value[activeTime.value]
