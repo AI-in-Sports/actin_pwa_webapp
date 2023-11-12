@@ -49,7 +49,7 @@ const submit = async () => {
 
   if (activePage.value === 1) {
     params['fullName'] = fullName.value
-    params['gender'] = fullName.value
+    params['gender'] = gender.value
 
     if(gender.value === 'جنسیت')
       return toast.error('لطفا جنسیت خود را وارد کنید!')
