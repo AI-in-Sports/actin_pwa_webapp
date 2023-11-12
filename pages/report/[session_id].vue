@@ -41,6 +41,7 @@ onMounted(async () => {
         location.replace("/home")
 
       isDataFetched.value = true
+      toast.clearAll()
     }).catch((e) => {
       console.log(e)
 
