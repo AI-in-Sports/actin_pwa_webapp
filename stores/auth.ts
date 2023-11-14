@@ -52,9 +52,11 @@ export const useAuthStore = defineStore('auth', {
             const backend = useRuntimeConfig().public['APP_BACKEND']
 
 
-            const {data, error} = await useFetch(`${backend}/auth/info`, {
+            const {data, error, refresh} = await useFetch(`${backend}/auth/info`, {
                 headers: { "Authorization": `Bearer ${this.token}` }
             })
+
+            watchEffect(() => refresh())
 
             if (error.value) {
                 this.logout()
