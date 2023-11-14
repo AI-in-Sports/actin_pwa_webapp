@@ -9,15 +9,9 @@ const props = defineProps<{
 
 const svgContent = shallowRef<string>('')
 
-const colors = shallowRef({
-  healthy: '#00FF38',
-  need_to_fix: '#F0A300',
-  dangerous: '#EC1515'
-})
+const colors = useNuxtApp().$getHealthyColor
 
 const report = props.report
-
-const healthy = useNuxtApp().$getHealthy
 
 // Simulate API data, where the keys are the circle IDs and values are the colors
 const apiData = shallowRef<{ [key: string]: string }>()
@@ -25,20 +19,20 @@ const sagitalData = shallowRef<{ [key: string]: string }>({})
 
 if (props.test === 'frontal') {
   apiData.value = {
-    left_knee: colors.value[healthy(report['knee']['left'])],
-    right_knee: colors.value[healthy(report['knee']['right'])],
-    left_hip: colors.value[healthy(report['hip']['left'])],
-    right_hip: colors.value[healthy(report['hip']['right'])],
-    left_shoulder: colors.value[healthy(report['shoulder']['left'])],
-    right_shoulder: colors.value[healthy(report['shoulder']['right'])],
-    neck: colors.value[healthy(report['neck']['left'])],
+    left_knee: colors(report['knee']['left']["grade"]),
+    right_knee: colors(report['knee']['right']["grade"]),
+    left_hip: colors(report['hip']['left']["grade"]),
+    right_hip: colors(report['hip']['right']["grade"]),
+    left_shoulder: colors(report['shoulder']['left']["grade"]),
+    right_shoulder: colors(report['shoulder']['right']["grade"]),
+    neck: colors(report['neck']['left']["grade"]),
   }
 }
 
 else sagitalData.value = {
-  forward_head: colors.value[healthy(report['sagital']['forward_head'])],
-  kyphosis: colors.value[healthy(report['densepose']['D1'])],
-  lordosis: colors.value[healthy(report['densepose']['D2'])],
+  forward_head: colors(report['sagital']['forward_head']["grade"]),
+  kyphosis: colors(report['dense_pose']['D1']["grade"]),
+  lordosis: colors(report['dense_pose']['D2']["grade"])
 }
 
 // Load the SVG content and update circle colors when the component is mounted
