@@ -25,6 +25,7 @@ export default {
             colors: {
                 mainBlue: "#0085FF",
                 mainDark: "#8080804D",
+                mainBlack: "#212121",
                 mainYellow: "#F8D32D",
                 mainDarkYellow: "#BFAC00",
                 mainRed: "#FF6B6B",
