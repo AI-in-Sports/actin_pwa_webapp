@@ -71,12 +71,6 @@ export default defineNuxtConfig({
     client: {
       installPrompt: true,
       periodicSyncForUpdates: 20,
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module',
-    },
+    }
   }
 })

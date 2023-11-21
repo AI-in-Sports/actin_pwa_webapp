@@ -8,7 +8,7 @@ import s5 from "~/assets/slides/5.jpg"
 import axios from "axios"
 
 definePageMeta({
-  middleware:  ["normal-auth"]
+  middleware: ["normal-auth"]
 })
 
 const config = useRuntimeConfig()

@@ -1,4 +1,4 @@
-import {JalaaliDateObject} from "jalaali-js";
+import {type JalaaliDateObject} from "jalaali-js"
 
 export const convertToPersianNumber = (text: string, reverse?: boolean) => {
     const persianDigits = reverse ? '0123456789' : '۰۱۲۳۴۵۶۷۸۹'

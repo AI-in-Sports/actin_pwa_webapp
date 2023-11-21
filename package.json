@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.8.3",
+    "@nuxt/devtools": "^1.0.3",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@types/jalaali-js": "^1.1.1",
     "@types/node": "^20.6.0",

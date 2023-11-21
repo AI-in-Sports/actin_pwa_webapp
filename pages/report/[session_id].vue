@@ -3,6 +3,7 @@ import {convertToPersianNumber} from "~/helper"
 import Jalali ,{type JalaaliDateObject} from "jalaali-js"
 import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"
+import type {Toast} from "vue3-toastify";
 
 definePageMeta({
   layout: "result",
@@ -91,8 +92,8 @@ onMounted(async () => {
   </div>
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]" v-if="config.public.DISABLE_RESERVATION !== 'true'">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/physio/list')">
-      رزرو وقت فیزیوتراپی
+    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/survey/ce')">
+      دریافت برنامه اصلاحی
     </PrimaryButton>
   </div>
 </template>

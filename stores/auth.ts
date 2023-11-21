@@ -29,7 +29,6 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         set(key: keyof AuthState, data: any) {
-            console.log(`data ${key} is going to be ${data}`)
             this[key] = data
         },
 
