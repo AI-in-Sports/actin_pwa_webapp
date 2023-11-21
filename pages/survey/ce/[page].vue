@@ -1,0 +1,135 @@
+<script setup lang="ts">
+import {isDigit} from "json5/lib/util"
+
+const route = useRoute()
+const ceSurvey = useCESurveyStore()
+
+const survey = shallowRef({
+  pages: [
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "مشخصات ظاهری"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "وضعیت کف پا"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "ناحیه درد"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "شدت درد"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "نوع درد"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "مدت زمان احساس درد"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "میزان آزاردهندگی درد"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "سابقه عمل جراحی"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "طول درمان"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "تکمیل طول درمان"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "تجربه روش‌های بازتوانی و درمانی"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "وضعیت جسمانی در محل کار"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "فعالیت‌های تکراری روزانه"
+    },
+    {
+      component: resolveComponent("LazySurveyCePersonalDetails"),
+      name: "محل تمرین"
+    },
+  ]
+})
+
+definePageMeta({
+  layout: "survey",
+  middleware: ["normal-auth", (to) => {
+    const pages = 14
+    const ceSurvey = useCESurveyStore()
+
+    if (!isDigit(to.params.page.toString())) return navigateTo("/")
+
+    const urlPage = ref(parseInt(to.params.page.toString()))
+
+    if (urlPage.value < 1 || urlPage.value > pages)
+      return navigateTo("/survey/ce/1")
+
+    if (urlPage.value != 1 && !ceSurvey.lastCompleted)
+      return navigateTo("/survey/ce/1")
+
+    if(ceSurvey.lastCompleted && urlPage.value > ceSurvey.lastCompleted + 1)
+      return navigateTo(`/survey/ce/${ceSurvey.lastCompleted + 1}`)
+
+    return
+  }]
+})
+
+const urlPage = ref(parseInt(route.params.page.toString()))
+
+const isReady = shallowRef(false)
+
+onMounted(() => isReady.value = true)
+</script>
+
+<template>
+  <div class="flex gap-[10px] mb-[24px]" v-if="isReady">
+    <div class="w-full h-[4px] rounded-full bg-mainBlack" v-for="i in urlPage" :key="i"></div>
+    <div class="w-full h-[4px] rounded-full bg-[#C1C1C1]" v-for="i in survey.pages.length - urlPage" :key="i"></div>
+  </div>
+
+  <div class="flex flex-col w-full h-full items-center" v-if="isReady">
+    <h1 class="text-[#121212] text-[18px] font-medium mb-[24px] text-center">{{ survey.pages[urlPage - 1].name }}</h1>
+
+
+    <div class="flex flex-col flex-1 max-w-[380px] w-full">
+      <component :is="survey.pages[urlPage - 1].component"/>
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-between h-full" v-if="!isReady">
+    <div class="flex flex-col w-full">
+      <Skeletor circle size="24"  class="self-end mb-[24px]"/>
+
+      <Skeletor width="100%" class="max-w-[600px] self-center mb-[24px]"/>
+      <Skeletor width="20%" class="max-w-[600px] self-center"/>
+
+
+      <Skeletor width="70%" class="self-center mt-7" height="200px"/>
+      <Skeletor width="70%" class="self-center mt-7" height="200px"/>
+    </div>
+
+
+    <div class="flex justify-between w-full">
+      <Skeletor width="96" height="36" pill />
+      <Skeletor width="96" height="36" pill />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>
