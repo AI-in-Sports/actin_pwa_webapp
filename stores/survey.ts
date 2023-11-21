@@ -86,9 +86,10 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
 
 export type SurveyState = {
-    isSurveyTook: boolean,
+    lastCompleted: number | null
 
     birthday: Date | null,
+    gender: "male" | "female" | null
     weight: number | null,
     height: number | null,
     soles_status: SolesStatus | null,
@@ -109,20 +110,34 @@ export type SurveyState = {
 export const useCESurveyStore = defineStore('ce_survey', {
     state: () => {
         return {
-            isSurveyTook: false,
+            lastCompleted: null,
+
             birthday: null,
+            gender: "male",
             weight: null,
             height: null,
             soles_status: null,
             pain_points: null,
-            pain_intensity: null
+            pain_intensity: null,
+            pain_type: null,
+            pain_time: null,
+            pain_rate: null,
+            surgery_history: null,
+            treatment_duration: null,
+            treatment_duration_done: null,
+            treatment_ways: null,
+            body_posture_at_work: null,
+            daily_routine: null,
+            exercise_place: null,
         } as SurveyState
     },
     getters: {
 
     },
     actions: {
-
+        set(key: keyof SurveyState, data: any) {
+            this[key] = data
+        },
     },
     persist: true,
 })
