@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {isDigit} from "json5/lib/util"
 import {type SurveyState} from "~/stores/survey"
 
 const route = useRoute()
@@ -68,25 +67,7 @@ const survey = shallowRef({
 
 definePageMeta({
   layout: "survey",
-  middleware: ["normal-auth", (to) => {
-    const pages = 14
-    const ceSurvey = useCESurveyStore()
-
-    if (!isDigit(to.params.page.toString())) return navigateTo("/")
-
-    const urlPage = ref(parseInt(to.params.page.toString()))
-
-    if (urlPage.value < 1 || urlPage.value > pages)
-      return navigateTo("/survey/ce/1")
-
-    if (urlPage.value != 1 && !ceSurvey.lastCompleted)
-      return navigateTo("/survey/ce/1")
-
-    if(ceSurvey.lastCompleted && urlPage.value > ceSurvey.lastCompleted + 1)
-      return navigateTo(`/survey/ce/${ceSurvey.lastCompleted + 1}`)
-
-    return
-  }]
+  middleware: ["normal-auth", "ce-survey-validate", "ce-survey-get-data"]
 })
 
 const urlPage = ref(parseInt(route.params.page.toString()))
@@ -126,7 +107,7 @@ onMounted(() => isReady.value = true)
       <component :is="survey.pages[urlPage - 1].component"/>
     </div>
 
-    <SurveyCeNavigator @next="submit"/>
+    <SurveyCeUtilsNavigator @next="submit"/>
   </div>
 
   <div class="flex flex-col justify-between h-full" v-if="!isReady">
