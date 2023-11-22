@@ -93,7 +93,7 @@ const goToSurvey = () => location.replace(`/survey/ce?nocache=${(new Date()).get
   </div>
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]" v-if="config.public.DISABLE_RESERVATION !== 'true'">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="$router.push('/survey/ce')">
+    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="goToSurvey">
       دریافت برنامه اصلاحی
     </PrimaryButton>
   </div>
