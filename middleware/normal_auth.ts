@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async () => {
 
         const isLoggedIn =  await store.isLoggedIn()
 
-        if (!isLoggedIn) return navigateTo("/")
+        if (!isLoggedIn) return navigateTo('/', { redirectCode: 301 })
 
         return
     }

@@ -50,7 +50,6 @@ export const useAuthStore = defineStore('auth', {
         async isLoggedIn() {
             const backend = useRuntimeConfig().public['APP_BACKEND']
 
-
             const {data, error, refresh} = await useFetch(`${backend}/auth/info`, {
                 headers: { "Authorization": `Bearer ${this.token}` }
             })
