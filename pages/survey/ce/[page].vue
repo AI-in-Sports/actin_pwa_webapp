@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {isDigit} from "json5/lib/util"
+import {type SurveyState} from "~/stores/survey"
 
 const route = useRoute()
-const ceSurvey = useCESurveyStore()
+const toast = useNuxtApp().$showToast
 
 const survey = shallowRef({
   pages: [
@@ -11,7 +12,7 @@ const survey = shallowRef({
       name: "مشخصات ظاهری"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeSolesStatus"),
       name: "وضعیت کف پا"
     },
     {
@@ -91,6 +92,22 @@ definePageMeta({
 const urlPage = ref(parseInt(route.params.page.toString()))
 
 const isReady = shallowRef(false)
+
+const pageValue: (keyof SurveyState)[][] = [
+    ["height", "weight", "birthday", "gender"],
+    ["soles_status"]
+]
+
+const ceSurvey = useCESurveyStore()
+
+const submit = async () => {
+  ceSurvey.set("lastCompleted", 1)
+  const res = await ceSurvey.submitSurvey(...pageValue[urlPage.value - 1])
+
+  if (!res) toast.error("خطا هنگام ثبت اطلاعات")
+
+  else if (urlPage.value < 14) useRouter().push(`/survey/ce/${urlPage.value + 1}`)
+}
 
 onMounted(() => isReady.value = true)
 </script>

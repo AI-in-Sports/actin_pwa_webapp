@@ -26,18 +26,19 @@ const genderCards = shallowRef([
 const survey = useCESurveyStore()
 
 const birthday = computed({
-  get() {
-    return new Date(survey.birthday!)
-  },
-  set(value) {
-    survey.set("birthday", value)
-  }
+  get() { return new Date(survey.birthday!) },
+  set(value) { survey.set("birthday", value) }
 })
 
+const weight = computed({
+  get() { return survey.weight },
+  set(value) { survey.set("weight", value) }
+})
 
-
-if (!birthday.value)
-  birthday.value = new Date()
+const height = computed({
+  get() { return survey.height },
+  set(value) { survey.set("height", value) }
+})
 
 const persianDatePicker = ref()
 
@@ -70,9 +71,9 @@ const openDatePicker = () => {
     </div>
   </div>
 
-  <DatePicker ref="persianDatePicker" v-model="birthday" format="YYYY-MM-DD" display-format="jYYYY-jMM-jDD"  simple></DatePicker>
+  <DatePicker ref="persianDatePicker" v-model="birthday" format="YYYY-MM-DD" display-format="jYYYY-jMM-jDD" simple></DatePicker>
 
-  <div class="rounded-[16px] border-[1px] border-[#C1C1C1] p-[16px] flex flex-col">
+  <div class="rounded-[16px] border-[1px] border-[#C1C1C1] p-[16px] flex flex-col mb-[16px]">
     <p class="text-[16px] text-mainBlack mb-[16px]">تاریخ تولد</p>
 
     <div class="flex gap-[22px]" @click="openDatePicker">
@@ -96,6 +97,29 @@ const openDatePicker = () => {
         <p class="bg-[#F0A3001A] p-[6px] rounded-[8px] text-center text-[16px] font-medium">
           {{ convertToPersianNumber(jbd.jy.toString()) }}
         </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-[16px] w-full">
+    <div class="rounded-[16px] border-[1px] border-[#C1C1C1] p-[16px] flex flex-col w-1/2">
+      <p class="text-[16px] text-mainBlack mb-[16px]">وزن</p>
+
+      <div class="mt-[16px] flex pl-[6px] items-center">
+        <input class="w-full p-[6px] bg-[#F0A3001A] rounded-[8px] outline-none text-center"
+               type="number" v-model="weight">
+
+        <p class="text-[20px] font-medium mr-[16px]">Kg</p>
+      </div>
+    </div>
+    <div class="rounded-[16px] border-[1px] border-[#C1C1C1] p-[16px] flex flex-col w-1/2">
+      <p class="text-[16px] text-mainBlack mb-[16px]">قد</p>
+
+      <div class="mt-[16px] flex pl-[6px] items-center">
+        <input class="w-full p-[6px] bg-[#F0A3001A] rounded-[8px] outline-none text-center"
+               type="number" v-model="height">
+
+        <p class="text-[20px] font-medium mr-[16px]">Cm</p>
       </div>
     </div>
   </div>
