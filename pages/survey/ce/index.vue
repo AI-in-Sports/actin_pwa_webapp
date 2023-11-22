@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "survey",
-  middleware: ["normal-auth", () => navigateTo("/survey/ce/1")]
+  middleware: ["normal-auth", "ce-survey-index"]
 })
 </script>
 
