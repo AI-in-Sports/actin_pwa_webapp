@@ -15,7 +15,7 @@ const survey = shallowRef({
       name: "وضعیت کف پا"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCePainPoints"),
       name: "ناحیه درد"
     },
     {
@@ -82,7 +82,9 @@ const pageValue: (keyof SurveyState)[][] = [
 const ceSurvey = useCESurveyStore()
 
 const submit = async () => {
-  ceSurvey.set("lastCompleted", 1)
+  isReady.value = false
+
+  ceSurvey.set("lastCompleted", urlPage.value)
   const res = await ceSurvey.submitSurvey(...pageValue[urlPage.value - 1])
 
   if (!res) toast.error("خطا هنگام ثبت اطلاعات")

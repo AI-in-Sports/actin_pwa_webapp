@@ -104,7 +104,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
             gender: "male",
             weight: 0,
             height: 0,
-            soles_status: null,
+            soles_status: "normal",
             pain_points: null,
             pain_intensity: null,
             pain_type: null,
