@@ -3,7 +3,6 @@ import {convertToPersianNumber} from "~/helper"
 import Jalali ,{type JalaaliDateObject} from "jalaali-js"
 import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"
-import type {Toast} from "vue3-toastify";
 
 definePageMeta({
   layout: "result",
@@ -51,6 +50,8 @@ onMounted(async () => {
 
   useHead({title: `Actin - Report page`})
 })
+
+const goToSurvey = () => location.replace(`/survey/ce?nocache=${(new Date()).getTime()}`)
 </script>
 
 <template>
