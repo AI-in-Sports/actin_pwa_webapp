@@ -140,11 +140,35 @@ export const useCESurveyStore = defineStore('ce_survey', {
                 body: store
             })
 
-            if (error.value) {
-                return false
-            }
+            if (error.value) return false
 
             return data.value
+        },
+
+        getData: async () => {
+            const backend = useRuntimeConfig().public['APP_BACKEND']
+
+            const {data, error, refresh} = await useFetch(`${backend}/survey/ce/get`, {
+                headers: { "Authorization": useAuthStore().getToken }
+            })
+
+            watchEffect(() => refresh())
+
+            if (error.value) return false
+
+            const response = data.value as {
+                status: number,
+                info?: any,
+                message?: string
+            }
+
+            if(response.status === 200) {
+                for (const infoKey in response.info) {
+                    useCESurveyStore().set(infoKey as keyof SurveyState, response.info[infoKey])
+                }
+            }
+
+            return true
         }
     },
     persist: true
