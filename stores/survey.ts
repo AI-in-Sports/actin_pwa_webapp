@@ -149,3 +149,12 @@ export const useCESurveyStore = defineStore('ce_survey', {
     },
     persist: true
 })
+
+export const surveyComputed = (item: keyof SurveyState) =>  computed({
+    get() {
+        return useCESurveyStore()[item]
+    },
+    set(value) {
+        useCESurveyStore().set(item, value)
+    }
+})

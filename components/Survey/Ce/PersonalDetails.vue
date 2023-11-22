@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Jalali from "jalaali-js";
 import {convertToPersianNumber} from "~/helper"
+import {surveyComputed} from "~/stores/survey"
 
 useHead({title: "مشخصات ظاهری"})
 
@@ -30,23 +31,15 @@ const birthday = computed({
   set(value) { survey.set("birthday", value) }
 })
 
-const weight = computed({
-  get() { return survey.weight },
-  set(value) { survey.set("weight", value) }
-})
+const weight = surveyComputed('weight')
 
-const height = computed({
-  get() { return survey.height },
-  set(value) { survey.set("height", value) }
-})
+const height = surveyComputed('height')
 
 const persianDatePicker = ref()
 
 const jbd = computed(() => Jalali.toJalaali(birthday.value!))
 
-const openDatePicker = () => {
-  persianDatePicker.value.focus()
-}
+const openDatePicker = () => persianDatePicker.value.focus()
 </script>
 
 <template>
@@ -57,12 +50,8 @@ const openDatePicker = () => {
     <div class="w-1/3 flex items-center border-[#C1C1C1] border-[1px] rounded-[8px] p-[8px] cursor-pointer"
          v-for="gender in genderCards" :key="gender.value" @click="survey.set('gender', gender.value)"
          :class="{ '!border-[#F0A300] bg-[#FDF6E5]': gender.value === survey.gender }">
-      <input
-          type="checkbox" :checked="survey.gender === gender.value"
-          class="appearance-none rounded-full w-[20px] h-[20px] border-[1px] border-[#C1C1C1] ml-[5px] checked:bg-[#F0A300] checked:!border-[#F0A300] checked:accent-white
-          before:checked:content-['✓'] before:text-[16px] text-white cursor-pointer
-          before:font-[initial] before:leading-[16px] before:scale-0 before:delay-75 before:ease-in-out
-          before:transition-transform checked:before:scale-100 font-bold before:pb-[2px] before:pr-[1.5px]">
+
+      <PrimaryCheckBox :checked="survey.gender === gender.value"/>
 
       <p class="ml-[8px]">{{ gender.name }}</p>
 
