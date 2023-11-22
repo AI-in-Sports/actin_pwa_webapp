@@ -20,3 +20,11 @@ export const convertJalaliToString = (date: JalaaliDateObject) => {
 
     return `${year}/${month}/${day}`
 }
+
+export const selectProperties = (obj: { [key: string]: any }, keys: string[]) => keys
+    .reduce((acc: { [key: string]: any }, key) => {
+        if (obj.hasOwnProperty(key)) {
+            acc[key] = obj[key]
+        }
+        return acc
+    }, {})

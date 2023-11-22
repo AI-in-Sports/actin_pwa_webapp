@@ -1,18 +1,6 @@
 import { defineStore } from 'pinia'
+import {selectProperties} from "~/helper"
 
-/*
-* Pain point types
-*
-* knee: زانو
-* neck: گردن
-* elbow: آرنج
-* shoulder: شونه
-* wrist: مچ دست
-* waist: کمر
-* ankle: مچ پا
-* pelvis: لگن
-* sciatic_nerve: عصب سیاتیک
-* */
 export type PainPoints =
     "knee" | "neck" | "elbow" | "shoulder" | "wrist" |
     "waist" | "ankle" | "pelvis" | "sciatic_nerve" | "none"
@@ -110,12 +98,12 @@ export type SurveyState = {
 export const useCESurveyStore = defineStore('ce_survey', {
     state: () => {
         return {
-            lastCompleted: null,
+            lastCompleted: 1,
 
-            birthday: null,
+            birthday: new Date(),
             gender: "male",
-            weight: null,
-            height: null,
+            weight: 0,
+            height: 0,
             soles_status: null,
             pain_points: null,
             pain_intensity: null,
@@ -138,6 +126,26 @@ export const useCESurveyStore = defineStore('ce_survey', {
         set(key: keyof SurveyState, data: any) {
             this[key] = data
         },
+
+        submitSurvey: async (...items: (keyof SurveyState)[]) => {
+            const backend = useRuntimeConfig().public['APP_BACKEND']
+
+            items.push("lastCompleted")
+
+            const store = selectProperties(useCESurveyStore(), items)
+
+            const {data, error, refresh} = await useFetch(`${backend}/survey/ce/update`, {
+                headers: { "Authorization": useAuthStore().getToken },
+                method: "PATCH",
+                body: store
+            })
+
+            if (error.value) {
+                return false
+            }
+
+            return data.value
+        }
     },
-    persist: true,
+    persist: true
 })
