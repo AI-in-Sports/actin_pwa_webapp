@@ -23,6 +23,8 @@ const items = shallowRef([
 ])
 
 const soles_status = surveyComputed('soles_status')
+
+useHead({title: "وضعیت کف پا"})
 </script>
 
 <template>

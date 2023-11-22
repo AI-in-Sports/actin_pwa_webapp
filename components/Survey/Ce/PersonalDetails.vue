@@ -3,8 +3,6 @@ import Jalali from "jalaali-js";
 import {convertToPersianNumber} from "~/helper"
 import {surveyComputed} from "~/stores/survey"
 
-useHead({title: "مشخصات ظاهری"})
-
 const genderCards = shallowRef([
   {
     value: "male",
@@ -40,6 +38,8 @@ const persianDatePicker = ref()
 const jbd = computed(() => Jalali.toJalaali(birthday.value!))
 
 const openDatePicker = () => persianDatePicker.value.focus()
+
+useHead({title: "مشخصات ظاهری"})
 </script>
 
 <template>
