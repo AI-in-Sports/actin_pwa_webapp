@@ -108,6 +108,8 @@ onMounted(() => isReady.value = true)
     <div class="flex flex-col flex-1 max-w-[380px] w-full">
       <component :is="survey.pages[urlPage - 1].component"/>
     </div>
+
+    <SurveyCeNavigator @next="submit"/>
   </div>
 
   <div class="flex flex-col justify-between h-full" v-if="!isReady">
@@ -124,8 +126,8 @@ onMounted(() => isReady.value = true)
 
 
     <div class="flex justify-between w-full">
-      <Skeletor width="96" height="36" pill />
-      <Skeletor width="96" height="36" pill />
+      <Skeletor width="96" height="36" pill/>
+      <Skeletor width="96" height="36" pill/>
     </div>
   </div>
 </template>
