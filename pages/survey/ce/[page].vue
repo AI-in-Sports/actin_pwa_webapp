@@ -23,7 +23,7 @@ const survey = shallowRef({
       name: "شدت درد"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCePainType"),
       name: "نوع درد"
     },
     {
