@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import {selectProperties} from "~/helper"
+import type {Ref} from "vue"
 
 /*
 * Pain point types
@@ -195,3 +196,22 @@ export const surveyComputed = (item: keyof SurveyState) => computed({
         useCESurveyStore().set(item, value)
     }
 })
+
+export const selectItem = (state: keyof SurveyState, value: string) => {
+    const ref = surveyComputed(state) as Ref<string[]>
+
+    const index = ref.value!.indexOf(value)
+    const none_index = ref.value!.indexOf("none")
+
+    if (value === "none") {
+        ref.value = []
+        ref.value!.push(value)
+
+        return
+    }
+    else if (none_index > -1) ref.value!.splice(none_index, 1)
+
+
+    if (index > -1) ref.value!.splice(index, 1)
+    else ref.value!.push(value)
+}
