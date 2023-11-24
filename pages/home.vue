@@ -66,6 +66,10 @@ onMounted(async () => {
     case "rep_done":
       toast.success("اطلاعات تست با موفقیت ذخیره شد!")
       break
+
+    case "survey_done":
+      toast.success("فرم با موفقیت تکمیل شد!")
+      break
   }
 })
 

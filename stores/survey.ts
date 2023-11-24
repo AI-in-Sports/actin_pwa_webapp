@@ -82,7 +82,7 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 * gym: باشگاه
 * home_gym: باشگاه خانگی
 * home: منزل
-* work: منزل
+* work: محل کار
 * */
 export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
 
@@ -129,7 +129,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
             treatment_ways: ["none"],
             body_posture_at_work: "sitting_more",
             daily_routine: "",
-            exercise_place: ["home"]
+            exercise_place: ["gym"]
         } as SurveyState
     },
     getters: {
