@@ -1,6 +1,19 @@
 import { defineStore } from 'pinia'
 import {selectProperties} from "~/helper"
 
+/*
+* Pain point types
+*
+* knee: زانو
+* neck: گردن
+* elbow: آرنج
+* shoulder: شونه
+* wrist: مچ دست
+* waist: کمر
+* ankle: مچ پا
+* pelvis: لگن
+* sciatic_nerve: عصب سیاتیک
+* */
 export type PainPoints =
     "knee" | "neck" | "elbow" | "shoulder" | "wrist" |
     "waist" | "ankle" | "pelvis" | "sciatic_nerve" | "none"
