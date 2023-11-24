@@ -53,8 +53,7 @@ export type PainTimeType = "less_than_1m" | "1m_to_3m" | "3m_to_6m" | "more_than
 *
 * less_than_1m: زیر ۱ ماه
 * 1m_to_3m: ۱ ماه تا سه ماه
-* 3m_to_6m: ۳ ماه نا ۶ ماه
-* more_than_1y: بیش از یکسال
+* more_than_6m: بیش از ۶ ماه
 * */
 export type TreatmentDurationType = "1m_to_3m" | "3m_to_6m" | "more_than_6m"
 
