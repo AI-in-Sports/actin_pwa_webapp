@@ -7,7 +7,7 @@
       <FaIcon :icon="['fas', 'xmark']" class="cursor-pointer text-[#666666] text-[24px] p-[8px]" @click="$router.replace('/home')"/>
     </nav>
 
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col overflow-hidden">
       <slot/>
     </div>
   </main>
