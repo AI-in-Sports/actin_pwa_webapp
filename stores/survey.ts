@@ -122,7 +122,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
             pain_points: ["none"],
             pain_intensity: 0,
             pain_type: ["none"],
-            pain_time: "1m_to_3m",
+            pain_time: "less_than_1m",
             pain_rate: 0,
             surgery_history: ["none"],
             treatment_duration: "1m_to_3m",

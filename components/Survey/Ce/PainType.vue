@@ -25,7 +25,7 @@ const items = shallowRef([
   }
 ])
 
-const pain_points_status = surveyComputed('pain_type') as Ref<string[]>
+const pain_type = surveyComputed('pain_type') as Ref<string[]>
 
 
 useHead({title: "نوع درد"})
@@ -39,7 +39,7 @@ useHead({title: "نوع درد"})
       <SurveyCeUtilsItem
           v-for="item in items" @click="selectItem('pain_type', item.value)"
           :key="item.value" :title="item.title"
-          :selected="pain_points_status!.includes(item.value)"/>
+          :selected="pain_type!.includes(item.value)"/>
     </div>
   </div>
 </template>
