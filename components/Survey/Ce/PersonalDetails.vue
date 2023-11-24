@@ -55,7 +55,7 @@ useHead({title: "مشخصات ظاهری"})
 
       <p class="ml-[8px]">{{ gender.name }}</p>
 
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="72" viewBox="0 0 28 72" :fill="survey.gender === gender.value ? '#F9B519' : '#C1C1C1'" v-html="gender.icon">
+      <svg xmlns="http://www.w3.org/2000/svg" class="mr-auto" width="28" height="72" viewBox="0 0 28 72" :fill="survey.gender === gender.value ? '#F9B519' : '#C1C1C1'" v-html="gender.icon">
       </svg>
     </div>
   </div>
