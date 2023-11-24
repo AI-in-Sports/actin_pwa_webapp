@@ -75,8 +75,11 @@ const urlPage = ref(parseInt(route.params.page.toString()))
 const isReady = shallowRef(false)
 
 const pageValue: (keyof SurveyState)[][] = [
-    ["height", "weight", "birthday", "gender"],
-    ["soles_status"]
+  ["height", "weight", "birthday", "gender"], ["soles_status"],
+  ["pain_points"], ["pain_rate"], ["pain_type"], ["pain_time"],
+  ["pain_intensity"], ["surgery_history"], ["treatment_duration"],
+  ["treatment_duration_done"], ["treatment_ways"],
+  ["body_posture_at_work"], ["daily_routine"], ["exercise_place"]
 ]
 
 const ceSurvey = useCESurveyStore()
