@@ -35,7 +35,7 @@ export type SolesStatus = "normal" | "flat" | "hollow"
 * numbness: مور مور و بی حسی
 * hot_flash: گُر گرفتگی
 * */
-export type PainType = "tingling_and_tingling" | "paresthesia" | "numbness" | "hot_flash"
+export type PainType = "tingling_and_tingling" | "paresthesia" | "numbness" | "hot_flash" | "none"
 
 /*
 * Pain time types
@@ -96,16 +96,16 @@ export type SurveyState = {
     soles_status: SolesStatus | null,
     pain_points: PainPoints[] | null,
     pain_intensity: number | null,
-    pain_type: PainType | null,
+    pain_type: PainType[] | null,
     pain_time: PainTimeType | null,
     pain_rate: number | null,
     surgery_history: PainPoints[] | null,
     treatment_duration: TreatmentDurationType | null,
     treatment_duration_done: boolean | null,
-    treatment_ways: TreatmentWayType | null,
+    treatment_ways: TreatmentWayType[] | null,
     body_posture_at_work: BodyPostureAtWorkType | null,
     daily_routine: string | null,
-    exercise_place: ExercisePlaceType | null
+    exercise_place: ExercisePlaceType[] | null
 }
 
 export const useCESurveyStore = defineStore('ce_survey', {
@@ -118,18 +118,18 @@ export const useCESurveyStore = defineStore('ce_survey', {
             weight: 0,
             height: 0,
             soles_status: "normal",
-            pain_points: null,
-            pain_intensity: null,
-            pain_type: null,
-            pain_time: null,
-            pain_rate: null,
-            surgery_history: null,
-            treatment_duration: null,
-            treatment_duration_done: null,
-            treatment_ways: null,
-            body_posture_at_work: null,
-            daily_routine: null,
-            exercise_place: null,
+            pain_points: ["none"],
+            pain_intensity: 0,
+            pain_type: ["none"],
+            pain_time: "1m_to_3m",
+            pain_rate: 0,
+            surgery_history: ["none"],
+            treatment_duration: "1m_to_3m",
+            treatment_duration_done: true,
+            treatment_ways: ["none"],
+            body_posture_at_work: "sitting_more",
+            daily_routine: "",
+            exercise_place: ["home"]
         } as SurveyState
     },
     getters: {
@@ -147,7 +147,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
 
             const store = selectProperties(useCESurveyStore(), items)
 
-            const {data, error, refresh} = await useFetch(`${backend}/survey/ce/update`, {
+            const {data, error} = await useFetch(`${backend}/survey/ce/update`, {
                 headers: { "Authorization": useAuthStore().getToken },
                 method: "PATCH",
                 body: store
