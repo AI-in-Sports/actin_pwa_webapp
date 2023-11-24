@@ -27,39 +27,39 @@ const survey = shallowRef({
       name: "نوع درد"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCePainTime"),
       name: "مدت زمان احساس درد"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCePainIntensity"),
       name: "میزان آزاردهندگی درد"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeSurgeryHistory"),
       name: "سابقه عمل جراحی"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeTreatmentDuration"),
       name: "طول درمان"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeTreatmentDurationDone"),
       name: "تکمیل طول درمان"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeTreatmentWays"),
       name: "تجربه روش‌های بازتوانی و درمانی"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeBodyPostureAtWork"),
       name: "وضعیت جسمانی در محل کار"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeDailyRoutine"),
       name: "فعالیت‌های تکراری روزانه"
     },
     {
-      component: resolveComponent("LazySurveyCePersonalDetails"),
+      component: resolveComponent("LazySurveyCeExercisePlace"),
       name: "محل تمرین"
     },
   ]
