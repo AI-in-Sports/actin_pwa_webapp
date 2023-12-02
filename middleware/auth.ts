@@ -9,8 +9,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if (checkPath() && checkToken())
             return navigateTo('/home')
 
-        else if (checkPath() && !checkToken())
+        else if (checkPath() && !checkToken()) {
             return
+        }
 
         return
     }

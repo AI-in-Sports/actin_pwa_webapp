@@ -1,17 +1,33 @@
-FROM node:16 AS deps
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+FROM node:16 AS base
 
-FROM node:16 AS builder
+ARG APP_BACKEND DISABLE_RESERVATION
+
+ENV APP_BACKEND=${APP_BACKEND} DISABLE_RESERVATION=${DISABLE_RESERVATION}
+
+ENV NITRO_HOST=0.0.0.0 NITRO_PORT=3000 NITRO_PRESET=node_cluster
+
+RUN yarn global add pnpm
+
+FROM base AS deps
+
 WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+FROM base AS builder
+
+WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
+
 COPY . .
-ARG EXPRESS_BACKEND ELASTIC_APM DISABLE_RESERVATION
-ENV EXPRESS_BACKEND=${EXPRESS_BACKEND} ELASTIC_APM=${ELASTIC_APM} NITRO_PRESET=node_cluster DISABLE_RESERVATION=${DISABLE_RESERVATION}
-RUN yarn build
+
+RUN pnpm build
 
 FROM node:16 AS runner
+
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -24,10 +40,5 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder --chown=nuxtjs:nodejs /app/.output/ ./.output/
 
 USER nuxtjs
-
-EXPOSE 3000
-
-ARG EXPRESS_BACKEND ELASTIC_APM DISABLE_RESERVATION
-ENV EXPRESS_BACKEND=${EXPRESS_BACKEND} ELASTIC_APM=${ELASTIC_APM} NITRO_HOST=0.0.0.0 NITRO_PORT=3000 DISABLE_RESERVATION=${DISABLE_RESERVATION}
 
 CMD ["node",".output/server/index.mjs"]
