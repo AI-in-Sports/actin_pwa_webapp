@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async () => {
     {
         const store = useAuthStore()
 
-        if (store.token === null || typeof store.token === 'undefined') {
+        if (store.token === null) {
             store.logout()
 
             return navigateTo('/')

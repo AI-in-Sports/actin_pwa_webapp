@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <main class="bg-white h-[100dvh] flex flex-col items-center text-black  py-[32px]">
+  <main class="bg-white h-[100dvh] flex flex-col items-center text-black py-[32px]">
     <img src="@/assets/images/logo_tr_white.png" alt="logo" class="h-[80px] w-auto flex-0 flex-shrink-0 cursor-pointer hover:scale-95"
     @click="$router.push('/' === $route.path ? '/' : '/home')">
 

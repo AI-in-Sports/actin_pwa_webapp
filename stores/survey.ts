@@ -82,7 +82,7 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 * gym: باشگاه
 * home_gym: باشگاه خانگی
 * home: منزل
-* work: محل کار
+* work: محل کارx
 * */
 export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
 
@@ -147,7 +147,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
 
             const store = selectProperties(useCESurveyStore(), items)
 
-            const {data, error} = await useFetch(`${backend}/survey/ce/update`, {
+            const {data, error} = await useFetch(`${backend}/ce/survey/update`, {
                 headers: { "Authorization": useAuthStore().getToken },
                 method: "PATCH",
                 body: store
@@ -161,7 +161,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
         getData: async () => {
             const backend = useRuntimeConfig().public['APP_BACKEND']
 
-            const {data, error, refresh} = await useFetch(`${backend}/survey/ce/get`, {
+            const {data, error, refresh} = await useFetch(`${backend}/ce/survey/get`, {
                 headers: { "Authorization": useAuthStore().getToken }
             })
 

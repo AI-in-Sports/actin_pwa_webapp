@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const token = useAuthStore().token
 
         const checkPath = () => ["/", "/otp/login", "/otp/register"].includes(to.path)
-        const checkToken = () => token !== null && typeof token !== 'undefined'
+        const checkToken = () => token !== null
 
         if (checkPath() && checkToken())
             return navigateTo('/home')
