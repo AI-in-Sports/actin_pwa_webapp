@@ -48,20 +48,16 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async isLoggedIn() {
-            const backend = useRuntimeConfig().public['APP_BACKEND']
-
-            const {data, error, refresh} = await useFetch(`${backend}/auth/info`, {
-                headers: { "Authorization": `Bearer ${this.token}` }
+            const {data, error} = await apiSSRFetch<AuthStateUser>("/auth/info", {
+                auth: true
             })
-
-            watchEffect(() => refresh())
 
             if (error.value) {
                 this.logout()
                 return false
             }
 
-            this.user = data.value as AuthStateUser
+            this.user = data.value!
 
             this.$persist()
             return true
