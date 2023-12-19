@@ -6,12 +6,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const checkPath = () => ["/", "/otp/login", "/otp/register"].includes(to.path)
         const checkToken = () => token !== null
 
-        if (checkPath() && checkToken())
-            return navigateTo('/home')
+        if (checkPath() && checkToken()) return navigateTo('/home')
 
-        else if (checkPath() && !checkToken()) {
-            return
-        }
+        else if (checkPath() && !checkToken()) return
 
         return
     }
