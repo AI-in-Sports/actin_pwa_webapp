@@ -23,25 +23,25 @@ const logout = () => {
   location.reload()
 }
 
-const {pending, data: fetchData} = await useAsyncData(async () => {
+const reports_data = useState(() => [] as Report[])
+const reservations_data = useState(() => [] as Reservation[])
+
+const {pending} = await useLazyAsyncData('home_data', async () => {
   const [reservations, reports] = await Promise.all([
     apiSSRFetch<Reservation[]>("/reservation/getAll", {
-      auth: true,
-      lazy: true
+      auth: true
     }),
     apiSSRFetch<Report[]>("/report/getAll", {
-      auth: true,
-      lazy: true
+      auth: true
     })
   ])
 
-  return {
-    reports: reports.data.value?.map(item => ({
-      testId: item.testId,
-      date: new Date(item.date as string)
-    })),
-    reservations: reservations.data
-  }
+  reports_data.value = reports.data.value?.map(item => ({
+    testId: item.testId,
+    date: new Date(item.date as string)
+  }))!
+
+  reservations_data.value = reservations.data.value!
 })
 
 onMounted(async () => {
@@ -110,20 +110,19 @@ useHead({title: "Actin health"})
         </client-only>
       </div>
 
-        <h2 v-if="!pending && fetchData?.reservations.value?.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">نوبت‌های من</h2>
+      <h2 v-if="!pending && reservations_data.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">نوبت‌های من</h2>
 
-        <div v-if="!pending" class="px-[16px]">
-          <HomeReservationCard v-for="res in fetchData?.reservations.value" :key="res.name" :data="res" class="mt-[16px]"/>
-        </div>
+      <div v-if="!pending && reservations_data.length" class="px-[16px]">
+        <HomeReservationCard v-for="res in reservations_data" :key="res.name" :data="res" class="mt-[16px]"/>
+      </div>
 
-        <h2 v-if="!pending && fetchData?.reports?.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">تاریخچه ارزیابی‌ها</h2>
+      <h2 v-if="!pending && reports_data.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">تاریخچه ارزیابی‌ها</h2>
 
-        <div v-if="!pending" class="px-[16px] pb-[16px]">
-          <HomeReportCard v-for="report in fetchData?.reports" :key="report.testId" :data="report" class="mt-[16px]"/>
-        </div>
+      <div v-if="!pending && reports_data.length" class="px-[16px] pb-[16px]">
+        <HomeReportCard v-for="report in reports_data" :key="report.testId" :data="report" class="mt-[16px]"/>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style scoped>
