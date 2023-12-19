@@ -7,10 +7,9 @@ import s5 from "~/assets/slides/5.jpg"
 import type {Reservation, Report} from "~/types/Responses"
 
 definePageMeta({
-  middleware: ["normal-auth"]
+  middleware: ["normal-auth"],
+  layout: "main"
 })
-
-const config = useRuntimeConfig()
 
 useAuthStore().$persist()
 
@@ -76,42 +75,40 @@ useHead({title: "Actin health"})
 </script>
 
 <template>
-  <main class="flex flex-col items-center h-[100dvh]" dir="rtl">
-    
-    <header class="flex items-center px-[14px] py-[16px] w-full">
-      <div class="w-full"></div>
+  <header class="flex items-center px-[14px] py-[16px] w-full">
+    <div class="w-full"></div>
 
-      <div class="w-full flex justify-center">
-        <img src="@/assets/images/logo_tr_white.png" alt="Actin" class="h-[50px] w-auto">
+    <div class="w-full flex justify-center">
+      <img src="@/assets/images/logo_tr_white.png" alt="Actin" class="h-[50px] w-auto">
+    </div>
+
+    <div class="w-full flex justify-end">
+      <FaIcon class="rotate-180 text-[24px] text-black/60 cursor-pointer"
+              icon="arrow-right-from-bracket" @click="logout()"/>
+    </div>
+  </header>
+
+  <div class="w-full overflow-auto pt-[40px] flex justify-center">
+    <div class="flex flex-col max-w-[450px] w-full" v-if="user">
+      <h1 class="text-[24px] text-[#212121] font-bold w-full px-[24px]">خوش آمدید، {{ (user as any)['fullName'] }}</h1>
+
+      <div class="w-full pr-[16px] mt-[24px]">
+        <client-only>
+          <Swiper
+              :modules="[SwiperAutoplay, SwiperEffectCreative, SwiperPagination]"
+              :slides-per-view="1.2"
+              :loop="true"
+              :autoplay="{
+                delay: 8000,
+                disableOnInteraction: true,
+              }"
+              :pagination="pagination as any">
+            <SwiperSlide v-for="slide in slides" :key="slide" class="pl-[12px] cursor-grab">
+              <img :src="slide" alt="slide" class="w-full rounded-[16px]">
+            </SwiperSlide>
+          </Swiper>
+        </client-only>
       </div>
-
-      <div class="w-full flex justify-end">
-        <FaIcon class="rotate-180 text-[24px] text-black/60 cursor-pointer"
-                icon="arrow-right-from-bracket" @click="logout()"/>
-      </div>
-    </header>
-
-    <div class="w-full overflow-auto pt-[40px] flex justify-center">
-      <div class="flex flex-col max-w-[450px] w-full" v-if="user">
-        <h1 class="text-[24px] text-[#212121] font-bold w-full px-[24px]">خوش آمدید، {{ (user as any)['fullName'] }}</h1>
-
-        <div class="w-full pr-[16px] mt-[24px]">
-          <client-only>
-            <Swiper
-                :modules="[SwiperAutoplay, SwiperEffectCreative, SwiperPagination]"
-                :slides-per-view="1.2"
-                :loop="true"
-                :autoplay="{
-                  delay: 8000,
-                  disableOnInteraction: true,
-                }"
-                :pagination="pagination as any">
-              <SwiperSlide v-for="slide in slides" :key="slide" class="pl-[12px] cursor-grab">
-                <img :src="slide" alt="slide" class="w-full rounded-[16px]">
-              </SwiperSlide>
-            </Swiper>
-          </client-only>
-        </div>
 
         <h2 v-if="!pending && fetchData?.reservations.value?.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">نوبت‌های من</h2>
 

@@ -4,7 +4,7 @@ import {convertToPersianNumber} from "~/helper"
 import {PhysioPagesDescription} from "#components"
 
 definePageMeta({
-  layout: "result",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 

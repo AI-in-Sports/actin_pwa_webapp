@@ -92,7 +92,7 @@ const submit = async () => {
 
   if (!res) toast.error("خطا هنگام ثبت اطلاعات")
 
-  else if (urlPage.value < 14) useRouter().push(`/survey/ce/${urlPage.value + 1}`)
+  else if (urlPage.value < 14) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
 
   else if(urlPage.value == 14) useRouter().push(`/home?act=survey_done`)
 }

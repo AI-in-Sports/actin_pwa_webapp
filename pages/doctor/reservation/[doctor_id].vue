@@ -5,7 +5,7 @@ import {convertToPersianNumber} from "~/helper"
 import type {Ref} from "vue"
 
 definePageMeta({
-  layout: "result",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 

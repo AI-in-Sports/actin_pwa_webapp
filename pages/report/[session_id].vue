@@ -5,7 +5,7 @@ import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"
 
 definePageMeta({
-  layout: "result",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 
@@ -51,7 +51,7 @@ onMounted(async () => {
   useHead({title: `Actin - Report page`})
 })
 
-const goToSurvey = () => location.replace(`/survey/ce?nocache=${(new Date()).getTime()}`)
+const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).getTime()}`)
 </script>
 
 <template>

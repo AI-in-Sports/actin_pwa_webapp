@@ -2,7 +2,7 @@
 import axios from "axios"
 
 definePageMeta({
-  layout: "result",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 

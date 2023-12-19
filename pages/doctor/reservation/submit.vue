@@ -6,7 +6,7 @@ import jalali from "jalaali-js"
 import {convertToPersianNumber} from "~/helper"
 
 definePageMeta({
-  layout: "result",
+  layout: "main",
   middleware: ["normal-auth"]
 })
 

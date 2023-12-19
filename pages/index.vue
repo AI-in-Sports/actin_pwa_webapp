@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {convertToPersianNumber} from "~/helper"
-import type {UpdateOptions} from "vue3-toastify"
 
 definePageMeta({
-  layout: "main",
+  layout: "general",
   middleware: ["auth"]
 })
 

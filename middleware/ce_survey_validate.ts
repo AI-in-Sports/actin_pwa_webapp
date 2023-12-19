@@ -9,13 +9,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const urlPage = ref(parseInt(to.params.page.toString()))
 
     if (urlPage.value < 1 || urlPage.value > pages)
-        return navigateTo("/survey/ce/1")
+        return navigateTo("/ce/survey/1")
 
     if (urlPage.value != 1 && !ceSurvey.lastCompleted)
-        return navigateTo("/survey/ce/1")
+        return navigateTo("/ce/survey/1")
 
     if(ceSurvey.lastCompleted && urlPage.value > ceSurvey.lastCompleted + 1)
-        return navigateTo(`/survey/ce/${ceSurvey.lastCompleted + 1}`)
+        return navigateTo(`/ce/survey/${ceSurvey.lastCompleted + 1}`)
 
     return
 })

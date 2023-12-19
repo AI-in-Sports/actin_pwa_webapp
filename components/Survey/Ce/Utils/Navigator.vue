@@ -7,7 +7,7 @@ const urlPage = ref(parseInt(route.params.page.toString()))
   <div class="flex w-full">
     <PrimaryButton
         class="ml-auto !w-fit flex items-center justify-center !text-[18px] !px-[14px] !py-[10px] !font-normal bg-white !text-mainBlack"
-        v-if="urlPage > 1" @click="$router.push(`/survey/ce/${urlPage - 1}`)">
+        v-if="urlPage > 1" @click="$router.push(`/ce/survey/${urlPage - 1}`)">
       <FaIcon :icon="['fas', 'angle-left']" class="text-mainBlack !text-[20px] ml-[10px] rotate-180"/>
       قبلی
     </PrimaryButton>
