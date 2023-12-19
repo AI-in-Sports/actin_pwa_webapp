@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.0.3",
+    "@nuxt/devtools": "^1.0.6",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@types/jalaali-js": "^1.1.1",
     "@types/node": "^20.6.0",
@@ -34,6 +34,7 @@
     "@pinia/nuxt": "^0.5.1",
     "axios": "^1.5.1",
     "jalaali-js": "^1.2.6",
+    "material-symbols": "^0.14.3",
     "pinia": "^2.1.7",
     "vue-skeletor": "^1.0.6",
     "vue3-persian-datetime-picker": "^1.2.2",
