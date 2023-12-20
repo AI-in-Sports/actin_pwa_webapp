@@ -90,12 +90,22 @@ const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).ge
 
     <component v-if="dataFetch" :is="activeViews[activeView - 1]"
                :report="activeView === 1 ? getActiveZone['frontal'] : getActiveZone"/>
-  </div>
 
-  <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]" v-if="config.public.DISABLE_RESERVATION !== 'true'">
-    <PrimaryButton class="rounded-full !bg-[#212121] border-none !font-semibold" @click="goToSurvey">
-      دریافت برنامه اصلاحی
-    </PrimaryButton>
+    <div class="border-t-[1px] border-[#0000001F] mt-[47px] w-full py-[16px]">
+      <div class="m-auto flex flex-col items-center gap-[16px] max-w-[500px] w-full text-center">
+        <img src="~/assets/images/icon_character_physio.png" alt="physio">
+
+        <h2 class="font-bold text-[20px] text-mainBlack">شما نیاز به حرکات اصلاحی نیاز دارید.</h2>
+
+        <p class="text-[14px] text-[#9E9E9E]">جهت اصلاح وضعیت بدن شما،‌ نیاز است تا طبق یک
+          <span class="text-mainBlack">“برنامه تمرینی منظم”</span> و یا در طی چند جلسه <span class="text-mainBlack">“فیزیوتراپی”</span>، حرکاتی را انجام دهید که منجر به اصلاح بدن شما گردد.
+        </p>
+
+        <PrimaryButton class="rounded-full !font-semibold" @click="$router.push('/ce')">
+          دریافت برنامه تمرینی
+        </PrimaryButton>
+      </div>
+    </div>
   </div>
 </template>
 
