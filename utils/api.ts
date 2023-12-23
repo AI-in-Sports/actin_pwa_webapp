@@ -1,9 +1,9 @@
 import {type NitroFetchOptions} from "nitropack"
 
-export const apiCall = <T>(endpoint: string, auth: boolean = true, options: NitroFetchOptions<any> = {}) => $fetch<T>(endpoint, {
+export const apiCall = <T>(endpoint: string, options?: {auth?: boolean} & NitroFetchOptions<any, any>) => $fetch<T>(endpoint, {
     baseURL: useRuntimeConfig().public.APP_BACKEND,
     headers: {
-        "Authorization": auth === null || auth ? useAuthStore().getToken : ''
+        "Authorization": options?.auth ? useAuthStore().getToken : ''
     },
     ...options
 })
@@ -15,3 +15,12 @@ export const apiSSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth
     },
     ...options
 })
+
+export const apiLazySSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth?: boolean} & NitroFetchOptions<any, any>) => useLazyFetch<T>(endpoint, {
+    baseURL: useRuntimeConfig().public.APP_BACKEND,
+    headers: {
+        "Authorization": options?.auth ? useAuthStore().getToken : ''
+    },
+    ...options
+})
+
