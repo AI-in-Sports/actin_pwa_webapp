@@ -1,155 +1,37 @@
 import { defineStore } from 'pinia'
 import {selectProperties} from "~/helper"
 import type {Ref} from "vue"
-
-/*
-* Pain point types
-*
-* knee: زانو
-* neck: گردن
-* elbow: آرنج
-* shoulder: شونه
-* wrist: مچ دست
-* waist: کمر
-* ankle: مچ پا
-* pelvis: لگن
-* sciatic_nerve: عصب سیاتیک
-* */
-export type PainPoints =
-    "knee" | "neck" | "elbow" | "shoulder" | "wrist" |
-    "waist" | "ankle" | "pelvis" | "sciatic_nerve" | "none"
-
-/*
-* Soles status types
-*
-* normal: کف پای عادی
-* flat: کف پای صاف
-* hollow: کف پای گود
-* */
-export type SolesStatus = "normal" | "flat" | "hollow"
-
-/*
-* Pain types
-*
-* tingling_and_tingling: گزگز و سوزن سوزن شدن
-* paresthesia: خواب رفتن
-* numbness: مور مور و بی حسی
-* hot_flash: گُر گرفتگی
-* */
-export type PainType = "tingling_and_tingling" | "paresthesia" | "numbness" | "hot_flash" | "none"
-
-/*
-* Pain time types
-*
-* less_than_1m: زیر ۱ ماه
-* 1m_to_3m: ۱ ماه تا سه ماه
-* 3m_to_6m: ۳ ماه نا ۶ ماه
-* more_than_1y: بیش از یکسال
-* */
-export type PainTimeType = "less_than_1m" | "1m_to_3m" | "3m_to_6m" | "more_than_1y"
-
-/*
-* Treatment duration types
-*
-* less_than_1m: زیر ۱ ماه
-* 1m_to_3m: ۱ ماه تا سه ماه
-* more_than_6m: بیش از ۶ ماه
-* */
-export type TreatmentDurationType = "1m_to_3m" | "3m_to_6m" | "more_than_6m"
-
-/*
-* Treatment way types
-*
-* physiotherapy: فیزیوتراپی
-* hydrotherapy: آب درمانی
-* water_walking: راه رفتن در استخر
-* exercise_therapy: ورزش درمانی (حرکت اصلاحی و توانبخشی)
-* */
-export type TreatmentWayType = "physiotherapy" | "hydrotherapy" | "water_walking" | "exercise_therapy" | "none"
-
-/*
-* Body posture at work types
-*
-* sitting_more: بیشتر نشسته ام
-* standing_more: بیشتر ایستاده ام
-* walking_more: بیشتر راه میروم
-* */
-export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_more"
-
-/*
-* Exercise place types
-*
-* gym: باشگاه
-* home_gym: باشگاه خانگی
-* home: منزل
-* work: محل کارx
-* */
-export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
-
-export type SurveyState = {
-    lastCompleted: number | null
-
-    birthday: Date | null,
-    gender: "male" | "female" | null
-    weight: number | null,
-    height: number | null,
-    soles_status: SolesStatus | null,
-    pain_points: PainPoints[] | null,
-    pain_intensity: number | null,
-    pain_type: PainType[] | null,
-    pain_time: PainTimeType | null,
-    pain_rate: number | null,
-    surgery_history: PainPoints[] | null,
-    treatment_duration: TreatmentDurationType | null,
-    treatment_duration_done: boolean | null,
-    treatment_ways: TreatmentWayType[] | null,
-    body_posture_at_work: BodyPostureAtWorkType | null,
-    daily_routine: string | null,
-    exercise_place: ExercisePlaceType[] | null
-}
+import type {Survey1, SurveyState} from "~/stores/survey.types"
 
 export const useCESurveyStore = defineStore('ce_survey', {
     state: () => {
         return {
-            lastCompleted: 1,
-
-            birthday: new Date(),
-            gender: "male",
-            weight: 0,
-            height: 0,
-            soles_status: "normal",
-            pain_points: ["none"],
-            pain_intensity: 0,
-            pain_type: ["none"],
-            pain_time: "less_than_1m",
-            pain_rate: 0,
-            surgery_history: ["none"],
-            treatment_duration: "1m_to_3m",
-            treatment_duration_done: true,
-            treatment_ways: ["none"],
-            body_posture_at_work: "sitting_more",
-            daily_routine: "",
-            exercise_place: ["gym"]
+            survey1: {
+                lastCompleted: 1,
+                birthday: new Date(),
+                weight: 0,
+                height: 0,
+                soles_status: "normal",
+                exercise_place: ["gym"]
+            },
         } as SurveyState
     },
     getters: {
 
     },
     actions: {
-        set(key: keyof SurveyState, data: any) {
-            this[key] = data
+        set(survey: keyof SurveyState, key: keyof Survey1, data: any) {
+            this[survey][key] = data
         },
 
-        submitSurvey: async (...items: (keyof SurveyState)[]) => {
-            const backend = useRuntimeConfig().public['APP_BACKEND']
-
+        submitSurvey: async (survey: keyof SurveyState, ...items: (keyof Survey1)[]) => {
             items.push("lastCompleted")
 
-            const store = selectProperties(useCESurveyStore(), items)
+            const store = selectProperties(useCESurveyStore()[survey], items)
 
-            const {data, error} = await useFetch(`${backend}/ce/survey/update`, {
-                headers: { "Authorization": useAuthStore().getToken },
+            const {data, error} = await apiSSRFetch(`/ce/survey/update/${survey}`, {
                 method: "PATCH",
+                auth: true,
                 body: store
             })
 
@@ -158,26 +40,24 @@ export const useCESurveyStore = defineStore('ce_survey', {
             return data.value
         },
 
-        getData: async () => {
-            const backend = useRuntimeConfig().public['APP_BACKEND']
+        getData: async (survey: "survey1") => {
 
-            const {data, error, refresh} = await useFetch(`${backend}/ce/survey/get`, {
-                headers: { "Authorization": useAuthStore().getToken }
+            const {data, error, refresh} = await apiSSRFetch<{
+                status: number,
+                info?: Survey1,
+                message?: string
+            }>(`/ce/survey/get/${survey}`, {
+                auth: true
             })
 
             watchEffect(() => refresh())
 
             if (error.value) return false
 
-            const response = data.value as {
-                status: number,
-                info?: any,
-                message?: string
-            }
-
-            if(response.status === 200) {
-                for (const infoKey in response.info) {
-                    useCESurveyStore().set(infoKey as keyof SurveyState, response.info[infoKey])
+            if(data.value?.status === 200) {
+                let infoKey: keyof Survey1
+                for (infoKey in data.value.info) {
+                    useCESurveyStore().set("survey1", infoKey as keyof Survey1, data.value.info![infoKey])
                 }
             }
 
@@ -187,17 +67,17 @@ export const useCESurveyStore = defineStore('ce_survey', {
     persist: true
 })
 
-export const surveyComputed = (item: keyof SurveyState) => computed({
+export const surveyComputed = (survey: keyof SurveyState, item: keyof Survey1) => computed({
     get() {
-        return useCESurveyStore()[item] as number | string[] | string | boolean
+        return useCESurveyStore()[survey][item] as number | string[] | string | boolean
     },
     set(value) {
-        useCESurveyStore().set(item, value)
+        useCESurveyStore().set(survey, item, value)
     }
 })
 
-export const selectItem = (state: keyof SurveyState, value: string) => {
-    const ref = surveyComputed(state) as Ref<string[]>
+export const selectItem = (survey: keyof SurveyState, state: keyof Survey1, value: string) => {
+    const ref = surveyComputed(survey, state) as Ref<string[]>
 
     const index = ref.value!.indexOf(value)
     const none_index = ref.value!.indexOf("none")
