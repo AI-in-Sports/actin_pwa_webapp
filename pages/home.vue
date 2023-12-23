@@ -4,7 +4,7 @@ import s2 from "~/assets/slides/2.jpg"
 import s3 from "~/assets/slides/3.jpg"
 import s4 from "~/assets/slides/4.jpg"
 import s5 from "~/assets/slides/5.jpg"
-import type {Reservation, Report, NormalResponse} from "~/types/Responses"
+import type {Reservation, Report, SurveyStatusResponse} from "~/types/Responses"
 
 definePageMeta({
   middleware: ["normal-auth"],
@@ -37,7 +37,7 @@ await useLazyAsyncData('home_data', async () => {
     apiSSRFetch<Report[]>("/report/getAll", {
       auth: true
     }),
-    apiSSRFetch<NormalResponse>("/ce/survey/status", {
+    apiSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
       auth: true
     })
   ])
@@ -86,7 +86,7 @@ useHead({title: "Actin health"})
   <!-- Survey alert -->
   <div class="fixed inset-0 z-[-99999] opacity-0 bg-white/80 p-[16px] backdrop-blur-2xl duration-[0.3s] flex justify-center items-center"
        :class="{ '!z-[99999] !opacity-100': !isSurvey && $route.query.nocache }">
-    <div class="flex flex-col w-full max-w-[400px] text-center">
+    <div class="flex flex-col w-full max-w-[400px] text-center text-mainBlack">
       <MaterialSymbols
           @click="isSurvey = true" theme="rounded"
           class="text-[#666666] ml-auto fixed top-[16px] left-[16px] cursor-pointer hover:text-[30px]">

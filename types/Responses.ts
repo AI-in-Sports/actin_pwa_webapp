@@ -1,4 +1,4 @@
-import type {JalaaliDateObject} from "jalaali-js";
+import type {JalaaliDateObject} from "jalaali-js"
 
 export type Reservation = {
     name: string,
@@ -15,4 +15,8 @@ export type Report = {
 export type NormalResponse = {
     status: number,
     message: string
+}
+
+export type SurveyStatusResponse = NormalResponse & {
+    mode: number
 }
