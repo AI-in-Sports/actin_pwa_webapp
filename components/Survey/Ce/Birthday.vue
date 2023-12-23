@@ -1,0 +1,50 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <div class="flex flex-col w-full justify-center">
+    <input id="birthday">
+    <ClientOnly>
+      <DatePicker inline auto-submit simple custom-input="#birthday"
+                  input-format="jYYYY-jMM-jDD"
+                  format="YYYY/MM/DD"/>
+    </ClientOnly>
+  </div>
+</template>
+
+<style lang="sass">
+.vpd-simple-content .vpd-column .vpd-column-header
+  margin-bottom: 40px!important
+  font-family: Dana, Arial, sans-serif!important
+  font-weight: 400!important
+  font-size: 22px!important
+  color: #212121!important
+
+.vpd-simple-content .vpd-column .vpd-column-content,
+.vpd-simple-content .vpd-column .vpd-column-header
+  padding-right: 17px
+  color: #212121
+  width: 100%
+  box-sizing: content-box
+
+.vpd-simple-content .vpd-addon-list-item
+  font-family: Dana, Arial, sans-serif!important
+  font-size: 16px!important
+  color: #666666!important
+  font-weight: 500!important
+
+.vpd-simple-content .vpd-column.vpd-is-mounted .vpd-selected:not(.vpd-range-first):not(.vpd-range-last):not([disabled=true])
+  color: #212121!important
+  font-weight: 400!important
+  font-size: 22px!important
+  background-color: #F0A3001A!important
+  border-radius: 360px!important
+
+.vpd-simple-content .vpd-column
+  overflow: hidden
+  width: 100%
+
+.vpd-is-inline .vpd-content
+  margin: auto!important
+</style>
