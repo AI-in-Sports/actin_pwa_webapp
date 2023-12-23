@@ -11,3 +11,8 @@ export type Report = {
     testId: string,
     date: string | Date | JalaaliDateObject
 }
+
+export type NormalResponse = {
+    status: number,
+    message: string
+}

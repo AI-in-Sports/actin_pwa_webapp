@@ -4,7 +4,7 @@ import s2 from "~/assets/slides/2.jpg"
 import s3 from "~/assets/slides/3.jpg"
 import s4 from "~/assets/slides/4.jpg"
 import s5 from "~/assets/slides/5.jpg"
-import type {Reservation, Report} from "~/types/Responses"
+import type {Reservation, Report, NormalResponse} from "~/types/Responses"
 
 definePageMeta({
   middleware: ["normal-auth"],
@@ -12,6 +12,8 @@ definePageMeta({
 })
 
 useAuthStore().$persist()
+
+const route = useRoute()
 
 const user = useAuthStore().user
 
@@ -25,6 +27,7 @@ const logout = () => {
 
 const reports_data = useState(() => [] as Report[])
 const reservations_data = useState(() => [] as Reservation[])
+const isSurvey = shallowRef(false)
 
 await useLazyAsyncData('home_data', async () => {
   const [reservations, reports, survey] = await Promise.all([
@@ -33,8 +36,13 @@ await useLazyAsyncData('home_data', async () => {
     }),
     apiSSRFetch<Report[]>("/report/getAll", {
       auth: true
+    }),
+    apiSSRFetch<NormalResponse>("/ce/survey/status", {
+      auth: true
     })
   ])
+
+  isSurvey.value = survey.data.value?.status === 200
 
   reports_data.value = reports.data.value?.map(item => ({
     testId: item.testId,
@@ -45,7 +53,7 @@ await useLazyAsyncData('home_data', async () => {
 })
 
 onMounted(async () => {
-  const act = useRoute().query.act
+  const act = route.query.act
   const toast = useNuxtApp().$showToast
 
   switch (act) {
@@ -75,6 +83,29 @@ useHead({title: "Actin health"})
 </script>
 
 <template>
+  <!-- Survey alert -->
+  <div class="fixed inset-0 z-[-99999] opacity-0 bg-white/80 p-[16px] backdrop-blur-2xl duration-[0.3s] flex justify-center items-center"
+       :class="{ '!z-[99999] !opacity-100': !isSurvey && $route.query.nocache }">
+    <div class="flex flex-col w-full max-w-[400px] text-center">
+      <MaterialSymbols
+          @click="isSurvey = true" theme="rounded"
+          class="text-[#666666] ml-auto fixed top-[16px] left-[16px] cursor-pointer hover:text-[30px]">
+        close
+      </MaterialSymbols>
+
+      <h1 class="mt-[20px] font-bold text-[26px]">
+        {{ user.fullName }}
+        عزیز خوش آمدی
+      </h1>
+
+      <p class="mt-[56px] text-[16px] ">جهت تهیه‌ی برنامه تمرینی مناسب براساس ناهنجاری‌‌های اسکلتی شما، نیازمند دریافت وضعیت جسمیتان هستیم.</p>
+
+      <p class="text-[14px] text-[#666666] mt-[32px]">زمان مورد نیاز برای انجام ارزیابی: ۳ دقیقه</p>
+
+      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce')">فرم وضعیت جسمی</PrimaryButton>
+    </div>
+  </div>
+
   <header class="flex items-center px-[14px] py-[16px] w-full">
     <div class="w-full"></div>
 
