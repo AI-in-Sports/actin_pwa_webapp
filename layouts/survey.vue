@@ -2,14 +2,20 @@
 </script>
 
 <template>
-  <main class="p-[12px] flex flex-col h-[100dvh]" dir="rtl">
-    <nav class="flex justify-end w-full mb-[16px]">
-      <FaIcon :icon="['fas', 'xmark']" class="cursor-pointer text-[#666666] text-[24px] p-[8px]" @click="$router.replace('/home')"/>
-    </nav>
+  <main class="flex flex-col w-full h-[100dvh] px-[16px] pt-[20px] pb-[18px] items-center" dir="rtl">
+   <div class="w-full max-w-[400px] h-full flex flex-col">
+     <MaterialSymbols
+         @click="$router.replace('/ce')" theme="rounded"
+         class="text-[#666666]  cursor-pointer hover:text-[30px]">
+       close
+     </MaterialSymbols>
 
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <slot/>
-    </div>
+     <h1 class="mt-[20px] font-bold text-[24px]">
+       {{ $route.meta.name }}
+     </h1>
+
+     <slot/>
+   </div>
   </main>
 </template>
 
