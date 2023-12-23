@@ -79,7 +79,7 @@ onMounted(async () => {
   }
 })
 
-useHead({title: "Actin health"})
+useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
@@ -102,7 +102,7 @@ useHead({title: "Actin health"})
 
       <p class="text-[14px] text-[#666666] mt-[32px]">زمان مورد نیاز برای انجام ارزیابی: ۳ دقیقه</p>
 
-      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce')">فرم وضعیت جسمی</PrimaryButton>
+      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce/survey/1')">فرم وضعیت جسمی</PrimaryButton>
     </div>
   </div>
 
