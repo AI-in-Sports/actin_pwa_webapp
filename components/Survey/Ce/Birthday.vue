@@ -3,10 +3,9 @@
 </script>
 
 <template>
-  <div class="flex flex-col w-full justify-center">
-    <input id="birthday">
+  <div class="flex flex-col w-full justify-center h-full">
     <ClientOnly>
-      <DatePicker inline auto-submit simple custom-input="#birthday"
+      <DatePicker inline auto-submit simple
                   input-format="jYYYY-jMM-jDD"
                   format="YYYY/MM/DD"/>
     </ClientOnly>
@@ -14,6 +13,9 @@
 </template>
 
 <style lang="sass">
+.vpd-input-group
+  display: none!important
+
 .vpd-simple-content .vpd-column .vpd-column-header
   margin-bottom: 40px!important
   font-family: Dana, Arial, sans-serif!important
@@ -38,7 +40,7 @@
   color: #212121!important
   font-weight: 400!important
   font-size: 22px!important
-  background-color: #F0A3001A!important
+  background-color: #fff5ea!important
   border-radius: 360px!important
 
 .vpd-simple-content .vpd-column
