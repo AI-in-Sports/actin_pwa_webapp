@@ -42,7 +42,7 @@ await useLazyAsyncData('home_data', async () => {
     })
   ])
 
-  isSurvey.value = survey.data.value?.status === 200
+  isSurvey.value = survey.data.value?.status === 200 || survey.data.value?.mode === 0
 
   reports_data.value = reports.data.value?.map(item => ({
     testId: item.testId,
