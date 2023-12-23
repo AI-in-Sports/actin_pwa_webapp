@@ -11,6 +11,8 @@ const user = useAuthStore().user
 const {data} = apiLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
   auth: true,
 })
+
+useHead({title: "اکتین - برنامه تمرینی"})
 </script>
 
 <template>
@@ -41,6 +43,7 @@ const {data} = apiLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
         </PrimaryButton>-->
 
         <PrimaryButton
+            @click="$router.replace('/ce/survey/1')"
             v-if="data?.mode === 1" class="!font-semibold !text-[16px]">
           تکمیل فرم وضعیت جسمی
         </PrimaryButton>
