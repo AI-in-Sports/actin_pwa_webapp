@@ -72,10 +72,9 @@ const submit = async () => {
 
 useHead({title: `اکتین - ${survey.value.pages[urlPage.value - 1].name}`})
 
-onMounted(() => {
-  route.meta.name = survey.value.pages[urlPage.value - 1].question
-  isReady.value = true
-})
+const isNextReady = shallowRef(false)
+
+const validate = (value: boolean) => isNextReady.value = value
 
 onMounted(() => {
   if (data.value?.mode === 0)
@@ -88,11 +87,11 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col w-full h-full items-center overflow-hidden" v-if="isReady">
-    <div class="flex flex-col flex-1 max-w-[380px] w-full overflow-hidden">
-      <component :is="survey.pages[urlPage - 1].component"/>
+    <div class="flex flex-col flex-1 max-w-[380px] w-full overflow-hidden" id="inputContainer">
+      <component :is="survey.pages[urlPage - 1].component" @validate="validate"/>
     </div>
 
-    <SurveyUtilsNavigator :pages="survey.pages.length" :page="urlPage" @next="submit" class="mt-[24px]"/>
+    <SurveyUtilsNavigator :pages="survey.pages.length" :page="urlPage" @next="submit" :isNextReady="isNextReady" class="mt-[24px]"/>
   </div>
 
   <div class="flex flex-col justify-between h-full" v-if="!isReady">

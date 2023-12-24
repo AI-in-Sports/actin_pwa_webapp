@@ -3,7 +3,8 @@ import {convertToPersianNumber} from "~/helper"
 
 const props = defineProps<{
   pages: number
-  page: number
+  page: number,
+  isNextReady: boolean
 }>()
 
 const calculateProgress = computed(() => ((props.page / 100) * props.pages) * 100)
@@ -29,7 +30,7 @@ const calculateProgress = computed(() => ((props.page / 100) * props.pages) * 10
       </p>
 
       <div class="w-1/3">
-        <PrimaryButton class="flex justify-center items-center text-[14px] !p-[10px]" @click="$emit('next')">
+        <PrimaryButton class="flex justify-center items-center text-[14px] !p-[10px]" @click="$emit('next')" :disabled="isNextReady">
           بعدی
           <MaterialSymbols theme="rounded" class="text-[20px] mr-[4px]">arrow_back_ios</MaterialSymbols>
         </PrimaryButton>
