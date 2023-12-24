@@ -58,7 +58,9 @@ const pageValue: (keyof Survey1)[][] = [
 const submit = async () => {
   isReady.value = false
 
-  ceSurvey.set("survey1", "lastCompleted", urlPage.value)
+  if (ceSurvey.survey1.lastCompleted! < urlPage.value)
+    ceSurvey.set("survey1", "lastCompleted", urlPage.value)
+
   const res = await ceSurvey.submitSurvey("survey1", ...pageValue[urlPage.value - 1])
 
   if (!res) toast.error("خطا هنگام ثبت اطلاعات")
