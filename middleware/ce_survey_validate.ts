@@ -10,14 +10,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
     const urlPage = ref(parseInt(to.params.page.toString()))
 
-    if (urlPage.value < 1 || urlPage.value > pages)
-        return navigateTo("/ce/survey/1")
-
-    if (urlPage.value != 1 && !ceSurvey.survey1)
-        return navigateTo("/ce/survey/1")
+    if (
+        (urlPage.value < 1 || urlPage.value > pages) ||
+        (urlPage.value != 1 && !ceSurvey.survey1) ||
+        (ceSurvey.survey1.lastCompleted === 0 && urlPage.value > 1)
+    ) return navigateTo("/ce/survey/1")
 
     if(ceSurvey.survey1.lastCompleted && urlPage.value > ceSurvey.survey1.lastCompleted + 1)
-        return navigateTo(`/ce/survey/${ceSurvey.survey1.lastCompleted + 1}`)
+        return navigateTo(`/ce/survey/${ceSurvey.survey1.lastCompleted! + 1}`)
 
     return
 })
