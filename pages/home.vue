@@ -102,7 +102,7 @@ useHead({title: "اکتین - صفحه اصلی"})
 
       <p class="text-[14px] text-[#666666] mt-[32px]">زمان مورد نیاز برای انجام ارزیابی: ۳ دقیقه</p>
 
-      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce/survey/1')">فرم وضعیت جسمی</PrimaryButton>
+      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce/survey/')">فرم وضعیت جسمی</PrimaryButton>
     </div>
   </div>
 

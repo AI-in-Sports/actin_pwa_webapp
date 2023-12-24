@@ -43,7 +43,7 @@ useHead({title: "اکتین - برنامه تمرینی"})
         </PrimaryButton>-->
 
         <PrimaryButton
-            @click="$router.replace('/ce/survey/1')"
+            @click="$router.replace('/ce/survey/')"
             v-if="data?.mode === 1" class="!font-semibold !text-[16px]">
           تکمیل فرم وضعیت جسمی
         </PrimaryButton>
