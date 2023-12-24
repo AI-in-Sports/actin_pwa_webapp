@@ -80,6 +80,9 @@ onMounted(() => {
 onMounted(() => {
   if (data.value?.mode === 0)
     useRouter().replace("/ce")
+
+  route.meta.name = survey.value.pages[urlPage.value - 1].question
+  isReady.value = true
 })
 </script>
 
