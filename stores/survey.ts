@@ -61,6 +61,8 @@ export const useCESurveyStore = defineStore('ce_survey', {
                 }
             }
 
+            else useCESurveyStore().$reset()
+
             return true
         }
     },
