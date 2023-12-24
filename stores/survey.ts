@@ -7,7 +7,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
     state: () => {
         return {
             survey1: {
-                lastCompleted: 1,
+                lastCompleted: 0,
                 birthday: new Date(),
                 weight: 0,
                 height: 0,
