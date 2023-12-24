@@ -6,13 +6,7 @@ const props = defineProps<{
   page: number
 }>()
 
-
-console.log(props.pages)
-console.log(props.page)
-
 const calculateProgress = computed(() => ((props.page / 100) * props.pages) * 100)
-
-console.log(calculateProgress.value)
 </script>
 
 <template>
