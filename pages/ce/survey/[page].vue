@@ -87,7 +87,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col w-full h-full items-center overflow-hidden" v-if="isReady">
-    <div class="flex flex-col flex-1 max-w-[380px] w-full overflow-hidden" id="inputContainer">
+    <div class="flex flex-col flex-1 max-w-[380px] w-full overflow-hidden pt-[40px]">
       <component :is="survey.pages[urlPage - 1].component" @validate="validate"/>
     </div>
 
