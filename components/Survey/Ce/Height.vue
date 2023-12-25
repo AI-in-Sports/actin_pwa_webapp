@@ -11,7 +11,7 @@ watch(height, isValid)
 </script>
 
 <template>
-  <SurveyUtilsNumberInput v-model:value="height" unit="سانتی متر" class="mt-[40px]" placeholder="قد"/>
+  <SurveyUtilsNumberInput v-model:value="height" unit="سانتی متر" placeholder="قد"/>
 </template>
 
 <style scoped>

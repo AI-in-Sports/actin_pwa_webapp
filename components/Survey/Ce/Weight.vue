@@ -11,7 +11,7 @@ watch(weight, isValid)
 </script>
 
 <template>
-  <SurveyUtilsNumberInput v-model:value="weight" unit="کیلوگرم" class="mt-[40px]" placeholder="وزن"/>
+  <SurveyUtilsNumberInput v-model:value="weight" unit="کیلوگرم" placeholder="وزن"/>
 </template>
 
 <style scoped>
