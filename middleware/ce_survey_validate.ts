@@ -1,7 +1,7 @@
 import {isDigit} from "json5/lib/util"
 
 export default defineNuxtRouteMiddleware(async (to) => {
-    const pages = 14
+    const pages = 5
     const ceSurvey = useCESurveyStore()
 
     await ceSurvey.getData("survey1")

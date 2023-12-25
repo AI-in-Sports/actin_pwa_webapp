@@ -65,12 +65,10 @@ const submit = async () => {
 
   if (!res) toast.error("خطا هنگام ثبت اطلاعات")
 
-  else if (urlPage.value < 14) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
+  else if (urlPage.value < 5) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
 
-  else if(urlPage.value == 14) useRouter().push(`/home?act=survey_done`)
+  else if(urlPage.value == 5) useRouter().push(`/home?act=survey_done`)
 }
-
-useHead({title: `اکتین - ${survey.value.pages[urlPage.value - 1].name}`})
 
 const isNextReady = shallowRef(false)
 
@@ -83,6 +81,8 @@ onMounted(() => {
   route.meta.name = survey.value.pages[urlPage.value - 1].question
   isReady.value = true
 })
+
+useHead({title: `اکتین - ${survey.value.pages[urlPage.value - 1].name}`})
 </script>
 
 <template>

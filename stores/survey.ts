@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import {selectProperties} from "~/helper"
-import type {Ref} from "vue"
 import type {Survey1, SurveyState} from "~/stores/survey.types"
 
 export const useCESurveyStore = defineStore('ce_survey', {
