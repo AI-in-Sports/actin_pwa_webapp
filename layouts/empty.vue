@@ -1,0 +1,14 @@
+<script setup lang="ts">
+</script>
+
+<template>
+  <main class="flex flex-col w-full h-[100dvh] px-[16px] pt-[20px] pb-[18px] items-center" dir="rtl">
+    <div class="w-full max-w-[400px] h-full flex flex-col">
+      <slot/>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+
+</style>
