@@ -7,7 +7,7 @@ const props = defineProps<{
   isNextReady: boolean
 }>()
 
-const calculateProgress = computed(() => ((props.page / 100) * props.pages) * 100)
+const calculateProgress = computed(() => (props.page / props.pages) * 100)
 </script>
 
 <template>
