@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import axios from "axios"
-import {convertToPersianNumber} from "~/helper"
 import {PhysioPagesDescription} from "#components"
 
 definePageMeta({

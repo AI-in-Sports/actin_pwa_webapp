@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-const props = defineProps<{
+defineProps<{
   required?: boolean
   placeholder?: string,
   name?: string,

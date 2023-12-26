@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps<{
   required?: boolean
   type?: "text" | "number" | "tel" | "email" | "password" | string,

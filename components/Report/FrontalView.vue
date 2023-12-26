@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {convertToPersianNumber} from "~/helper"
-
 defineProps<{
   report: any
 }>()

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {convertToPersianNumber} from "~/helper"
 import jalali from "jalaali-js"
 
 defineProps<{

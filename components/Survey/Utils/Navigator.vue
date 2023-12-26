@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {convertToPersianNumber} from "~/helper"
-
 const props = defineProps<{
   pages: number
   page: number,

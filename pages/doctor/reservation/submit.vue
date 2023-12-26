@@ -3,7 +3,6 @@ import ok from "@/assets/images/reservation_green.svg"
 import not_ok from "@/assets/images/reservation_red.svg"
 import axios from "axios"
 import jalali from "jalaali-js"
-import {convertToPersianNumber} from "~/helper"
 
 definePageMeta({
   layout: "main",

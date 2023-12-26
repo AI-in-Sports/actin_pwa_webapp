@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {convertToPersianNumber} from "~/helper"
 import Jalali ,{type JalaaliDateObject} from "jalaali-js"
 import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"

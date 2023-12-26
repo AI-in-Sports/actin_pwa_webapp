@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import axios from "axios"
 import jalali from "jalaali-js"
-import {convertToPersianNumber} from "~/helper"
 import type {Ref} from "vue"
 
 definePageMeta({

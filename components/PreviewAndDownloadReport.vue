@@ -2,7 +2,6 @@
 import arrow_green from "~/assets/icons/icon_arrow_left_green.svg"
 import arrow_orange from "~/assets/icons/icon_arrow_left_orange.svg"
 import arrow_red from "~/assets/icons/icon_arrow_left_red.svg"
-import {convertToPersianNumber} from "~/helper"
 
 const props = defineProps<{
   report: any
