@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type {SurveyStatusResponse} from "~/types/Responses";
-import type {Survey1} from "~/stores/survey.types";
+import type {SurveyStatusResponse} from "~/types/Responses"
+import type {Survey1} from "~/stores/survey.types"
 
 const route = useRoute()
 const toast = useNuxtApp().$showToast
@@ -67,7 +67,7 @@ const submit = async () => {
 
   else if (urlPage.value < 5) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
 
-  else if(urlPage.value == 5) useRouter().push(`/home?act=survey_done`)
+  else if(urlPage.value == 5) useRouter().push(`/ce/generate`)
 }
 
 const isNextReady = shallowRef(false)
