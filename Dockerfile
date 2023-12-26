@@ -15,6 +15,8 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 
+RUN pnpm i pm2 -g
+
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
@@ -44,4 +46,4 @@ COPY --from=builder --chown=nuxtjs:nodejs /app/.output/ ./.output/
 
 USER nuxtjs
 
-CMD ["node",".output/server/index.mjs"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
