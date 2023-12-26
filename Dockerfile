@@ -1,4 +1,4 @@
-FROM node:16-alpine AS base
+FROM node:18-alpine AS base
 
 RUN yarn global add pnpm
 
@@ -8,6 +8,8 @@ ENV APP_BACKEND=${APP_BACKEND} DISABLE_RESERVATION=${DISABLE_RESERVATION}
 
 ENV NITRO_HOST=0.0.0.0 NITRO_PORT=3000 NITRO_PRESET=node_cluster
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+ENV NODE_OPTIONS=\"--no-experimental-fetch\"
+
 
 FROM base AS deps
 
@@ -33,6 +35,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+ENV NODE_OPTIONS=\"--no-experimental-fetch\"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nuxtjs
