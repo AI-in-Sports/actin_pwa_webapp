@@ -12,6 +12,17 @@ const {data} = apiLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
   auth: true,
 })
 
+onMounted(() => {
+  const res = useRoute().query.res
+  const toast = useNuxtApp().$showToast
+
+  switch (res) {
+    case "pg_err":
+      toast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
+      break
+  }
+})
+
 useHead({title: "اکتین - برنامه تمرینی"})
 </script>
 
