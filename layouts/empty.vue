@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <main class="flex flex-col w-full h-[100dvh] px-[16px] pt-[20px] pb-[18px] items-center" dir="rtl">
-    <div class="w-full max-w-[400px] h-full flex flex-col">
+  <main class="w-full h-[100dvh]" dir="rtl">
+    <div class="w-full max-w-[400px] h-full flex flex-col m-auto">
       <slot/>
     </div>
   </main>
