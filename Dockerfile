@@ -7,7 +7,6 @@ ARG APP_BACKEND DISABLE_RESERVATION
 ENV APP_BACKEND=${APP_BACKEND} DISABLE_RESERVATION=${DISABLE_RESERVATION}
 
 ENV NITRO_HOST=0.0.0.0 NITRO_PORT=3000
-ENV NODE_OPTIONS=\"--no-experimental-fetch\"
 
 
 FROM base AS deps
@@ -33,8 +32,6 @@ FROM node:16 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-ENV NODE_OPTIONS=\"--no-experimental-fetch\"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nuxtjs
