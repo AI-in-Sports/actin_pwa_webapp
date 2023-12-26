@@ -16,7 +16,7 @@ if ([0, 1].includes(data.value?.mode!))
 onMounted(async () => {
   await apiCall("/ce/exercise/generate", {
     auth: true
-  }).then(() => useRouter().push("/ce")).catch((reason) => {
+  }).then(() => useRouter().push("/ce/payment")).catch((reason) => {
     alert("ایجاد برنامه تمرینی با خطا مواجه شد لطفا بعد از زدن دکمه تایید پیام خطا را برای پشتیبانی اکتین ارسال کنید.")
     alert(reason)
 
