@@ -1,4 +1,4 @@
-FROM node:18 AS base
+FROM node:18-alpine AS base
 
 RUN yarn global add pnpm
 
@@ -36,7 +36,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nuxtjs
 
 COPY --from=builder /app/package.json ./package.json
-
+COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder --chown=nuxtjs:nodejs /app/.output/ ./.output/
 
 USER nuxtjs
