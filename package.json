@@ -39,6 +39,7 @@
     "pinia": "^2.1.7",
     "progressbar.js": "^1.1.1",
     "vue-skeletor": "^1.0.6",
+    "vue3-lottie": "^3.2.0",
     "vue3-persian-datetime-picker": "^1.2.2",
     "vue3-toastify": "^0.1.14"
   }
