@@ -27,7 +27,7 @@ useHead({title: "اکتین - برنامه تمرینی"})
 </script>
 
 <template>
-  <div class="px-[16px] py-[32px] flex w-full justify-center text-mainBlack">
+  <div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack">
     <section v-if="[0, 1, 2, 3].includes(data?.mode!)" class="flex flex-col max-w-[400px] w-full ">
       <h1 class="font-semibold text-[21px]">
         {{ user.fullName }}
@@ -63,6 +63,11 @@ useHead({title: "اکتین - برنامه تمرینی"})
           پرداخت
         </PrimaryButton>
       </div>
+    </section>
+
+    <section v-else class="h-full w-full flex flex-col justify-center items-center text-center">
+      <h2 class="text-mainBlack text-[24px] font-bold mb-[20px]">این صفحه در حال حاظر در دسترس نیست.</h2>
+      <p>اگر این پیام را می‌بینید به این معناست که حرکات اصلاحی شما آماده و درون پایگاه داده ما قرار دارد و تا ساعاتی دیگر در دسترس شما قرار خواهد گرفت.</p>
     </section>
   </div>
 </template>
