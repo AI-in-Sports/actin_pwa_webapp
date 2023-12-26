@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import done_animation from "~/assets/lottie/done.json"
+import type {NormalResponse} from "~/types/Responses"
 
 definePageMeta({
   middleware: ["normal-auth"],
   layout: "empty"
 })
+
+const paymentUrl = shallowRef("")
+
+onMounted(async () => {
+  await apiCall<NormalResponse & {
+    url: string
+  }>("/ce/payment/create", {
+    auth: true,
+  }).then((value) => {
+    paymentUrl.value = value!.url
+  }).catch((reason) => {
+    console.log(reason)
+    useNuxtApp().$showToast.error("ایجاد درگاه پرداخت با خطا مواجد شد. لطفا صفحه را بازسازی کنید!")
+  })
+})
+
+const pay = () => location.href = paymentUrl.value
 </script>
 
 <template>
@@ -51,7 +69,7 @@ definePageMeta({
       </div>
     </div>
 
-    <PrimaryButton class="mt-[32px]">پرداخت</PrimaryButton>
+    <PrimaryButton class="mt-[32px]" :disabled="!paymentUrl" @click="pay">پرداخت</PrimaryButton>
   </div>
 </template>
 

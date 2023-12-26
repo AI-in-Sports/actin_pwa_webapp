@@ -67,7 +67,7 @@ const submit = async () => {
 
   else if (urlPage.value < 5) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
 
-  else if(urlPage.value == 5) useRouter().push(`/ce/generate`)
+  else if(urlPage.value == 5) location.href = `/ce/generate?nocache=${(new Date()).getTime()}`
 }
 
 const isNextReady = shallowRef(false)
