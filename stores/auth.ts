@@ -52,9 +52,6 @@ export const useAuthStore = defineStore('auth', {
                 auth: true
             })
 
-            console.log(data.value)
-            console.log(error.value)
-
             if (error.value) {
                 this.logout()
                 return false
