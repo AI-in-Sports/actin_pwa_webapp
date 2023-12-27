@@ -25,7 +25,7 @@ onMounted(async () => {
     headers: {
       "Authorization": useAuthStore().getToken
     },
-    params: {
+    query: {
       session_id: session_id
     }
   })
