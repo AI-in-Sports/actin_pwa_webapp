@@ -30,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         set(key: keyof AuthState, data: any) {
             this[key] = data
+            this.$persist()
         },
 
         del(key: keyof AuthState) {
