@@ -1,7 +1,8 @@
 import {type NitroFetchOptions} from "nitropack"
 import {useAuthStore} from "~/stores/auth"
+import type {AsyncDataOptions} from "#app/composables/asyncData"
 
-export const apiCall = <T>(endpoint: string, options?: {auth?: boolean} & NitroFetchOptions<any, any>) => $fetch<T>(endpoint, {
+export const apiCall = <T>(endpoint: string, options?: {auth?: boolean} & NitroFetchOptions<any, any> & AsyncDataOptions<any>) => $fetch<T>(endpoint, {
     baseURL: useRuntimeConfig().public.APP_BACKEND,
     headers: {
         "Authorization": options?.auth ? useAuthStore().getToken : ''
@@ -9,7 +10,7 @@ export const apiCall = <T>(endpoint: string, options?: {auth?: boolean} & NitroF
     ...options
 })
 
-export const apiSSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth?: boolean} & NitroFetchOptions<any, any>) => {
+export const apiSSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth?: boolean} & NitroFetchOptions<any, any> & AsyncDataOptions<any>) => {
     console.log(useAuthStore().token)
 
     return useFetch<T>(endpoint, {
@@ -17,11 +18,11 @@ export const apiSSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth
         headers: {
             "Authorization": options?.auth ? useAuthStore().getToken : ''
         },
-        ...options
+        ...options,
     })
 }
 
-export const apiLazySSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth?: boolean} & NitroFetchOptions<any, any>) => useLazyFetch<T>(endpoint, {
+export const apiLazySSRFetch = <T>(endpoint: string, options?: {lazy?: boolean, auth?: boolean} & NitroFetchOptions<any, any> & AsyncDataOptions<any>) => useLazyFetch<T>(endpoint, {
     baseURL: useRuntimeConfig().public.APP_BACKEND,
     headers: {
         "Authorization": options?.auth ? useAuthStore().getToken : ''
