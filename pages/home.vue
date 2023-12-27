@@ -48,7 +48,7 @@ await useLazyAsyncData('home_data', async () => {
     })
   ])
 
-  isSurvey.value = survey.data.value?.status === 200 || survey.data.value?.mode === 0
+  isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
 
   reports_data.value = reports.data.value!
 
