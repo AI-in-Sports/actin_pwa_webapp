@@ -35,7 +35,13 @@ await useLazyAsyncData('home_data', async () => {
       auth: true
     }),
     apiSSRFetch<Report[]>("/report/getAll", {
-      auth: true
+      auth: true,
+      transform: (input: Report[]) => {
+        return input.map(item => ({
+          testId: item.testId,
+          date: new Date(item.date as string)
+        }))
+      }
     }),
     apiSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
       auth: true
@@ -44,10 +50,7 @@ await useLazyAsyncData('home_data', async () => {
 
   isSurvey.value = survey.data.value?.status === 200 || survey.data.value?.mode === 0
 
-  reports_data.value = reports.data.value?.map(item => ({
-    testId: item.testId,
-    date: new Date(item.date as string)
-  }))!
+  reports_data.value = reports.data.value!
 
   reservations_data.value = reservations.data.value!
 })
