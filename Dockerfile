@@ -6,16 +6,13 @@ ARG APP_BACKEND DISABLE_RESERVATION
 
 ENV APP_BACKEND=${APP_BACKEND} DISABLE_RESERVATION=${DISABLE_RESERVATION}
 
-ENV NITRO_HOST=0.0.0.0 NITRO_PORT=3000 NITRO_PRESET=node-server
-
+ENV NITRO_HOST=0.0.0.0 NITRO_PORT=3000 NITRO_PRESET=node_cluster
 
 FROM base AS deps
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
-
-RUN pnpm i pm2 -g
 
 RUN pnpm install --frozen-lockfile
 
@@ -26,8 +23,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 
 COPY . .
-
-ENV NITRO_PRESET=node-server
 
 RUN pnpm build
 
