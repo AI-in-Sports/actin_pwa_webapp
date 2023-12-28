@@ -78,7 +78,6 @@ onMounted(() => {
   if (data.value?.mode === 0)
     useRouter().replace("/ce")
 
-  route.meta.name = survey.value.pages[urlPage.value - 1].question
   isReady.value = true
 })
 
@@ -86,6 +85,10 @@ useHead({title: `اکتین - ${survey.value.pages[urlPage.value - 1].name}`})
 </script>
 
 <template>
+  <h1 class="mt-[20px] font-bold text-[24px]" v-if="isReady">
+    {{ survey.pages[urlPage - 1].question }}
+  </h1>
+
   <div class="flex flex-col w-full h-full items-center overflow-hidden" v-if="isReady">
     <div class="flex flex-col flex-1 max-w-[380px] w-full overflow-hidden pt-[40px]">
       <component :is="survey.pages[urlPage - 1].component" @validate="validate"/>
@@ -97,7 +100,7 @@ useHead({title: `اکتین - ${survey.value.pages[urlPage.value - 1].name}`})
   <div class="flex flex-col justify-between h-full" v-if="!isReady">
     <div class="flex flex-col w-full h-full">
 
-      <Skeletor width="40%" height="45" class="max-w-[600px] mb-[24px]" pill/>
+      <Skeletor width="60%" height="45" class="max-w-[600px] mb-[24px]" pill/>
 
       <Skeletor width="80%" class="self-center mt-7" height="200px"/>
     </div>

@@ -10,10 +10,6 @@
        close
      </MaterialSymbols>
 
-     <h1 class="mt-[20px] font-bold text-[24px]">
-       {{ $route.meta.name }}
-     </h1>
-
      <slot/>
    </div>
   </main>
