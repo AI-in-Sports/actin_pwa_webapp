@@ -23,6 +23,7 @@ export default {
                 dana: ["Dana", "Arial", "sans-serif"],
             },
             colors: {
+                mainSubDead: "#666666",
                 mainBlue: "#0085FF",
                 mainDark: "#8080804D",
                 mainBlack: "#212121",
