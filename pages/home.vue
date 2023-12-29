@@ -60,22 +60,6 @@ onMounted(async () => {
   const toast = useNuxtApp().$showToast
 
   switch (act) {
-    case "sid_inv":
-      toast.error("کد تست نامعتبر است!")
-      break
-
-    case "sid_tkn":
-      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!")
-      break
-
-    case "srv_err":
-      toast.error("خطا از سمت سرور!")
-      break
-
-    case "rep_done":
-      toast.success("اطلاعات تست با موفقیت ذخیره شد!")
-      break
-
     case "survey_done":
       toast.success("فرم با موفقیت تکمیل شد!")
       break

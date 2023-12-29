@@ -28,6 +28,26 @@ const getActiveZone = computed(() => dataFetch.value.report['analyze']['zones'])
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
+  const act = route.query.act
+
+  switch (act) {
+    case "sid_inv":
+      toast.error("کد تست نامعتبر است!")
+      break
+
+    case "sid_tkn":
+      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!")
+      break
+
+    case "srv_err":
+      toast.error("خطا از سمت سرور!")
+      break
+
+    case "rep_done":
+      toast.success("اطلاعات تست با موفقیت ذخیره شد!")
+      break
+  }
+
   if (route.params.session_id)
     await axios(`${config.public.APP_BACKEND}/report/${route.params.session_id}`, {
       headers: { "Authorization": useAuthStore().getToken }
@@ -40,7 +60,7 @@ onMounted(async () => {
         location.replace("/home")
 
       isDataFetched.value = true
-      toast.clearAll()
+      toast.remove(loading)
     }).catch((e) => {
       console.log(e)
 

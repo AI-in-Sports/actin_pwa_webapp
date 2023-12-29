@@ -31,7 +31,7 @@ onMounted(async () => {
   })
 
   const callback = (act: string) =>
-      location.replace(`/home?act=${act}&nocache=${(new Date()).getTime()}`)
+      location.replace(`/report/${session_id}?act=${act}&nocache=${(new Date()).getTime()}`)
 
   if (error.value)
   {
