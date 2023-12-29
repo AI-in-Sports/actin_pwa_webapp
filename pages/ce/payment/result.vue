@@ -2,7 +2,6 @@
 import check from "~/assets/icons/icon_check_circle.svg"
 import error from "~/assets/icons/icon_failed_circle.svg"
 
-
 definePageMeta({
   middleware: ["normal-auth"],
   layout: "empty"
@@ -27,6 +26,8 @@ onMounted(() => {
 })
 
 const goto = (url: string) => location.href = url
+
+useHead({title: `اکتین - ${status.value === 1 ? 'پرداخت ناموفق' : 'پرداخت موفق'}`})
 </script>
 
 <template>

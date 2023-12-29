@@ -27,6 +27,8 @@ onMounted(async () => {
 const doneAlert = () => {
   useNuxtApp().$showToast("ساخت برنامه تمرینی شما تا لحظات دیگر به اتمام میرسد...")
 }
+
+useHead({title: `اکتین - درحال تولید برنامه اصلاحی`})
 </script>
 
 <template>

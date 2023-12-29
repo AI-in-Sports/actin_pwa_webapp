@@ -23,6 +23,8 @@ onMounted(async () => {
 })
 
 const pay = () => location.href = paymentUrl.value
+
+useHead({title: `اکتین - پرداخت`})
 </script>
 
 <template>
