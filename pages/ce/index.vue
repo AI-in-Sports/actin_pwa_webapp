@@ -65,9 +65,8 @@ useHead({title: "اکتین - برنامه تمرینی"})
       </div>
     </section>
 
-    <section v-else class="h-full w-full flex flex-col justify-center items-center text-center">
-      <h2 class="text-mainBlack text-[24px] font-bold mb-[20px]">این صفحه در حال حاضر در دسترس نیست.</h2>
-      <p>اگر این پیام را می‌بینید به این معناست که حرکات اصلاحی شما آماده و درون پایگاه داده ما قرار دارد و تا ساعاتی دیگر در دسترس شما قرار خواهد گرفت.</p>
+    <section class="w-full h-full flex justify-center items-center"  v-else>
+      <Ce/>
     </section>
   </div>
 </template>
