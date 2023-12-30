@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="isReady" class="h-full w-full flex flex-col max-w-[500px] text-mainBlack">
+  <section v-if="isReady && data" class="h-full w-full flex flex-col max-w-[500px] text-mainBlack">
     <header class="flex justify-between">
       <p class="text-[20px] font-semibold">روز {{ numberToWords(data!['currentDay']!, {ordinal: true}) }}</p>
 
@@ -83,7 +83,9 @@ onMounted(() => {
     </section>
 
     <article class="mt-[28px] flex flex-col gap-[12px] relative h-full">
-      <CeCard v-for="ce in data?.exercises" :key="ce.uuid" :exercise="ce"/>
+      <CeCard
+          v-for="ce in data?.exercises" :key="ce.uuid"
+          :exercise="ce" @click="$router.push(`/ce/exercise/${ce.uuid}`)"/>
     </article>
   </section>
 
