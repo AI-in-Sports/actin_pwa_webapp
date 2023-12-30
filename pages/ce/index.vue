@@ -20,6 +20,10 @@ onMounted(() => {
     case "pg_err":
       toast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
       break
+
+    case "ex_ntf":
+      toast.warning("برنامه اصلاحی مورد نظر یافت نشد!")
+      break
   }
 })
 
