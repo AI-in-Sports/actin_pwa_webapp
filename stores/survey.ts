@@ -9,6 +9,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
                 birthday: new Date(),
                 weight: 0,
                 height: 0,
+                exercise_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                 soles_status: "normal",
                 exercise_place: ["gym"]
             },

@@ -6,7 +6,6 @@ definePageMeta({
     return navigateTo(`/ce/survey/${ceSurvey.survey1.lastCompleted! + 1}`)
   })]
 })
-
 </script>
 
 <template>

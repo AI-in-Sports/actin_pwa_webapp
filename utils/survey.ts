@@ -10,7 +10,7 @@ export const surveyComputed = (survey: keyof SurveyState, item: keyof Survey1) =
     }
 })
 
-export const selectItem = (survey: keyof SurveyState, state: keyof Survey1, value: string) => {
+export const selectItem = (survey: keyof SurveyState, state: keyof Survey1, value: string, canEmpty: boolean = true) => {
     const ref = surveyComputed(survey, state) as Ref<string[]>
 
     const index = ref.value!.indexOf(value)
@@ -24,7 +24,9 @@ export const selectItem = (survey: keyof SurveyState, state: keyof Survey1, valu
     }
     else if (none_index > -1) ref.value!.splice(none_index, 1)
 
-
-    if (index > -1) ref.value!.splice(index, 1)
+    if (
+        (index > -1 && canEmpty && ref.value.length >= 1) ||
+        (index > -1 && !canEmpty && ref.value.length > 1)
+    ) ref.value!.splice(index, 1)
     else ref.value!.push(value)
 }

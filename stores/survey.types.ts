@@ -83,26 +83,18 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 * */
 export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
 
+export type ExerciseDays = "Saturday" | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday"
+
 export type Survey1 = {
     lastCompleted: number | null
     birthday: Date | null,
     weight: number | null,
     height: number | null,
+    exercise_days: ExerciseDays[] | null,
     soles_status: SolesStatusType | null,
     exercise_place: ExercisePlaceType[] | null
 }
 
 export type SurveyState = {
     survey1: Survey1
-    /* pain_points: PainPoints[] | null,
-     pain_intensity: number | null,
-     pain_type: PainType[] | null,
-     pain_time: PainTimeType | null,
-     pain_rate: number | null,
-     surgery_history: PainPoints[] | null,
-     treatment_duration: TreatmentDurationType | null,
-     treatment_duration_done: boolean | null,
-     treatment_ways: TreatmentWayType[] | null,
-     body_posture_at_work: BodyPostureAtWorkType | null,
-     daily_routine: string | null,*/
 }
