@@ -1,4 +1,6 @@
 import type {JalaaliDateObject} from "jalaali-js"
+import type {ExerciseDays} from "~/stores/survey.types"
+import type {Exercise} from "~/types/CorrectiveExercise";
 
 export type Reservation = {
     name: string,
@@ -23,16 +25,7 @@ export type SurveyStatusResponse = NormalResponse & {
 
 export type ExerciseResponse = {
     startDate: Date,
+    exerciseDays: ExerciseDays[]
     currentDay: number,
-    exercises: {
-        uuid: string
-        name: string
-        sets: number
-        duration: number
-        intensity: "Low" | "Medium" | "High"
-        exercise_number: number
-        day_number: number,
-        week_number: number,
-        done: boolean
-    }[][]
+    exercises: Exercise[]
 }

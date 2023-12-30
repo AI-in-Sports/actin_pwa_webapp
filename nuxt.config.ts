@@ -6,7 +6,14 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  modules: ["@vite-pwa/nuxt", "nuxt3-leaflet", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  modules: [
+    "@vite-pwa/nuxt", "nuxt3-leaflet", "nuxt-swiper",
+    "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt",
+    "@nuxt/image"
+  ],
+  image: {
+    dir: 'assets/',
+  },
   css: [
     "~/assets/style/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css"

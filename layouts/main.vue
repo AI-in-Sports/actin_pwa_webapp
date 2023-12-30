@@ -28,7 +28,7 @@ const isActive = (path: string) => {
 </script>
 
 <template>
-  <main class="bg-white h-[100dvh] flex flex-col items-center text-black relative pb-[66px]" dir="rtl">
+  <main class="bg-white h-[100dvh] flex flex-col items-center text-black relative pb-[66px] overflow-hidden" dir="rtl">
     <slot/>
   </main>
   <section class="fixed inset-0 top-auto h-[66px] flex justify-center items-center shadow-[0px_-2px_6px_0px] shadow-[#0000000F] bg-white" dir="rtl">

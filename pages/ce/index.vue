@@ -27,7 +27,7 @@ useHead({title: "اکتین - برنامه تمرینی"})
 </script>
 
 <template>
-  <div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack">
+  <div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack overflow-auto">
     <section v-if="[0, 1, 2, 3].includes(data?.mode!)" class="flex flex-col max-w-[400px] w-full ">
       <h1 class="font-semibold text-[21px]">
         {{ user.fullName }}
@@ -65,7 +65,7 @@ useHead({title: "اکتین - برنامه تمرینی"})
       </div>
     </section>
 
-    <section class="w-full h-full flex justify-center items-center"  v-else>
+    <section class="w-full h-full flex justify-center items-center flex-col" v-else>
       <Ce/>
     </section>
   </div>

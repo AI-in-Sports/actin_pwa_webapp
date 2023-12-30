@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type {ExerciseResponse} from "~/types/Responses"
+import { numberToWords } from "@persian-tools/persian-tools"
 import jalali from "jalaali-js"
 import type {Ref} from "vue"
-
-const user = useAuthStore().user
+import type {ExerciseDays} from "~/stores/survey.types"
 
 const isReady = ref(false)
 
-const exercises = ref()
-const activeWeek = shallowRef(0)
 const dates: Ref<Date[]> = shallowRef([])
 const currentDate = shallowRef(new Date())
 
@@ -16,10 +14,12 @@ const {data, error} = apiSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   auth: true,
   transform: (input: {
     startDate: string,
-    exercises: any[]
-  }) => {
+    currentDay: number,
+    exercises: any[],
+    exerciseDays: ExerciseDays[]
+  }): ExerciseResponse => {
     return {
-      exercises,
+      ...input,
       startDate: new Date(input.startDate)
     }
   }
@@ -29,17 +29,16 @@ onMounted(() => {
   const res = useRoute().query.res
   const toast = useNuxtApp().$showToast
 
-  if (!error.value)
-  {
+  const todayDate = new Date()
+  const todayDay = todayDate.getDay()
+  const startDate = new Date(todayDate)
 
-    for (let i = 0; i < 7; i++) {
-      const lastDate = dates.value[dates.value.length - 1]
+  startDate.setDate(todayDate.getDate() + (7 - todayDay))
 
-      const date = dates.value.length > 0 ? new Date(new Date().setDate(lastDate.getDate() + 1)) : new Date()
-
-      dates.value.push(date)
-    }
-
+  for (let i = 0; i < 7; i++) {
+    const nowDate = new Date(startDate)
+    nowDate.setDate(startDate.getDate() + i)
+    dates.value.push(new Date(nowDate.toISOString().split('T')[0]))
   }
 
   isReady.value = true
@@ -55,7 +54,7 @@ onMounted(() => {
 <template>
   <section v-if="isReady" class="h-full w-full flex flex-col max-w-[500px] text-mainBlack">
     <header class="flex justify-between">
-      <p class="text-[20px] font-semibold">هفته اول</p>
+      <p class="text-[20px] font-semibold">روز {{ numberToWords(data!['currentDay']!, {ordinal: true}) }}</p>
 
       <p class="text-[16px] font-mainSubDead">{{
           new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(currentDate) + " " +
@@ -65,10 +64,14 @@ onMounted(() => {
 
     <section class="flex gap-[16px] mt-[24px]">
       <div class="flex w-full justify-between">
-        <div class="flex flex-col items-center px-[8px] py-[12px] cursor-pointer w-full rounded-full text-mainSubDead max-w-[46px]"
-             v-for="(day, index) in dates" :key="index" @click="activeWeek = index"
-             :class="{ '!text-white !bg-mainBlack': activeWeek === index }">
-          <p :class="{ 'text-[14px]': activeWeek === index, 'text-[10px]': activeWeek !== index }">
+        <div class="flex flex-col items-center px-[8px] py-[12px] w-full rounded-full text-mainSubDead max-w-[46px]"
+             v-for="(day, index) in dates" :key="index"
+             :class="{
+               '!text-white !bg-mainBlack/50': data?.exerciseDays.includes(day.toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays),
+               '!text-white !bg-mainBlack': data?.exerciseDays.includes(new Date().toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays),
+               '!border-[1px] !border-mainBlack': day.getDay() === new Date().getDay(),
+             }">
+          <p class="text-[14px]">
             {{ day.toLocaleDateString("fa-IR", { weekday: 'long' })[0] }}
           </p>
 
@@ -78,6 +81,10 @@ onMounted(() => {
         </div>
       </div>
     </section>
+
+    <article class="mt-[28px] flex flex-col gap-[12px] relative h-full">
+      <CeCard v-for="ce in data?.exercises" :key="ce.uuid" :exercise="ce"/>
+    </article>
   </section>
 
   <section v-else class="h-full w-full flex flex-col max-w-[500px]">
