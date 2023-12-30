@@ -107,7 +107,7 @@ useHead({title: "اکتین - صفحه اصلی"})
   </header>
 
   <div class="w-full overflow-auto pt-[40px] flex justify-center">
-    <div class="flex flex-col max-w-[450px] w-full" v-if="user">
+    <div class="flex flex-col max-w-[500px] w-full" v-if="user">
       <h1 class="text-[24px] text-[#212121] font-bold w-full px-[24px]">خوش آمدید، {{ (user as any)['fullName'] }}</h1>
 
       <div class="w-full pr-[16px] mt-[24px]">
