@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {Exercise} from "~/types/CorrectiveExercise"
 import jalali from "jalaali-js"
-import {numberToWords} from "@persian-tools/persian-tools";
+import {numberToWords} from "@persian-tools/persian-tools"
 
 definePageMeta({
   layout: "main",
@@ -48,7 +48,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <header class="w-full shadow-[0px_2px_2px_0px] shadow-[#0000001A] h-[56px]">
+  <header class="w-full shadow-[0px_2px_2px_0px] shadow-[#0000001A] h-full max-h-[56px] px-[12px]">
     <div class="flex max-w-[500px] w-full justify-between items-center h-full mx-auto" v-if="isReady">
       <div class="flex items-center w-1/3 text-right">
         <MaterialSymbols theme="rounded" class="p-[8px] cursor-pointer" @click="$router.push('/ce')">
@@ -56,8 +56,8 @@ watchEffect(async () => {
         </MaterialSymbols>
       </div>
 
-      <p class="font-semibold text-[24px] text-mainBlack mr-[12px] w-1/3 text-center">
-        تمرینات روز {{ numberToWords(data!['day_number'], { ordinal: true }) }}
+      <p class="font-semibold text-[18px] sm:text-[20px] text-mainBlack w-1/3 text-center whitespace-nowrap">
+        تمرینات روز {{ numberToWords(data!['day'], { ordinal: true }) }}
       </p>
 
       <p class="text-mainSubDead text-[12px] w-1/3 text-left">
@@ -67,17 +67,21 @@ watchEffect(async () => {
       </p>
     </div>
 
-    <div class="flex max-w-[500px] w-full justify-between items-center h-full mx-auto" v-else>
-      <Skeletor width="32px" class="self-center" height="32px" pill/>
-
-      <Skeletor width="40%" class="self-center" height="32px" pill/>
-
-      <Skeletor width="50px" class="self-center" height="18px" pill/>
+    <div class="flex max-w-[500px] w-full items-center h-full mx-auto" v-else>
+      <div class="w-1/3 flex justify-start">
+        <Skeletor width="32px" height="32px" pill/>
+      </div>
+      <div class="w-1/3 flex justify-center">
+        <Skeletor width="100%" height="32px" pill/>
+      </div>
+      <div class="w-1/3 flex justify-end">
+        <Skeletor width="50px" height="18px" pill/>
+      </div>
     </div>
   </header>
 
-  <article class="max-w-[500px] w-full mx-auto h-full" v-if="isReady">
-    <section class="flex w-full justify-center items-center mt-[24px]">
+  <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-if="isReady">
+    <section class="flex w-full justify-center items-center">
       <MaterialSymbols theme="rounded" class="p-[8px] text-[32px] text-[#F8D32D]">
         arrow_forward_ios
       </MaterialSymbols>
@@ -91,10 +95,32 @@ watchEffect(async () => {
       </MaterialSymbols>
     </section>
 
-    <div class="mt-[32px] rounded-[24px] overflow-hidden">
-      <video class="w-full" controls autoplay>
+    <div class="mt-[32px] rounded-[24px] overflow-hidden relative">
+      <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md">
+        <MaterialSymbols theme="rounded" class="text-mainSubDead">info</MaterialSymbols>
+      </div>
+      <video class="w-full">
         <source :src="videoContent" type="video/mp4">
       </video>
+    </div>
+
+    <p class="mt-[32px] text-mainBlack text-[16px]">{{ data!['description'] }}</p>
+  </article>
+
+  <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-else>
+    <section class="flex w-full justify-center items-center">
+      <Skeletor width="48px" class="self-center" height="48px" pill/>
+      <Skeletor width="40%" class="self-center mx-[8px]" height="48px" pill/>
+      <Skeletor width="48px" class="self-center" height="48px" pill/>
+    </section>
+
+    <Skeletor width="100%" class="self-center mt-[32px]" height="35%"/>
+
+    <div class="flex flex-col mt-[32px] gap-[4px]">
+      <Skeletor width="100%" class="self-center" height="24px" pill/>
+      <Skeletor width="100%" class="self-center" height="24px" pill/>
+      <Skeletor width="100%" class="self-center" height="24px" pill/>
+      <Skeletor width="40%" height="24px" pill/>
     </div>
   </article>
 </template>
