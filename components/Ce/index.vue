@@ -33,7 +33,7 @@ onMounted(() => {
   const todayDay = todayDate.getDay()
   const startDate = new Date(todayDate)
 
-  startDate.setDate(todayDate.getDate() + (7 - todayDay))
+  startDate.setDate(todayDate.getDate() + (6 - todayDay))
 
   for (let i = 0; i < 7; i++) {
     const nowDate = new Date(startDate)

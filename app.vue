@@ -1,7 +1,11 @@
+<script lang="ts" setup>
+useLoadingIndicator().start()
+</script>
+
 <template>
+  <VitePwaManifest/>
   <NuxtLayout>
-    <VitePwaManifest/>
-    <NuxtLoadingIndicator color="white" :height="2"/>
+    <NuxtLoadingIndicator color="#212121" :height="2"/>
     <NuxtPage/>
   </NuxtLayout>
 </template>
