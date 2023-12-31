@@ -11,7 +11,7 @@ defineProps<{
     <img src="@/assets/images/test.png" alt="" class="rounded-[8px]">
 
     <div class="flex-grow mr-[16px]">
-      <p class="text-mainBlack text-[16px]">{{ exercise.name.trim().replace("-", " ") }}</p>
+      <p class="text-mainBlack text-[16px]">{{ exercise.name.trim().replaceAll("-", " ") }}</p>
 
       <p class="text-mainSubDead text-[14px] mt-[8px]">
         {{ convertToPersianNumber(exercise.sets.toString()) }}
