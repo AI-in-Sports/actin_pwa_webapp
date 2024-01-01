@@ -135,7 +135,7 @@ watchEffect(async () => {
       <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md" @click="isInfoShowed = true">
         <MaterialSymbols theme="rounded" class="text-mainSubDead">info</MaterialSymbols>
       </div>
-      <video class="w-full">
+      <video class="w-full" controls autoplay>
         <source :src="videoContent" type="video/mp4">
       </video>
     </div>
