@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type {Exercise} from "~/types/CorrectiveExercise"
 
+const user = useAuthStore().user
+
 defineProps<{
   exercise: Exercise
 }>()
+
+const baseUrl = shallowRef(useRuntimeConfig().public.APP_BACKEND)
 </script>
 
 <template>
   <div class="border-[1px] border-[#E0E0E0] rounded-[12px] p-[8px] flex items-center hover:shadow-md cursor-pointer relative">
-    <img src="@/assets/images/test.png" alt="" class="rounded-[8px]">
+    <NuxtImg :src="baseUrl + `/ce/files/${user.id}/thumbnail/${exercise.uuid}`" class="min-w-[72px] max-w-[72px] min-h-[72px] rounded-[8px]" crossorigin="anonymous" fit="fill"/>
 
     <div class="flex-grow mr-[16px]">
       <p class="text-mainBlack text-[16px]">{{ exercise.name.trim().replaceAll("-", " ") }}</p>

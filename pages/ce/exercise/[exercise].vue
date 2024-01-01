@@ -37,7 +37,7 @@ watchEffect(async () => {
     extraInfo.value.push({ title: "مدت زمان استراحت", value: data.value.rest })
 
     try {
-      const response = await useAxios(true).get(`/ce/files/videos/${data.value?.uuid}`, {
+      const response = await useAxios(true).get(`/ce/files/${useAuthStore().user.id}/video/${data.value?.uuid}`, {
         responseType: 'arraybuffer',
         headers: {
           'Accept': 'video/mp4'
@@ -118,17 +118,9 @@ watchEffect(async () => {
 
   <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-if="isReady">
     <section class="flex w-full justify-center items-center">
-      <MaterialSymbols theme="rounded" class="p-[8px] text-[32px] text-[#F8D32D]">
-        arrow_forward_ios
-      </MaterialSymbols>
-
       <p class="font-semibold text-[20px] text-mainBlack mx-[8px] ">
         {{ data!['name'].trim().replaceAll('-', ' ') }}
       </p>
-
-      <MaterialSymbols theme="rounded" class="p-[8px] text-[32px] text-[#F8D32D]">
-        arrow_back_ios_new
-      </MaterialSymbols>
     </section>
 
     <div class="mt-[32px] rounded-[24px] overflow-hidden relative">
@@ -145,9 +137,7 @@ watchEffect(async () => {
 
   <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-else>
     <section class="flex w-full justify-center items-center">
-      <Skeletor width="48px" class="self-center" height="48px" pill/>
       <Skeletor width="40%" class="self-center mx-[8px]" height="48px" pill/>
-      <Skeletor width="48px" class="self-center" height="48px" pill/>
     </section>
 
     <Skeletor width="100%" class="self-center mt-[32px]" height="35%"/>
