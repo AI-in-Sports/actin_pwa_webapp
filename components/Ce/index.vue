@@ -10,7 +10,7 @@ const isReady = ref(false)
 const dates: Ref<Date[]> = shallowRef([])
 const currentDate = shallowRef(new Date())
 
-const {data, error} = apiSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
+const {data} = apiSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   auth: true,
   transform: (input: {
     startDate: string,

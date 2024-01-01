@@ -9,10 +9,15 @@ definePageMeta({
 })
 
 const isReady = shallowRef(false)
+const isInfoShowed = shallowRef(false)
 const route = useRoute()
 const router = useRouter()
 const today = shallowRef(new Date())
 const toast = useNuxtApp().$showToast
+const extraInfo = shallowRef([] as {
+  title: string,
+  value: string | number
+}[])
 
 const {data, error} = apiSSRFetch<Exercise>(`/ce/exercise/get/${route.params.exercise}`, {
   auth: true,
@@ -24,7 +29,12 @@ const videoContent = shallowRef()
 
 watchEffect(async () => {
   if (data.value) {
-    const videoPlayer = document.getElementById("videoPlayer") as HTMLVideoElement
+    useHead({title: `اکتین - تمرین ${data.value.name.replaceAll('-', ' ')}`})
+
+    extraInfo.value.push({ title: "نوع تمرین", value: data.value.type })
+    extraInfo.value.push({ title: "تعداد ست", value: data.value.sets })
+    extraInfo.value.push({ title: "تکرار در هر ست", value: data.value.repetition })
+    extraInfo.value.push({ title: "مدت زمان استراحت", value: data.value.rest })
 
     try {
       const response = await useAxios(true).get(`/ce/files/videos/${data.value?.uuid}`, {
@@ -80,6 +90,32 @@ watchEffect(async () => {
     </div>
   </header>
 
+  <div class="z-[-99999] opacity-0 fixed flex inset-0 justify-center items-center bg-[#00000080] backdrop-blur-sm"
+       :class="{ '!z-[99999] !opacity-100': isInfoShowed }" @click.self="isInfoShowed = false">
+    <div class="p-[24px] rounded-[16px] bg-white max-w-[328px] w-full flex flex-col" @click.prevent>
+      <header class="flex justify-between items-center">
+        <p class="text-[21px] font-semibold text-mainBlack">حرکت اصلاحی گردن</p>
+
+        <MaterialSymbols
+            theme="rounded" @click="isInfoShowed = false"
+            class="text-mainSubDead cursor-pointer hover:text-black">
+          close
+        </MaterialSymbols>
+      </header>
+
+      <div class="mt-[24px] flex flex-col w-full gap-[8px]">
+        <div class="flex items-center justify-between p-[8px] rounded-[8px] bg-[#FAFAFA]"
+             v-for="ex in extraInfo" :key="ex.title">
+          <p class="text-mainSubDead text-[12px]">{{ ex.title }}:</p>
+
+          <p class="text-mainBlack text-[16px]">{{
+              typeof ex.value === "number" ? convertToPersianNumber(ex.value.toString()) : ex.value
+            }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-if="isReady">
     <section class="flex w-full justify-center items-center">
       <MaterialSymbols theme="rounded" class="p-[8px] text-[32px] text-[#F8D32D]">
@@ -96,7 +132,7 @@ watchEffect(async () => {
     </section>
 
     <div class="mt-[32px] rounded-[24px] overflow-hidden relative">
-      <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md">
+      <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md" @click="isInfoShowed = true">
         <MaterialSymbols theme="rounded" class="text-mainSubDead">info</MaterialSymbols>
       </div>
       <video class="w-full">
