@@ -2,6 +2,7 @@
 import type {Exercise} from "~/types/CorrectiveExercise"
 import jalali from "jalaali-js"
 import {numberToWords} from "@persian-tools/persian-tools"
+import {useStopwatch} from "vue-timer-hook"
 
 definePageMeta({
   layout: "main",
@@ -14,6 +15,21 @@ const route = useRoute()
 const router = useRouter()
 const today = shallowRef(new Date())
 const toast = useNuxtApp().$showToast
+
+const stopWatch = useStopwatch(0, false)
+
+const fixNumber = (number: number) => {
+  if (number.toString().length === 1) return `0${number}`
+  return number.toString()
+}
+
+const exerciseTrack = ref({
+  stated: false,
+  rest: false,
+  done: false,
+  round: 0
+})
+
 const extraInfo = shallowRef([] as {
   title: string,
   value: string | number
@@ -54,6 +70,58 @@ watchEffect(async () => {
       toast.error("خطا در هنگام بارگزاری ویدیو تمرین.")
     }
   }
+})
+
+const startExercise = () => {
+  if (exerciseTrack.value.round === 0)
+    exerciseTrack.value.round++
+
+  exerciseTrack.value.stated = true
+
+  stopWatch.start()
+}
+
+const resetExercise = () => {
+  stopWatch.reset()
+  stopWatch.pause()
+}
+
+const toggleExercise = () => {
+  exerciseTrack.value.stated = !stopWatch.isRunning.value
+
+  stopWatch.isRunning.value ? stopWatch.pause() : stopWatch.start()
+}
+
+onMounted(() => {
+  watch(stopWatch.seconds, () => {
+    let sec = 0
+
+    sec += stopWatch.seconds.value === 0 ? 60 : stopWatch.seconds.value
+
+    sec += stopWatch.minutes.value * 60
+
+    if (exerciseTrack.value.rest && sec === data.value?.rest) {
+      console.log("hi im here")
+      resetExercise()
+
+      exerciseTrack.value.rest = false
+    }
+
+    if (!exerciseTrack.value.rest && sec === data.value?.duration) {
+
+      if (exerciseTrack.value.round === data.value.sets) {
+        exerciseTrack.value.done = true
+        return resetExercise()
+      }
+
+      resetExercise()
+
+      exerciseTrack.value.round++
+      exerciseTrack.value.stated = false
+      exerciseTrack.value.rest = true
+      stopWatch.start()
+    }
+  })
 })
 </script>
 
@@ -116,14 +184,14 @@ watchEffect(async () => {
     </div>
   </div>
 
-  <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-if="isReady">
+  <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px] flex flex-col gap-[32px]" v-if="isReady">
     <section class="flex w-full justify-center items-center">
       <p class="font-semibold text-[20px] text-mainBlack mx-[8px] ">
         {{ data!['name'].trim().replaceAll('-', ' ') }}
       </p>
     </section>
 
-    <div class="mt-[32px] rounded-[24px] overflow-hidden relative">
+    <div class="rounded-[24px] overflow-hidden relative">
       <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md" @click="isInfoShowed = true">
         <MaterialSymbols theme="rounded" class="text-mainSubDead">info</MaterialSymbols>
       </div>
@@ -132,7 +200,30 @@ watchEffect(async () => {
       </video>
     </div>
 
-    <p class="mt-[32px] text-mainBlack text-[16px]">{{ data!['description'] }}</p>
+    <p class="text-mainBlack text-[16px] text-center">{{ data!['description'] }}</p>
+
+    <p class="text-center font-medium text-[42px] text-mainBlack flex-grow justify-center items-center flex">
+      {{ convertToPersianNumber(fixNumber(stopWatch.minutes.value)) }}:{{ convertToPersianNumber(fixNumber(stopWatch.seconds.value))}}
+    </p>
+
+    <PrimaryButton v-if="exerciseTrack.round === 0" @click="startExercise">شروع کن</PrimaryButton>
+
+    <PrimaryButton
+        class="flex items-center justify-center gap-2 font-semibold"
+        v-else-if="exerciseTrack.stated" @click="toggleExercise">
+      <MaterialSymbols theme="rounded">pause_circle</MaterialSymbols>
+      توقف
+    </PrimaryButton>
+
+    <PrimaryButton v-else-if="exerciseTrack.rest" disabled>استراحت کنید</PrimaryButton>
+
+    <PrimaryButton v-else-if="!exerciseTrack.rest && !exerciseTrack.stated && exerciseTrack.round > 0" @click="toggleExercise">
+      شروع دوباره
+    </PrimaryButton>
+
+    <PrimaryButton class="!bg-green-500 !font-semibold" v-else-if="exerciseTrack.done" @click="$router.push('/ce')">
+      تمرین با موفقیت انجام شد!
+    </PrimaryButton>
   </article>
 
   <article class="max-w-[500px] w-full mx-auto h-full px-[16px] py-[24px]" v-else>
