@@ -37,7 +37,7 @@ export default defineNuxtConfig({
       short_name: 'Actin Health',
       theme_color: '#ffffff',
       "display": "standalone",
-      "background_color": "#000000",
+      "background_color": "#ffffff",
       icons: [
         {
           "src": "logo.png",
