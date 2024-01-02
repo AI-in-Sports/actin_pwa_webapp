@@ -90,9 +90,9 @@ watchEffect(async () => {
     </div>
   </header>
 
-  <div class="z-[-99999] opacity-0 fixed flex inset-0 justify-center items-center bg-[#00000080] backdrop-blur-sm"
-       :class="{ '!z-[99999] !opacity-100': isInfoShowed }" @click.self="isInfoShowed = false">
-    <div class="p-[24px] rounded-[16px] bg-white max-w-[328px] w-full flex flex-col" @click.prevent>
+  <div class="z-[-99999] opacity-0 fixed flex inset-0 justify-center items-center bg-[#00000080] backdrop-blur-sm p-4"
+       :class="{ '!z-[99999] !opacity-100': isInfoShowed }" @click.self="isInfoShowed = false" v-if="isReady">
+    <div class="p-[24px] rounded-[16px] bg-white max-w-[428px] w-full flex flex-col" @click.prevent>
       <header class="flex justify-between items-center">
         <p class="text-[21px] font-semibold text-mainBlack">حرکت اصلاحی گردن</p>
 
@@ -127,7 +127,7 @@ watchEffect(async () => {
       <div class="absolute flex justify-center items-center bg-white h-[32px] w-[32px] rounded-full top-[8px] right-[8px] cursor-pointer z-50 hover:shadow-md" @click="isInfoShowed = true">
         <MaterialSymbols theme="rounded" class="text-mainSubDead">info</MaterialSymbols>
       </div>
-      <video class="w-full" controls autoplay>
+      <video class="w-full" muted loop autoplay>
         <source :src="videoContent" type="video/mp4">
       </video>
     </div>
