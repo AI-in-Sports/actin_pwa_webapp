@@ -25,20 +25,25 @@ const {data} = apiSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   }
 })
 
+const getDateDay = (date: Date) => date.toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays
+const isDateToday = (date: Date) => date.getDay() === new Date().getDay()
+
 onMounted(() => {
   const res = useRoute().query.res
   const toast = useNuxtApp().$showToast
 
-  const todayDate = new Date()
-  const todayDay = todayDate.getDay()
-  const startDate = new Date(todayDate)
+  const today = new Date()
+  const currentDay = today.getDay()
 
-  startDate.setDate(todayDate.getDate() + (6 - todayDay))
+  const daysDiff = (currentDay - 6 + 7) % 7
+
+  const saturdayDate = new Date(today)
+  saturdayDate.setDate(today.getDate() - daysDiff)
 
   for (let i = 0; i < 7; i++) {
-    const nowDate = new Date(startDate)
-    nowDate.setDate(startDate.getDate() + i)
-    dates.value.push(new Date(nowDate.toISOString().split('T')[0]))
+    const currentDate = new Date(saturdayDate)
+    currentDate.setDate(saturdayDate.getDate() + i)
+    dates.value.push(currentDate)
   }
 
   isReady.value = true
@@ -67,9 +72,9 @@ onMounted(() => {
         <div class="flex flex-col items-center px-[8px] py-[12px] w-full rounded-full text-mainSubDead max-w-[46px]"
              v-for="(day, index) in dates" :key="index"
              :class="{
-               '!text-white !bg-mainBlack/50': data?.exerciseDays.includes(day.toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays),
-               '!text-white !bg-mainBlack': data?.exerciseDays.includes(new Date().toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays),
-               '!border-[1px] !border-mainBlack': day.getDay() === new Date().getDay(),
+               '!text-white !bg-mainBlack/50': data?.exerciseDays.includes(getDateDay(day)) && !isDateToday(day),
+               '!text-white !bg-mainBlack': data?.exerciseDays.includes(getDateDay(new Date())) && isDateToday(day),
+               '!border-[1px] !border-mainBlack': !data?.exerciseDays.includes(getDateDay(day)) && isDateToday(day),
              }">
           <p class="text-[14px]">
             {{ day.toLocaleDateString("fa-IR", { weekday: 'long' })[0] }}
