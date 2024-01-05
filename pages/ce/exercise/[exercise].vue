@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {Exercise} from "~/types/CorrectiveExercise"
 import jalali from "jalaali-js"
-import {useStopwatch} from "vue-timer-hook"
+import {numberToWords} from "@persian-tools/persian-tools";
 
 definePageMeta({
   middleware: ["normal-auth"]
@@ -13,18 +13,16 @@ const router = useRouter()
 const today = shallowRef(new Date())
 const toast = useNuxtApp().$showToast
 
-const stopWatch = useStopwatch(0, false)
-
-const fixNumber = (number: number) => {
-  if (number.toString().length === 1) return `0${number}`
-  return number.toString()
-}
-
 const exerciseTrack = ref({
-  stated: false,
-  rest: false,
+  status: "onReady",
+  mode: "exercise",
   done: false,
   round: 0
+} as {
+  status: "onReady" | "playing" | "paused",
+  mode: "exercise" | "rest",
+  done: boolean,
+  round: number
 })
 
 const extraInfo = shallowRef([] as {
@@ -43,6 +41,8 @@ const videoContent = shallowRef()
 watchEffect(async () => {
   if (data.value) {
     useHead({title: `اکتین - تمرین ${data.value.name.replaceAll('-', ' ')}`})
+
+    extraInfo.value = []
 
     extraInfo.value.push({ title: "نوع تمرین", value: data.value.type })
     extraInfo.value.push({ title: "تعداد ست", value: data.value.sets })
@@ -69,27 +69,24 @@ watchEffect(async () => {
   }
 })
 
-const startExercise = () => {
+const player = computed(() => document.getElementById("player") as HTMLVideoElement)
+
+const play = () => {
   if (exerciseTrack.value.round === 0)
     exerciseTrack.value.round++
 
-  exerciseTrack.value.stated = true
-
-  stopWatch.start()
+  exerciseTrack.value.status = "playing"
+  player.value.play()
+  //stopWatch.start()
 }
 
-const resetExercise = () => {
-  stopWatch.reset()
-  stopWatch.pause()
-}
-
-const toggleExercise = () => {
+/*const toggleExercise = () => {
   exerciseTrack.value.stated = !stopWatch.isRunning.value
 
   stopWatch.isRunning.value ? stopWatch.pause() : stopWatch.start()
-}
+}*/
 
-onMounted(() => {
+/*onMounted(() => {
   watch(stopWatch.seconds, () => {
     let sec = 0
 
@@ -119,7 +116,7 @@ onMounted(() => {
       stopWatch.start()
     }
   })
-})
+})*/
 </script>
 
 <template>
@@ -157,32 +154,38 @@ onMounted(() => {
     </header>
 
     <article class="max-w-[600px] w-full mx-auto h-full px-[16px] pb-[24px] flex flex-col overflow-auto" v-if="isReady">
-      <video class="w-full" muted loop>
+      <video class="w-full rounded-b-[8px]" muted loop id="player">
         <source :src="videoContent" type="video/mp4">
       </video>
 
-     <section class="h-full w-full flex flex-col" v-if="!exerciseTrack.stated">
-       <p class="font-semibold text-[20px] text-mainBlack text-center mt-[24px]">
-         {{ data!['name'].trim().replaceAll('-', ' ') }}
-       </p>
+      <section class="h-full w-full flex flex-col" v-if="exerciseTrack.status === 'onReady'">
+        <p class="font-semibold text-[20px] text-mainBlack text-center mt-[24px]">
+          {{ data!['name'].trim().replaceAll('-', ' ') }}
+        </p>
 
-       <p class="text-mainBlack mt-[8px] text-[16px] text-center">{{ data!['description'] }}</p>
+        <p class="text-mainBlack mt-[8px] text-[16px] text-center">{{ data!['description'] }}</p>
 
-       <div class="mt-[24px] flex flex-col w-full gap-[8px]">
-         <div class="flex items-center justify-between p-[8px] rounded-[8px] bg-[#F5F5F5]"
-              v-for="ex in extraInfo" :key="ex.title">
-           <p class="text-mainSubDead text-[16px]">{{ ex.title }}:</p>
+        <div class="mt-[24px] flex flex-col w-full gap-[8px]">
+          <div class="flex items-center justify-between p-[8px] rounded-[8px] bg-[#F5F5F5]"
+               v-for="ex in extraInfo" :key="ex.title">
+            <p class="text-mainSubDead text-[16px]">{{ ex.title }}:</p>
 
-           <p class="text-mainBlack text-[16px] font-semibold">{{
-               typeof ex.value === "number" ? convertToPersianNumber(ex.value.toString()) : ex.value
-             }}</p>
-         </div>
-       </div>
+            <p class="text-mainBlack text-[16px] font-semibold">
+              {{ typeof ex.value === "number" ? convertToPersianNumber(ex.value.toString()) : ex.value }}
+            </p>
+          </div>
+        </div>
 
-       <div class="flex flex-col flex-grow justify-end">
-         <PrimaryButton v-if="exerciseTrack.round === 0" @click="startExercise">شروع کن</PrimaryButton>
+        <div class="flex flex-col flex-grow justify-end">
+          <PrimaryButton
+              class="flex items-center justify-center gap-[8px] !text-[16px] font-semibold"
+              v-if="exerciseTrack.round === 0" @click="play">
+            شروع کن
 
-         <PrimaryButton
+            <MaterialSymbols theme="rounded">chevron_left</MaterialSymbols>
+          </PrimaryButton>
+
+<!--         <PrimaryButton
              class="flex items-center justify-center gap-2 font-semibold"
              v-else-if="exerciseTrack.stated" @click="toggleExercise">
            <MaterialSymbols theme="rounded">pause_circle</MaterialSymbols>
@@ -197,20 +200,48 @@ onMounted(() => {
 
          <PrimaryButton class="!bg-green-500 !font-semibold" v-else-if="exerciseTrack.done" @click="$router.push('/ce')">
            تمرین با موفقیت انجام شد!
-         </PrimaryButton>
-       </div>
-     </section>
+         </PrimaryButton>-->
+        </div>
+      </section>
+
+      <section class="flex flex-col justify-center items-center w-full h-full" v-else>
+        <p class="flex items-center gap-[10px] w-full mt-[16px] font-semibold text-[24px]">
+          <span class="relative flex h-[24px] w-[24px] justify-center items-center">
+            <span class="animate-ping absolute inline-flex h-[12px] w-[12px] rounded-full bg-[#F8D32D] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-[12px] w-[12px] bg-[#F8D32D]"></span>
+          </span>
+
+          ستِ {{ numberToWords(exerciseTrack.round, { ordinal: true }) }}
+        </p>
+
+        <div class="flex flex-col justify-center items-center flex-grow">
+          <ClientOnly>
+            <CeCircleProgressBar :is-counting="false" :time="60" class="w-[128px] h-[128px]"/>
+          </ClientOnly>
+        </div>
+
+        <PrimaryButton class="flex items-center justify-center" @click="play">
+          <MaterialSymbols theme="rounded">pause</MaterialSymbols>
+        </PrimaryButton>
+      </section>
     </article>
 
-    <article class="max-w-[600px] w-full mx-auto h-full px-[16px] pb-[24px]" v-else>
+    <article class="max-w-[600px] w-full flex flex-col px-[12px] md:px-0 mx-auto h-full pb-[24px]" v-else>
       <Skeletor width="100%" class="self-center" height="35%"/>
 
-      <div class="flex flex-col mt-[32px] gap-[4px]">
-        <Skeletor width="100%" class="self-center" height="24px" pill/>
-        <Skeletor width="100%" class="self-center" height="24px" pill/>
-        <Skeletor width="100%" class="self-center" height="24px" pill/>
-        <Skeletor width="40%" height="24px" pill/>
+      <Skeletor width="200px" class="self-center mt-[24px]" height="32px" pill/>
+
+      <Skeletor width="80%" class="self-center mt-[8px]" height="24px" pill/>
+
+      <div class="flex flex-col flex-grow mt-[32px] gap-[8px]">
+        <Skeletor width="100%" class="self-center" height="40px"/>
+        <Skeletor width="100%" class="self-center" height="40px"/>
+        <Skeletor width="100%" class="self-center" height="40px"/>
+        <Skeletor width="100%" class="self-center" height="40px"/>
       </div>
+
+
+      <Skeletor width="100%" class="self-center" height="48px" pill/>
     </article>
   </main>
 </template>
