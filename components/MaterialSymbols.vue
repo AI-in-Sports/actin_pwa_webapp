@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <span :class="`material-symbols-${theme} ` + (filled ? 'material-symbols-filled' : '')"><slot/></span>
+  <span class="!select-none" :class="`material-symbols-${theme} ` + (filled ? 'material-symbols-filled' : '')"><slot/></span>
 </template>
 
 <style scoped>
