@@ -190,11 +190,11 @@ const toggleExercise = () => {
           {{ convertToPersianNumber(jalali.toJalaali(today).jy.toString()) }}
         </p>
 
-        <div class="w-1/5"></div>
+        <div class="w-1/6"></div>
       </div>
 
       <div class="flex max-w-[570px] w-full items-center h-full mx-auto" v-else>
-        <div class="w-1/6 flex justify-start">
+        <div class="w-1/3 flex justify-start">
           <Skeletor width="32px" height="32px" pill/>
         </div>
 
