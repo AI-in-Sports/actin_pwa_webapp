@@ -176,13 +176,13 @@ const toggleExercise = () => {
   <main class="bg-white h-[100dvh] flex flex-col items-center text-black relative" dir="rtl">
     <header class="w-full shadow-[0px_2px_2px_0px] shadow-[#0000001A] h-full max-h-[56px] min-h-[56px] px-[12px]">
       <div class="flex max-w-[600px] w-full justify-between items-center h-full mx-auto" v-if="isReady">
-        <div class="flex items-center w-1/3 text-right">
+        <div class="flex items-center w-1/6 text-right">
           <MaterialSymbols theme="rounded" class="p-[8px] cursor-pointer" @click="$router.push('/ce')">
             arrow_forward
           </MaterialSymbols>
         </div>
 
-        <p class="font-semibold text-[16px] text-mainBlack w-1/3 flex justify-center items-center">
+        <p class="font-semibold text-[16px] text-mainBlack w-4/6 flex justify-center items-center">
           {{ new Date().toLocaleDateString("fa-IR", { weekday: 'long' }) }}
           <span class="w-[1px] h-[16px] bg-[#E0E0E0] mx-[8px]"></span>
           {{ convertToPersianNumber(jalali.toJalaali(today).jd.toString()) + " " }}
@@ -190,11 +190,11 @@ const toggleExercise = () => {
           {{ convertToPersianNumber(jalali.toJalaali(today).jy.toString()) }}
         </p>
 
-        <div class="w-1/3"></div>
+        <div class="w-1/5"></div>
       </div>
 
       <div class="flex max-w-[570px] w-full items-center h-full mx-auto" v-else>
-        <div class="w-1/3 flex justify-start">
+        <div class="w-1/6 flex justify-start">
           <Skeletor width="32px" height="32px" pill/>
         </div>
 
