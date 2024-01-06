@@ -122,8 +122,6 @@ watch(exerciseTrackComputed, () => {
             maxPercentage.value = data.value?.rest!
             exerciseTrack.value.mode = "rest"
             exerciseTrack.value.status = "playing"
-
-            exerciseTrack.value.timer++
           }
         }
 
@@ -134,8 +132,6 @@ watch(exerciseTrackComputed, () => {
           maxPercentage.value = data.value?.duration!
           exerciseTrack.value.mode = "exercise"
           exerciseTrack.value.status = "playing"
-
-          exerciseTrack.value.timer++
         }
 
         // Else
