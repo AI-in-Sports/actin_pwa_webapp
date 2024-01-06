@@ -29,7 +29,7 @@ const baseUrl = shallowRef(useRuntimeConfig().public.APP_BACKEND)
 
     <div
         v-if="exercise.done"
-        class="absolute top-[-14px] right-[-14px] z-50 rounded-full bg-[#23AD5A] w-[28px] h-[28px] flex justify-center items-center shadow-[0px_2px_4px_0px] shadow-[#00000040]">
+        class="absolute top-[-12px] right-[-12px] z-50 rounded-full bg-[#23AD5A] w-[28px] h-[28px] flex justify-center items-center shadow-[0px_2px_4px_0px] shadow-[#00000040]">
       <MaterialSymbols theme="rounded" class=" text-white text-[34px]">check_circle</MaterialSymbols>
     </div>
   </div>
