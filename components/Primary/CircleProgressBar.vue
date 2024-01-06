@@ -50,7 +50,7 @@ onMounted(() => {
 
     if (isCounting.value && Math.round(count * 60) < props.time) {
       interval = setInterval(() => {
-        count = (count + 0.016666667) % 1;
+        count = (count + 0.016666667) % 1
         progressBar.value.setText(convertToPersianNumber(Math.round(count * 60).toString()))
         progressBar.value.animate(count)
       }, 1000)

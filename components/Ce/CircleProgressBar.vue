@@ -2,14 +2,13 @@
 import ProgressBar from "progressbar.js"
 
 const props = defineProps<{
-  isCounting: boolean
-  time: number
+  currentTime: number,
+  percentage: number,
+  maxPercentage: number
 }>()
 
-const emit = defineEmits(["done"])
-
 onMounted(() => {
-  const width = 10
+  const width = 8
 
   const progressBar = ref(new ProgressBar.Circle('#progress', {
     color: '#F8D32D',
@@ -18,9 +17,9 @@ onMounted(() => {
     easing: 'easeInOut',
     duration: 10,
     text: {
-      value: "۱",
+      value: "۰۰:۰۱",
       style: {
-        color: '#EBEBEB',
+        color: '#212121',
         position: 'absolute',
         left: '50%',
         top: '50%',
@@ -28,9 +27,9 @@ onMounted(() => {
         margin: 0,
         fontSize: {
           prefix: true,
-          value: '20px'
+          value: '28px'
         },
-        fontWeight: "600",
+        fontWeight: "700",
         transform: {
           prefix: true,
           value: 'translate(-50%, -50%)'
@@ -39,30 +38,32 @@ onMounted(() => {
     }
   }))
 
-  let interval: any = null
+  const count = computed(() => props.currentTime)
+  const percentage = computed(() => props.percentage)
 
-  const isCounting = computed(() => props.isCounting)
+  function secondsToMinuteStyle(seconds: number) {
+    seconds = Math.max(0, Math.floor(seconds))
 
-  const start = () => {
-    let count = 0
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
 
-    if (isCounting.value && Math.round(count * 60) < props.time) {
-      interval = setInterval(() => {
-        count = (count + 0.016666667) % 1;
-        progressBar.value.setText(convertToPersianNumber(Math.round(count * 60).toString()))
-        progressBar.value.animate(count)
-      }, 1000)
-    }
-    else {
-      clearInterval(interval)
-      count = 0
-      progressBar.value.setText("۱")
-      progressBar.value.animate(count)
-      emit("done")
-    }
+    const formattedMinutes = String(minutes).padStart(2, '0')
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0')
+
+    return `${convertToPersianNumber(formattedMinutes)}:${convertToPersianNumber(formattedSeconds)}`
   }
 
-  if (isCounting.value) start()
+  watch(count, () => {
+    if (count.value === 1) {
+      progressBar.value.setText(secondsToMinuteStyle(1))
+      progressBar.value.animate(count.value)
+    }
+
+    else {
+      progressBar.value.setText(secondsToMinuteStyle(count.value))
+      progressBar.value.animate(percentage.value)
+    }
+  })
 })
 </script>
 
