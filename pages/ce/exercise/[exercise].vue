@@ -214,7 +214,7 @@ const toggleExercise = () => {
               :animationData="done_animation"
               v-if="isDoneCompleted === 2"
               :loop="false"
-              :speed="1.9"
+              :speed="2"
               :height="242"
               :width="242"/>
 
