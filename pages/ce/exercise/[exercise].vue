@@ -33,7 +33,7 @@ const extraInfo = shallowRef([] as {
   value: string | number
 }[])
 
-const {data, error} = apiSSRFetch<Exercise>(`/ce/exercise/get/${route.params.exercise}`, {
+const {data, error} = useSSRFetch<Exercise>(`/ce/exercise/get/${route.params.exercise}`, {
   auth: true,
 })
 
@@ -181,9 +181,9 @@ const toggleExercise = () => {
         <p class="font-semibold text-[16px] text-mainBlack w-4/6 flex justify-center items-center">
           {{ new Date().toLocaleDateString("fa-IR", { weekday: 'long' }) }}
           <span class="w-[1px] h-[16px] bg-[#E0E0E0] mx-[8px]"></span>
-          {{ convertToPersianNumber(jalali.toJalaali(today).jd.toString()) + " " }}
+          {{ persianNumber(jalali.toJalaali(today).jd.toString()) + " " }}
           {{ today.toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-          {{ convertToPersianNumber(jalali.toJalaali(today).jy.toString()) }}
+          {{ persianNumber(jalali.toJalaali(today).jy.toString()) }}
         </p>
 
         <div class="w-1/6"></div>
@@ -241,7 +241,7 @@ const toggleExercise = () => {
             <p class="text-mainSubDead text-[16px]">{{ ex.title }}:</p>
 
             <p class="text-mainBlack text-[16px] font-semibold">
-              {{ typeof ex.value === "number" ? convertToPersianNumber(ex.value.toString()) : ex.value }}
+              {{ typeof ex.value === "number" ? persianNumber(ex.value.toString()) : ex.value }}
             </p>
           </div>
         </div>

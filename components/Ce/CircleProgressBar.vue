@@ -50,7 +50,7 @@ onMounted(() => {
     const formattedMinutes = String(minutes).padStart(2, '0')
     const formattedSeconds = String(remainingSeconds).padStart(2, '0')
 
-    return `${convertToPersianNumber(formattedMinutes)}:${convertToPersianNumber(formattedSeconds)}`
+    return `${persianNumber(formattedMinutes)}:${persianNumber(formattedSeconds)}`
   }
 
   watch(count, () => {

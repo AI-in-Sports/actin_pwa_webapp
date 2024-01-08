@@ -6,7 +6,7 @@ definePageMeta({
   layout: "empty"
 })
 
-const {data} = apiLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+const {data} = useLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
   auth: true,
 })
 
@@ -14,7 +14,7 @@ if ([0, 1].includes(data.value?.mode!))
   useRouter().replace("/ce")
 
 onMounted(async () => {
-  await apiCall("/ce/exercise/generate", {
+  await use$Fetch("/ce/exercise/generate", {
     auth: true
   }).then(() => useRouter().push("/ce/payment")).catch((reason) => {
     alert("ایجاد برنامه تمرینی با خطا مواجه شد لطفا بعد از زدن دکمه تایید پیام خطا را برای پشتیبانی اکتین ارسال کنید.")

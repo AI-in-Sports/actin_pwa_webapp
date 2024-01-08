@@ -8,7 +8,7 @@ definePageMeta({
 
 const user = useAuthStore().user
 
-const {data} = apiLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+const {data} = useLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
   auth: true,
 })
 

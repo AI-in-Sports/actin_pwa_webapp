@@ -87,7 +87,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['neck']['left']))"
                alt="<" class="h-[24px] ml-2" :class="{ 'rotate-[180deg]' : getActiveZone['neck']['left'] > getActiveZone['neck']['right'] }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['neck']['left']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['neck']['left']).toString()) }}°
         </span>
         </p>
 
@@ -96,7 +96,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['shoulder']['left']))"
                alt="<" class="h-[24px] ml-2 rotate-[90deg]" :class="{ '!rotate-[-90deg]': getActiveZone['shoulder']['left'] < 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['shoulder']['left']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['shoulder']['left']).toString()) }}°
         </span>
         </p>
 
@@ -105,7 +105,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['hip']['left']))"
                alt="<" class="h-[24px] ml-2 rotate-90" :class="{ '!rotate-[-90deg]': getActiveZone['hip']['left'] < 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['hip']['left']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['hip']['left']).toString()) }}°
         </span>
         </p>
 
@@ -114,7 +114,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['knee']['left']))"
                alt="<" class="h-[24px] ml-2" :class="{ 'rotate-[180deg]': getActiveZone['knee']['left'] > 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['knee'][0]['left']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['knee'][0]['left']).toString()) }}°
         </span>
         </p>
 
@@ -123,7 +123,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['shoulder']['right']))"
                alt="<" class="h-[24px] ml-2 rotate-90" :class="{ '!rotate-[-90deg]': getActiveZone['shoulder']['right'] < 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['shoulder']['right']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['shoulder']['right']).toString()) }}°
         </span>
         </p>
 
@@ -132,7 +132,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['hip']['right']))"
                alt="<" class="h-[24px] ml-2 rotate-90" :class="{ '!rotate-[-90deg]': getActiveZone['hip']['right'] < 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['hip']['right']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['hip']['right']).toString()) }}°
         </span>
         </p>
 
@@ -141,7 +141,7 @@ const soon = () => {
           <span class="flex items-center mt-1">
           <img :src="getColor(Math.abs(getActiveZone['knee']['right']))"
                alt="<" class="h-[24px] ml-2" :class="{ 'rotate-[180deg]': getActiveZone['knee']['right'] > 0 }">
-          {{ convertToPersianNumber(Math.abs(getActiveZone['knee'][0]['right']).toString()) }}°
+          {{ persianNumber(Math.abs(getActiveZone['knee'][0]['right']).toString()) }}°
         </span>
         </p>
 
@@ -156,7 +156,7 @@ const soon = () => {
         <FaIcon :icon="['far', 'circle-question']" class="text-[18px]"/>
       </button>
 
-<!--      <p class="text-white/70">تست {{ convertToPersianNumber(activeIndex.toString()) }} از {{ convertToPersianNumber(report['analyze'].length.toString()) }}</p>-->
+<!--      <p class="text-white/70">تست {{ persianNumber(activeIndex.toString()) }} از {{ persianNumber(report['analyze'].length.toString()) }}</p>-->
 
       <div class="flex mt-4">
 

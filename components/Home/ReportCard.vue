@@ -11,9 +11,9 @@ defineProps<{
        @click="$router.push(`/report/${data.testId}`)">
     <div class="flex flex-col">
       <p class="text-[#727272] text-[14px] mb-[18px]">
-        {{ convertToPersianNumber(jalali.toJalaali(data['date']).jd.toString()) + " " }}
+        {{ persianNumber(jalali.toJalaali(data['date']).jd.toString()) + " " }}
         {{ new Date(data['date']).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-        {{ convertToPersianNumber(jalali.toJalaali(data['date']).jm.toString()) }}
+        {{ persianNumber(jalali.toJalaali(data['date']).jm.toString()) }}
       </p>
 
       <p class="text-[#212121] text-[14px]">

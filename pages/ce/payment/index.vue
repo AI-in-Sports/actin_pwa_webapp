@@ -10,7 +10,7 @@ definePageMeta({
 const paymentUrl = shallowRef("")
 
 onMounted(async () => {
-  await apiCall<NormalResponse & {
+  await use$Fetch<NormalResponse & {
     url: string
   }>("/ce/payment/create", {
     auth: true,

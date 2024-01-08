@@ -22,9 +22,9 @@ const calculateProgress = computed(() => (props.page / props.pages) * 100)
       </div>
 
       <p class="w-1/3 text-center font-semibold text-[16px]">
-        {{ convertToPersianNumber(page.toString()) }}
+        {{ persianNumber(page.toString()) }}
         از
-        {{ convertToPersianNumber(pages.toString()) }}
+        {{ persianNumber(pages.toString()) }}
       </p>
 
       <div class="w-1/3">

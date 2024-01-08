@@ -21,7 +21,7 @@ const getStarDetail = useNuxtApp().$getStarDetail(props.data['score'])
         <div class="flex items-center">
           <FaIcon :icon="['fas', 'star']" class="text-[#F0A300]" v-for="star in getStarDetail.full" :key="star"/>
           <FaIcon :icon="['fas', 'star-half-stroke']" class="text-[#F0A300] scale-x-[-1]" v-if="getStarDetail.half"/>
-          <p class="text-black/60 text-[12px] mr-[4px] mt-[2px]">{{ convertToPersianNumber(data['score'].toString()) }}</p>
+          <p class="text-black/60 text-[12px] mr-[4px] mt-[2px]">{{ persianNumber(data['score'].toString()) }}</p>
         </div>
         <div class="h-[18px] rounded-full bg-[#FFE6E6] flex items-center px-[8px] pb-[2px]" v-if="data['occupation'] == 'busy'">
           <div class="bg-[#EC1515] h-[8px] w-[8px] rounded-full ml-[4px] mt-[2px]"></div>

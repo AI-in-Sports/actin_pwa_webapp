@@ -40,11 +40,7 @@ for (let i = 0; i < 7; i++) {
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
-    headers: {
-      "Authorization": useAuthStore().getToken
-    }
-  }).then((value) => {
+  await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`).then((value) => {
     physio.value = value.data['physio']
 
     toast.clearAll()

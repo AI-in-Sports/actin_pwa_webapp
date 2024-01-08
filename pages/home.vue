@@ -31,10 +31,10 @@ const isSurvey = shallowRef(false)
 
 await useLazyAsyncData('home_data', async () => {
   const [reservations, reports, survey] = await Promise.all([
-    apiSSRFetch<Reservation[]>("/reservation/getAll", {
+    useSSRFetch<Reservation[]>("/reservation/getAll", {
       auth: true
     }),
-    apiSSRFetch<Report[]>("/report/getAll", {
+    useSSRFetch<Report[]>("/report/getAll", {
       auth: true,
       transform: (input: Report[]) => {
         return input.map(item => ({
@@ -43,7 +43,7 @@ await useLazyAsyncData('home_data', async () => {
         }))
       }
     }),
-    apiSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+    useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
       auth: true
     })
   ])

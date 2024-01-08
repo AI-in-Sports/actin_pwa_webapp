@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@actin/pwa-layer':
+    specifier: ^1.0.0
+    version: 1.0.0(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.4.0
     version: 6.5.1
@@ -105,6 +108,25 @@ devDependencies:
     version: 1.8.27(typescript@5.3.3)
 
 packages:
+
+  /@actin/pwa-layer@1.0.0(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13):
+    resolution: {integrity: sha512-rFgrHnnMkkLK8EryltLzSaeWW7L7SW4Zs0mKkzCGFr5wAy+nZyvqex4sq3cjPNS6xmL6Cz5MR+i2Vy70qCTUUQ==}
+    requiresBuild: true
+    dependencies:
+      '@pinia/nuxt': 0.5.1(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
+      axios: 1.6.5
+      jalaali-js: 1.2.6
+      material-symbols: 0.14.4
+      pinia: 2.1.7(typescript@5.3.3)(vue@3.3.13)
+      progressbar.js: 1.1.1
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - debug
+      - rollup
+      - supports-color
+      - typescript
+      - vue
+    dev: false
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3206,6 +3228,16 @@ packages:
       - debug
     dev: false
 
+  /axios@1.6.5:
+    resolution: {integrity: sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==}
+    dependencies:
+      follow-redirects: 1.15.4
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /b4a@1.6.4:
     resolution: {integrity: sha512-fpWrvyVHEKyeEvbKZTVOeZF3VSKKWtJxFIxX/jaVPf+cLbGUSitjb49pHLqPV2BUNNZ0LcoeEGfE/YCpyDYHIw==}
 
@@ -4297,6 +4329,16 @@ packages:
 
   /follow-redirects@1.15.3:
     resolution: {integrity: sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
+  /follow-redirects@1.15.4:
+    resolution: {integrity: sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5398,6 +5440,10 @@ packages:
 
   /material-symbols@0.14.3:
     resolution: {integrity: sha512-oys7SbIaPz1sfUCMVYlEE5HJGzh0GMoUK0jCGH7hAqO9iW/b9dnSAeYgOQp2s1ifQP5Y+Q4+Fcujay/ASzvy2w==}
+    dev: false
+
+  /material-symbols@0.14.4:
+    resolution: {integrity: sha512-a4gUxar/H+enN+hc5b/XE3Sroqyb9eT9hqkoTl6HXoW2mIajQ9mLW1T1tgjfq6KX6zqU1aLOV27mddUSHrgYAA==}
     dev: false
 
   /mdn-data@2.0.28:

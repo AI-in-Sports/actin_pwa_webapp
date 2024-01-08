@@ -18,9 +18,9 @@ const baseUrl = shallowRef(useRuntimeConfig().public.APP_BACKEND)
       <p class="text-mainBlack text-[16px]">{{ exercise.name.trim().replaceAll("-", " ") }}</p>
 
       <p class="text-mainSubDead text-[14px] mt-[8px]">
-        {{ convertToPersianNumber(exercise.sets.toString()) }}
+        {{ persianNumber(exercise.sets.toString()) }}
         ست
-        {{ convertToPersianNumber(exercise.duration.toString()) }}
+        {{ persianNumber(exercise.duration.toString()) }}
         ثانیه ای
       </p>
     </div>

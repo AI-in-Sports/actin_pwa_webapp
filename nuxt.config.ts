@@ -1,3 +1,5 @@
+import {join} from "path";
+
 export default defineNuxtConfig({
   devtools: {
     enabled: true,
@@ -11,11 +13,8 @@ export default defineNuxtConfig({
     "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt",
     "@nuxt/image"
   ],
-  image: {
-    dir: 'assets/',
-  },
+  image: {dir: 'assets/'},
   css: [
-    "~/assets/style/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css"
   ],
   postcss: {
@@ -24,12 +23,19 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  pinia: {
+    storesDirs: [
+      './stores/'
+    ]
+  },
   runtimeConfig: {
     public: {
       APP_BACKEND: process.env.APP_BACKEND,
-      DISABLE_RESERVATION: process.env.DISABLE_RESERVATION
+      DISABLE_RESERVATION: process.env.DISABLE_RESERVATION,
+      GIGET_AUTH: process.env.GIGET_AUTH
     }
   },
+  extends: ["@actin/pwa-layer"],
   pwa: {
     registerType: 'autoUpdate',
     manifest: {

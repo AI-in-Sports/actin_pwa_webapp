@@ -4,7 +4,7 @@ import icon_map_st1 from "~/assets/map/icon_map_st1.svg"
 //import icon_map_st2 from "~/assets/map/icon_map_st2.svg"
 import icon_map_st3 from "~/assets/map/icon_map_st3.svg"
 import {LIcon} from "@vue-leaflet/vue-leaflet"
-import {Ref} from "vue"
+import {type Ref} from "vue"
 
 const props = defineProps<{
   flag: "special" | "active" | "deactivate",

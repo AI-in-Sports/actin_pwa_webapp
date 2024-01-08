@@ -14,9 +14,7 @@ const physioList = ref()
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.APP_BACKEND}/physio/physiotherapists`, {
-    headers: { "Authorization": useAuthStore().getToken }
-  }).then((value) => {
+  await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapists`).then((value) => {
     physioList.value = value.data['physio']
 
     toast.clearAll()

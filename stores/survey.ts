@@ -28,7 +28,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
 
             const store = selectProperties(useCESurveyStore()[survey], items)
 
-            const {data, error} = await apiSSRFetch(`/ce/survey/update/${survey}`, {
+            const {data, error} = await useSSRFetch(`/ce/survey/update/${survey}`, {
                 method: "PATCH",
                 auth: true,
                 body: store
@@ -41,7 +41,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
 
         getData: async (survey: "survey1") => {
 
-            const {data, error, refresh} = await apiSSRFetch<{
+            const {data, error, refresh} = await useSSRFetch<{
                 status: number,
                 info?: Survey1,
                 message?: string

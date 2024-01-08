@@ -10,7 +10,7 @@ const isReady = ref(false)
 const dates: Ref<Date[]> = shallowRef([])
 const currentDate = shallowRef(new Date())
 
-const {data} = apiSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
+const {data} = useSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   auth: true,
   transform: (input: {
     startDate: string,
@@ -81,7 +81,7 @@ onMounted(() => {
           </p>
 
           <p class="text-[16px] mt-[20px]">
-            {{ convertToPersianNumber(jalali.toJalaali(day).jd.toString()) }}
+            {{ persianNumber(jalali.toJalaali(day).jd.toString()) }}
           </p>
         </div>
       </div>

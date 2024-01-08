@@ -2,7 +2,7 @@
 import icon_map_recommend from "~/assets/map/icon_map_recommend.svg"
 import icon_map_st1 from "~/assets/map/icon_map_st1.svg"
 import icon_map_st3 from "~/assets/map/icon_map_st3.svg"
-import {Ref} from "vue"
+import {type Ref} from "vue"
 
 const zoom = ref(10)
 const defaultLocation: Ref<[number, number]> = ref([35.72920336162293, 51.33802912176813])

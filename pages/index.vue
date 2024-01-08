@@ -36,7 +36,7 @@ onMounted(() => {
 
 const submit = async () => {
   const params = {
-    phone: convertToPersianNumber(phoneNumber.value, true)
+    phone: persianNumber(phoneNumber.value, true)
   } as any
 
   const vf = phoneNumber.value.replace(/\D/g,'')
@@ -83,7 +83,7 @@ const submit = async () => {
     localStorage.setItem("loginSession", response.sessionId)
     localStorage.setItem("process", activePage.value === 0 ? 'login' : 'register')
 
-    useAuthStore().set("phone", convertToPersianNumber(phoneNumber.value, true))
+    useAuthStore().set("phone", persianNumber(phoneNumber.value, true))
 
     useAuthStore().$persist()
 

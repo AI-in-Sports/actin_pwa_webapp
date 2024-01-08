@@ -10,7 +10,7 @@ defineProps<{
   <div class="border-[1px] border-black/10 shadow-sm rounded-[16px] py-[14px] px-[16px] flex flex-col">
     <p class="text-[#727272] text-[14px]">
       {{ new Date(data['date']).toLocaleDateString("fa-IR", { weekday: 'long' }) }}،
-      {{ convertToPersianNumber(jalali.toJalaali(new Date(data['date'])).jd.toString()) + " " }}
+      {{ persianNumber(jalali.toJalaali(new Date(data['date'])).jd.toString()) + " " }}
       {{ new Date(data['date']).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
       {{ data['time'] }}
     </p>

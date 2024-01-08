@@ -49,9 +49,7 @@ onMounted(async () => {
   }
 
   if (route.params.session_id)
-    await axios(`${config.public.APP_BACKEND}/report/${route.params.session_id}`, {
-      headers: { "Authorization": useAuthStore().getToken }
-    }).then((value) => {
+    await useAxios(true)(`${config.public.APP_BACKEND}/report/${route.params.session_id}`).then((value) => {
       dataFetch.value = value.data
 
       date.value = (Jalali.toJalaali(new Date(dataFetch.value['report']['date'])) as JalaaliDateObject)
@@ -95,9 +93,9 @@ const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).ge
     <p class="text-center mb-[20px] mt-[78px] h-[27px] text-[#727272] text-[14px]">
       <span v-if="dataFetch">
         {{
-          convertToPersianNumber((date as JalaaliDateObject).jd.toString()) + " " +
+          persianNumber((date as JalaaliDateObject).jd.toString()) + " " +
           new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['report']['date'])) + " " +
-          convertToPersianNumber((date as JalaaliDateObject).jy.toString())
+          persianNumber((date as JalaaliDateObject).jy.toString())
         }}
       </span>
 
