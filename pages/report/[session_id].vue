@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Jalali ,{type JalaaliDateObject} from "jalaali-js"
-import axios from "axios"
 import {ReportFrontalView, ReportSagitalView} from "#components"
 
 definePageMeta({

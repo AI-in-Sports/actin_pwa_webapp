@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios"
 import {PhysioPagesDescription} from "#components"
 
 definePageMeta({
@@ -26,11 +25,7 @@ const getStarDetail = useNuxtApp().$getStarDetail
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`, {
-    headers: {
-      "Authorization": useAuthStore().getToken
-    }
-  }).then((value) => {
+  await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`).then((value) => {
     physio.value = value.data['physio']
 
     toast.clearAll()
@@ -58,7 +53,7 @@ useHead({title: `Actin - Doctor page`})
     <div class="flex items-center mt-[12px]">
       <FaIcon :icon="['fas', 'star']" class="text-[#F0A300]" v-for="star in getStarDetail(physio['score']).full" :key="star"/>
       <FaIcon :icon="['fas', 'star-half-stroke']" class="text-[#F0A300] scale-x-[-1]" v-if="getStarDetail(physio['score']).half"/>
-      <p class="text-black/60 text-[12px] mr-[4px] mt-[2px]">{{ convertToPersianNumber(physio['score'].toString()) }}</p>
+      <p class="text-black/60 text-[12px] mr-[4px] mt-[2px]">{{ persianNumber(physio['score'].toString()) }}</p>
     </div>
 
     <div class="flex flex-col mt-[24px] w-full px-[16px] text-[16px] text-[#212121]">
@@ -77,7 +72,7 @@ useHead({title: `Actin - Doctor page`})
 
         <div class="flex flex-col flex-1">
           <p class="text-[12px] mb-[2px]">شماره ثابت</p>
-          <p>{{ convertToPersianNumber(physio['phone']) }}</p>
+          <p>{{ persianNumber(physio['phone']) }}</p>
         </div>
       </div>
     </div>

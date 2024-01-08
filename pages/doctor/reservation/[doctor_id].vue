@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios"
 import jalali from "jalaali-js"
 import type {Ref} from "vue"
 
@@ -57,10 +56,7 @@ const reserve = async () => {
 
   isSubmit.value = true
 
-  await axios.post(`${config.public.APP_BACKEND}/reservation/physio`, null, {
-    headers: {
-      "Authorization": useAuthStore().getToken
-    },
+  await useAxios(true).post(`${config.public.APP_BACKEND}/reservation/physio`, null, {
     params: {
       doctor_id: route.params.doctor_id,
       date: dates.value[selectedDay.value],
@@ -106,7 +102,7 @@ useHead({title: `Actin - Doctor reservation page`})
       <div class="flex flex-col items-center px-[5px] py-[7px] cursor-pointer text-[#727272] w-[14.285714286%] border-b-[2px] border-b-transparent"
            v-for="(day, index) in dates" :key="index" @click="selectedDay = index"
            :class="{ 'font-bold !text-[#212121] !border-b-[#212121]': selectedDay === index }">
-        <p class="text-[14px]">{{ convertToPersianNumber(jalali.toJalaali(day).jd.toString()) }}</p>
+        <p class="text-[14px]">{{ persianNumber(jalali.toJalaali(day).jd.toString()) }}</p>
         <p :class="{ 'text-[12px]': selectedDay === index, 'text-[10px]': selectedDay !== index }">{{ day.toLocaleDateString("fa-IR", { weekday: 'long' }) }}</p>
       </div>
     </div>

@@ -50,9 +50,11 @@ await useLazyAsyncData('home_data', async () => {
 
   isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
 
-  reports_data.value = reports.data.value!
+  if (reports.data.value)
+    reports_data.value = reports.data.value!
 
-  reservations_data.value = reservations.data.value!
+  if (reservations.data.value)
+    reservations_data.value = reservations.data.value!
 })
 
 onMounted(async () => {

@@ -12,7 +12,7 @@ definePageMeta({
 
 const ceSurvey = useCESurveyStore()
 
-const {data} = apiSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+const {data} = useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
   auth: true,
 })
 

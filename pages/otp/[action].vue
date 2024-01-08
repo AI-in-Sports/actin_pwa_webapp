@@ -112,7 +112,7 @@ const submitForm = async () => {
 
       <p class="flex items-center m-auto px-[8px] py-[2px] bg-black/10 rounded-full text-[16px] text-black/80 mt-[32px] cursor-pointer"
          @click="retry('/')" v-if="phone">
-        {{ convertToPersianNumber((phone as any).toString()) }}
+        {{ persianNumber((phone as any).toString()) }}
         <img src="@/assets/icons/icon_edit_gray.svg" class="w-[16px] mr-[6px]" alt="edit">
       </p>
 

@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import defaultTheme from "tailwindcss/defaultTheme"
+import layerTheme from "@actin/pwa-layer/tailwind.config"
 
 export default {
     content: [
@@ -11,29 +11,6 @@ export default {
         "./app.vue",
         "./error.vue"
     ],
-    theme: {
-        screens: {
-            'sm': '450px',
-        },
-        extend: {
-            animation: {
-                'spin-slow': 'spin 2.5s linear infinite',
-            },
-            fontFamily: {
-                dana: ["Dana", "Arial", "sans-serif"],
-            },
-            colors: {
-                mainSubDead: "#666666",
-                mainBlue: "#0085FF",
-                mainDark: "#8080804D",
-                mainBlack: "#212121",
-                mainYellow: "#F8D32D",
-                mainDarkYellow: "#BFAC00",
-                mainRed: "#FF6B6B",
-                mainGreen: "#00A62E",
-                mainDarkSecondary: "#101C27"
-            }
-        }
-    },
+    theme: layerTheme.theme,
     plugins: [],
 }

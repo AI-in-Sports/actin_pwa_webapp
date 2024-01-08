@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ok from "@/assets/images/reservation_green.svg"
 import not_ok from "@/assets/images/reservation_red.svg"
-import axios from "axios"
 import jalali from "jalaali-js"
 
 definePageMeta({
@@ -21,11 +20,7 @@ const physio = ref()
 onMounted(async () => {
   const loading = toast.loading("در حال دریافت اطلاعات...")
 
-  await axios(`${config.public.APP_BACKEND}/reservation/get/${uuid}`, {
-    headers: {
-      "Authorization": useAuthStore().getToken
-    }
-  }).then((value) => {
+  await useAxios(true)(`${config.public.APP_BACKEND}/reservation/get/${uuid}`).then((value) => {
     physio.value = value.data['data']
 
     toast.clearAll()
@@ -57,7 +52,7 @@ useHead({title: `Actin - `})
     <div v-if="uuid && physio" class="flex flex-col mt-[32px] w-full items-center">
       <p class="text-[#727272] text-[14px]">
         {{ new Date(physio['date']).toLocaleDateString("fa-IR", { weekday: 'long' }) }}،
-        {{ convertToPersianNumber(jalali.toJalaali(new Date(physio['date'])).jd.toString()) + " " }}
+        {{ persianNumber(jalali.toJalaali(new Date(physio['date'])).jd.toString()) + " " }}
         {{ new Date(physio['date']).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
         {{ physio['time'] }}
       </p>
