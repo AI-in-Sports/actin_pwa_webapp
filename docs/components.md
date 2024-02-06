@@ -52,7 +52,8 @@ description: Icon Button
 <template>
   <PrimaryIconButton 
       type="submit" :disabled="false"
-      :src="image" alt="image alternative text"/>
+      :src="image" alt="image alternative text"
+  />
 </template>
 ```
 
