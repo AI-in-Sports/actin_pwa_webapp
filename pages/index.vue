@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 definePageMeta({
   layout: "general",
@@ -11,7 +12,6 @@ const authPages = shallowRef(["ورود کاربران", "ثبت نام"])
 const isSubmit = shallowRef(false)
 const toast = useNuxtApp().$showToast
 const closeLoading = useNuxtApp().$closeLoading
-
 const phoneNumber = shallowRef("")
 const fullName = shallowRef("")
 const gender = shallowRef("جنسیت")
