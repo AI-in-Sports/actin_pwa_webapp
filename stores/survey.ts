@@ -45,9 +45,7 @@ export const useCESurveyStore = defineStore('ce_survey', {
                 status: number,
                 info?: Survey1,
                 message?: string
-            }>(`/ce/survey/get/${survey}`, {
-                auth: true
-            })
+            }>(`/ce/survey/get/${survey}`, {auth: true})
 
             watchEffect(() => refresh())
 
