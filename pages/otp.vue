@@ -3,19 +3,16 @@ definePageMeta({
   middleware: "auth"
 })
 
-const route = useRoute()
 const toast = useNuxtApp().$showToast
-const action = route.params.action as string
 const code = useState(() => "")
 const isSubmit = ref(false)
 
 const config = useRuntimeConfig()
 
-useHead({title: `Actin - Action ${action}`})
+useHead({title: `ورود به حساب با کد`})
 
 const retry = (callback: string) => {
   localStorage.removeItem('loginSession')
-  localStorage.removeItem('process')
   useAuthStore().logout()
 
   location.replace(callback)
@@ -25,26 +22,19 @@ const phone = useAuthStore().phone
 if (!phone) useRouter().replace('/')
 
 onMounted(() => {
-  console.log(useAuthStore().phone)
   const session = localStorage.getItem("loginSession")
-  const process = localStorage.getItem("process")
 
  if (!session || !phone) location.replace("/")
 
   if (useAuthStore().token && phone)
     location.replace("/home")
-
-  if (!["login", "register"].includes(action))
-    location.href = "/"
-
-  if (process !== action)
-    location.replace(`/otp/${process}`)
 })
 
 const submitForm = async () => {
   isSubmit.value = true
 
-  console.log(code.value)
+  code.value = code.value.replace(/\D/g,'')
+
   if (code.value.length < 6) {
     toast.error("لطفا کد را کامل وارد کنید!")
     isSubmit.value = false
@@ -55,7 +45,7 @@ const submitForm = async () => {
 
   const session = localStorage.getItem("loginSession")
 
-  const { data, error } = await useFetch(`${config.public.APP_BACKEND}/auth/${action}`, {
+  const { data, error } = await useFetch(`${config.public.APP_BACKEND}/auth/login`, {
     method: "POST",
     params: {
       phone: phone,
@@ -88,7 +78,6 @@ const submitForm = async () => {
 
     useAuthStore().set("token", response.token)
     localStorage.removeItem("loginSession")
-    localStorage.removeItem("process")
 
     const sessionId = useAuthStore().reportSessionId
 
@@ -120,7 +109,7 @@ const submitForm = async () => {
 
         <VerificationCode class="mb-16" v-model:value="code" :disabled="isSubmit"/>
 
-        <PrimaryButton :disabled="isSubmit">ورود</PrimaryButton>
+        <PrimaryButton type="submit" :disabled="isSubmit">ورود</PrimaryButton>
       </form>
 
       <div></div>
