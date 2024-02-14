@@ -7,7 +7,7 @@ definePageMeta({
 <template>
   <div class="flex flex-col justify-center items-center w-full max-w-[400px] px-4 mt-5">
     <div class="relative mb-8">
-      <img src="~/assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] rounded-full">
+      <img src="../../assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] rounded-full">
 
       <div class="flex justify-center items-center bg-black w-7 h-7 border-[3px] border-solid	border-white absolute bottom-0 left-3 rounded-full">
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base">edit</MaterialSymbols>
