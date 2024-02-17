@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 definePageMeta({
   layout: "general",
@@ -8,7 +9,6 @@ const config = useRuntimeConfig()
 const isSubmit = shallowRef(false)
 const toast = useNuxtApp().$showToast
 const closeLoading = useNuxtApp().$closeLoading
-
 const phoneNumber = shallowRef("")
 
 onMounted(() => {

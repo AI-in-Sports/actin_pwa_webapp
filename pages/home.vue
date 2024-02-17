@@ -7,7 +7,6 @@ import s5 from "~/assets/slides/5.jpg"
 import type {Reservation, Report, SurveyStatusResponse} from "~/types/Responses"
 
 definePageMeta({
-  middleware: ["normal-auth"],
   layout: "main"
 })
 
@@ -31,10 +30,10 @@ const isSurvey = shallowRef(false)
 
 await useLazyAsyncData('home_data', async () => {
   const [reservations, reports, survey] = await Promise.all([
-    useSSRFetch<Reservation[]>("/reservation/getAll", {
+    apiSSRFetch<Reservation[]>("/reservation/getAll", {
       auth: true
     }),
-    useSSRFetch<Report[]>("/report/getAll", {
+    apiSSRFetch<Report[]>("/report/getAll", {
       auth: true,
       transform: (input: Report[]) => {
         return input.map(item => ({
@@ -43,18 +42,16 @@ await useLazyAsyncData('home_data', async () => {
         }))
       }
     }),
-    useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+    apiSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
       auth: true
     })
   ])
 
   isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
 
-  if (reports.data.value)
-    reports_data.value = reports.data.value!
+  reports_data.value = reports.data.value!
 
-  if (reservations.data.value)
-    reservations_data.value = reservations.data.value!
+  reservations_data.value = reservations.data.value!
 })
 
 onMounted(async () => {
@@ -72,77 +69,88 @@ useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
-  <ThemeBottomSheet is-open/>
+  <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] overflow-auto h-full">
+    <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
+      <div class="flex flex-row justify-center items-center gap-x-4 w-full">
+        <PrimaryProfile />
 
-  <!-- Survey alert -->
-  <div class="fixed inset-0 z-[-99999] opacity-0 bg-white/80 p-[16px] backdrop-blur-2xl duration-[0.3s] flex justify-center items-center"
-       :class="{ '!z-[99999] !opacity-100': !isSurvey && $route.query.nocache }">
-    <div class="flex flex-col w-full max-w-[400px] text-center text-mainBlack">
-      <MaterialSymbols
-          @click="isSurvey = true" theme="rounded"
-          class="text-[#666666] ml-auto fixed top-[16px] left-[16px] cursor-pointer hover:text-[30px]">
-        close
-      </MaterialSymbols>
+        <div class="flex flex-col gap-y-2">
+          <p class="text-mainBlack text-2xl font-semibold">
+            رومینا یکانی
+          </p>
 
-      <h1 class="mt-[20px] font-bold text-[26px]">
-        {{ user.fullName }}
-        عزیز خوش آمدی
-      </h1>
+          <p class="text-mainSubDead text-base">
+            ۰۹۱۲۳۴۵۶۷۸۹
+          </p>
+        </div>
 
-      <p class="mt-[56px] text-[16px] ">جهت تهیه‌ی برنامه تمرینی مناسب براساس ناهنجاری‌‌های اسکلتی شما، نیازمند دریافت وضعیت جسمیتان هستیم.</p>
-
-      <p class="text-[14px] text-[#666666] mt-[32px]">زمان مورد نیاز برای انجام ارزیابی: ۳ دقیقه</p>
-
-      <PrimaryButton class="mt-[132px]" @click="$router.push('/ce/survey/')">فرم وضعیت جسمی</PrimaryButton>
-    </div>
-  </div>
-
-  <header class="flex items-center px-[14px] py-[16px] w-full">
-    <div class="w-full"></div>
-
-    <div class="w-full flex justify-center">
-      <img src="@/assets/images/logo_tr_white.png" alt="Actin" class="h-[50px] w-auto">
-    </div>
-
-    <div class="w-full flex justify-end">
-      <FaIcon class="rotate-180 text-[24px] text-black/60 cursor-pointer"
-              icon="arrow-right-from-bracket" @click="logout()"/>
-    </div>
-  </header>
-
-  <div class="w-full overflow-auto pt-[40px] flex justify-center">
-    <div class="flex flex-col max-w-[500px] w-full" v-if="user">
-      <h1 class="text-[24px] text-[#212121] font-bold w-full px-[24px]">خوش آمدید، {{ (user as any)['fullName'] }}</h1>
-
-      <div class="w-full pr-[16px] mt-[24px]">
-        <client-only>
-          <Swiper
-              :modules="[SwiperAutoplay, SwiperEffectCreative, SwiperPagination]"
-              :slides-per-view="1.2"
-              :loop="true"
-              :autoplay="{
-                delay: 8000,
-                disableOnInteraction: true,
-              }"
-              :pagination="pagination as any">
-            <SwiperSlide v-for="slide in slides" :key="slide" class="pl-[12px] cursor-grab">
-              <img :src="slide" alt="slide" class="w-full rounded-[16px]">
-            </SwiperSlide>
-          </Swiper>
-        </client-only>
+        <div class="bg-white rounded-full pr-12">
+          <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
+        </div>
       </div>
+      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
+        <p class="text-base text-center text-mainBlack font-semibold">
+          برای دریافت برنامه تمرینی ابتدا باید پروفایل
+          <br>
+          خود را تکمیل کنید.
+        </p>
 
-      <h2 v-if="reservations_data.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">نوبت‌های من</h2>
+        <div class="flex flex-col justify-center items-center gap-y-3 w-full">
+          <div class="bg-white w-full h-2 rounded">
+            <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
+          </div>
 
-      <div v-if="reservations_data.length" class="px-[16px]">
-        <HomeReservationCard v-for="res in reservations_data" :key="res.name" :data="res" class="mt-[16px]"/>
+          <p class="text-mainBlack text-xs">
+            ۵ مرحله دیگر تا تکمیل پروفایل
+          </p>
+        </div>
+
+        <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
+          تکمیل پروفایل
+
+          <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
+        </PrimaryButton>
       </div>
+    </div>
 
-      <h2 v-if="reports_data.length" class="mt-[24px] px-[16px] text-[#212121] text-[18px] font-bold">تاریخچه ارزیابی‌ها</h2>
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        علائم حیاتی
+      </h3>
 
-      <div v-if="reports_data.length" class="px-[16px] pb-[16px]">
-        <HomeReportCard v-for="report in reports_data" :key="report.testId" :data="report" class="mt-[16px]"/>
-      </div>
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش لاغری
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش اسکلتی- عضلانی
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+       در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
+        <br>
+        ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
   </div>
 </template>
