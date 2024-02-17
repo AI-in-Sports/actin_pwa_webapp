@@ -9,8 +9,8 @@ overrides:
 
 dependencies:
   '@actin/pwa-layer':
-    specifier: ^1.5.6
-    version: 1.5.6(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
+    specifier: ^1.5.7
+    version: 1.5.7(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.4.0
     version: 6.5.1
@@ -106,8 +106,8 @@ devDependencies:
 
 packages:
 
-  /@actin/pwa-layer@1.5.6(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13):
-    resolution: {integrity: sha512-SA7QVy0l796jzLX5Idp99ko28MEJCTqFrG6kdpmt98n3cfGZ45cbU4dIMPdQgotd2+USnnDvL4ufnBcXx5gghQ==}
+  /@actin/pwa-layer@1.5.7(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13):
+    resolution: {integrity: sha512-Ag39iyhtEhytWi5OP3ZN6+WZtwb/DJ40NMbjKopmuRfYhvg1RhacpA4RxQ8CWV0elVaDFsgHhnawXl0WFNXBWw==}
     dependencies:
       '@nuxtjs/tailwindcss': 6.10.4(rollup@2.79.1)
       '@pinia-plugin-persistedstate/nuxt': 1.2.0(@pinia/nuxt@0.5.1)(pinia@2.1.7)(rollup@2.79.1)

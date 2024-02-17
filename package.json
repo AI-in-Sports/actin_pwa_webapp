@@ -26,7 +26,7 @@
     "vue-tsc": "^1.8.10"
   },
   "dependencies": {
-    "@actin/pwa-layer": "^1.5.6",
+    "@actin/pwa-layer": "^1.5.7",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",

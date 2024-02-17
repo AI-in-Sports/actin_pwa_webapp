@@ -72,6 +72,8 @@ useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
+  <ThemeBottomSheet is-open/>
+
   <!-- Survey alert -->
   <div class="fixed inset-0 z-[-99999] opacity-0 bg-white/80 p-[16px] backdrop-blur-2xl duration-[0.3s] flex justify-center items-center"
        :class="{ '!z-[99999] !opacity-100': !isSurvey && $route.query.nocache }">
