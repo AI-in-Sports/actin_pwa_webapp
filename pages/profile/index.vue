@@ -9,13 +9,13 @@ definePageMeta({
     <div class="relative mb-8">
       <img src="../../assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] rounded-full">
 
-      <div class="flex justify-center items-center bg-black w-7 h-7 border-[3px] border-solid	border-white absolute bottom-0 left-3 rounded-full">
-        <MaterialSymbols theme="rounded" class="text-mainSubDead text-base">edit</MaterialSymbols>
+      <div class="flex justify-center items-center bg-black w-7 h-7 border-[3px] border-solid	border-white absolute bottom-0 left-3 rounded-full cursor-pointer">
+        <MaterialSymbols theme="rounded" class="text-white text-base">edit</MaterialSymbols>
       </div>
     </div>
 
     <div class="flex flex-col justify-center items-center gap-y-1 w-full">
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4 cursor-pointer">
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base px-6">chevron_left</MaterialSymbols>
 
         <p class="text-mainBlack text-base py-1 px-2">
@@ -23,7 +23,7 @@ definePageMeta({
         </p>
       </NuxtLink>
 
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4 cursor-pointer">
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base px-6">chevron_left</MaterialSymbols>
 
         <p class="text-mainBlack text-base py-1 px-2">
@@ -31,7 +31,7 @@ definePageMeta({
         </p>
       </NuxtLink>
 
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 pl-4 cursor-pointer">
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base px-6">chevron_left</MaterialSymbols>
 
         <p class="text-mainBlack text-base py-1 px-2">
