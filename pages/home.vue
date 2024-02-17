@@ -88,8 +88,7 @@ useHead({title: "اکتین - صفحه اصلی"})
           <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
         </div>
       </div>
-
-      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl bg-black/[0.08] w-full">
+      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
         <p class="text-base text-center text-mainBlack font-semibold">
           برای دریافت برنامه تمرینی ابتدا باید پروفایل
           <br>
@@ -115,7 +114,7 @@ useHead({title: "اکتین - صفحه اصلی"})
     </div>
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
 
@@ -128,7 +127,20 @@ useHead({title: "اکتین - صفحه اصلی"})
     </div>
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش لاغری
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی- عضلانی
       </h3>
 
