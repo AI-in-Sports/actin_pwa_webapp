@@ -18,7 +18,7 @@ onMounted(async () => {
     location.reload()
   }
 
-  useNuxtApp().$showToast.loading("در حال ثبت و بررسی اطلاعات...")
+  useToast.loading("در حال ثبت و بررسی اطلاعات...")
 
   const { error } = await useFetch(`${config.public.APP_BACKEND}/report/register`, {
     method: "PUT",

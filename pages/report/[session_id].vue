@@ -9,7 +9,6 @@ definePageMeta({
 
 const config = useRuntimeConfig()
 const route = useRoute()
-const toast = useNuxtApp().$showToast
 const isDataFetched = shallowRef(false)
 const activeViews = shallowRef([ReportFrontalView, ReportSagitalView])
 const activeView = shallowRef(1)
@@ -25,25 +24,25 @@ const date = ref()
 const getActiveZone = computed(() => dataFetch.value.report['analyze']['zones'])
 
 onMounted(async () => {
-  const loading = toast.loading("در حال دریافت اطلاعات...")
+  const loading = useToast.loading("در حال دریافت اطلاعات...")
 
   const act = route.query.act
 
   switch (act) {
     case "sid_inv":
-      toast.error("کد تست نامعتبر است!")
+      useToast.error("کد تست نامعتبر است!")
       break
 
     case "sid_tkn":
-      toast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!")
+      useToast.error("کد قبلا اسکن شده است و برای شخص دیگری ثبت شده است!")
       break
 
     case "srv_err":
-      toast.error("خطا از سمت سرور!")
+      useToast.error("خطا از سمت سرور!")
       break
 
     case "rep_done":
-      toast.success("اطلاعات تست با موفقیت ذخیره شد!")
+      useToast.success("اطلاعات تست با موفقیت ذخیره شد!")
       break
   }
 
@@ -57,11 +56,11 @@ onMounted(async () => {
         location.replace("/home")
 
       isDataFetched.value = true
-      toast.remove(loading)
+      useToast.remove(loading)
     }).catch((e) => {
       console.log(e)
 
-      useNuxtApp().$closeLoading(loading, e["response"]["data"]["message"])
+      updateToast(loading, e["response"]["data"]["message"])
     })
 
   useHead({title: `Actin - Report page`})

@@ -14,7 +14,6 @@ const tabs = shallowRef([
 ])
 const activeTab = shallowRef(0)
 
-const toast = useNuxtApp().$showToast
 const route = useRoute()
 const config = useRuntimeConfig()
 
@@ -23,16 +22,16 @@ const physio = ref()
 const getStarDetail = useNuxtApp().$getStarDetail
 
 onMounted(async () => {
-  const loading = toast.loading("در حال دریافت اطلاعات...")
+  const loading = useToast.loading("در حال دریافت اطلاعات...")
 
   await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`).then((value) => {
     physio.value = value.data['physio']
 
-    toast.clearAll()
+    useToast.clearAll()
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات پزشکان!")
+    updateToast(loading, "خطا در دریافت اطلاعات پزشکان!")
   })
 })
 

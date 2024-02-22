@@ -18,7 +18,7 @@ onMounted(async () => {
     paymentUrl.value = value!.url
   }).catch((reason) => {
     console.log(reason)
-    useNuxtApp().$showToast.error("ایجاد درگاه پرداخت با خطا مواجد شد. لطفا صفحه را بازسازی کنید!")
+    useToast.error("ایجاد درگاه پرداخت با خطا مواجد شد. لطفا صفحه را بازسازی کنید!")
   })
 })
 

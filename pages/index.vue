@@ -7,8 +7,6 @@ definePageMeta({
 
 const config = useRuntimeConfig()
 const isSubmit = shallowRef(false)
-const toast = useNuxtApp().$showToast
-const closeLoading = useNuxtApp().$closeLoading
 const phoneNumber = shallowRef("")
 
 onMounted(() => {
@@ -16,15 +14,15 @@ onMounted(() => {
 
   switch (act) {
     case "usr_inv":
-      toast.error("کاربر نامعتبر است!")
+      useToast.error("کاربر نامعتبر است!")
       break
 
     case "sid_inv":
-      toast.error("کد نامعتبر است!")
+      useToast.error("کد نامعتبر است!")
       break
 
     case "lg_exp":
-      toast.error("کد ورود منقضی شده است! دوباره امتحان کنید.")
+      useToast.error("کد ورود منقضی شده است! دوباره امتحان کنید.")
       break
   }
 })
@@ -37,11 +35,11 @@ const submit = async () => {
   } as any
 
   if (phoneNumber.value.length < 11 || !checkPhoneNumber(phoneNumber.value))
-    return toast.error('لطفا یک شماره تلفن معتبر وارد کنید!')
+    return useToast.error('لطفا یک شماره تلفن معتبر وارد کنید!')
 
   isSubmit.value = true
 
-  const loading = toast.loading("در حال ارسال کد...")
+  const loading = useToast.loading("در حال ارسال کد...")
 
   const { data, error } = await useFetch(`${config.public.APP_BACKEND}/otp/send`, {
     method: "GET",
@@ -52,7 +50,7 @@ const submit = async () => {
   {
     isSubmit.value = false
 
-    closeLoading(loading, "فرایند با خطا مواجه شد!")
+    updateToast(loading, "فرایند با خطا مواجه شد!")
   }
   else
   {

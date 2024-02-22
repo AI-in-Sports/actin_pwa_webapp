@@ -7,7 +7,6 @@ definePageMeta({
   middleware: ["normal-auth"]
 })
 
-const toast = useNuxtApp().$showToast
 const route = useRoute()
 const config = useRuntimeConfig()
 
@@ -37,16 +36,16 @@ for (let i = 0; i < 7; i++) {
 }
 
 onMounted(async () => {
-  const loading = toast.loading("در حال دریافت اطلاعات...")
+  const loading = useToast.loading("در حال دریافت اطلاعات...")
 
   await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapist/${route.params.doctor_id}`).then((value) => {
     physio.value = value.data['physio']
 
-    toast.clearAll()
+    useToast.clearAll()
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات پزشکان!")
+    updateToast(loading, "خطا در دریافت اطلاعات پزشکان!")
   })
 })
 
@@ -67,7 +66,7 @@ const reserve = async () => {
       isSubmit.value = false
 
       console.log(value.data)
-      toast("فرایند با خطا مواجه شد!", {type: "error"})
+      useToast.error("فرایند با خطا مواجه شد!")
     }
 
     if (value.data.status === 200)
@@ -75,7 +74,7 @@ const reserve = async () => {
   }).catch((reason) => {
     console.log(reason)
 
-    toast("فرایند با خطا مواجه شد!", {type: "error"})
+    useToast.error("فرایند با خطا مواجه شد!")
   })
 }
 

@@ -8,7 +8,6 @@ definePageMeta({
   middleware: ["normal-auth"]
 })
 
-const toast = useNuxtApp().$showToast
 const route = useRoute()
 const config = useRuntimeConfig()
 
@@ -18,16 +17,16 @@ const uuid = shallowRef(route.query.uuid)
 const physio = ref()
 
 onMounted(async () => {
-  const loading = toast.loading("در حال دریافت اطلاعات...")
+  const loading = useToast.loading("در حال دریافت اطلاعات...")
 
   await useAxios(true)(`${config.public.APP_BACKEND}/reservation/get/${uuid}`).then((value) => {
     physio.value = value.data['data']
 
-    toast.clearAll()
+    useToast.clearAll()
   }).catch((e) => {
     console.log(e)
 
-    useNuxtApp().$closeLoading(loading, "خطا در دریافت اطلاعات نوبت!")
+    updateToast(loading, "خطا در دریافت اطلاعات نوبت!")
   })
 })
 

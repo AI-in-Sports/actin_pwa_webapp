@@ -3,7 +3,6 @@ import type {SurveyStatusResponse} from "~/types/Responses"
 import type {Survey1} from "~/stores/survey.types"
 
 const route = useRoute()
-const toast = useNuxtApp().$showToast
 
 definePageMeta({
   layout: "survey",
@@ -71,7 +70,7 @@ const submit = async () => {
 
   const res = await ceSurvey.submitSurvey("survey1", ...pageValue[urlPage.value - 1])
 
-  if (!res) toast.error("خطا هنگام ثبت اطلاعات")
+  if (!res) useToast.error("خطا هنگام ثبت اطلاعات")
 
   else if (urlPage.value < pages) useRouter().push(`/ce/survey/${urlPage.value + 1}`)
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {Exercise} from "~/types/CorrectiveExercise"
+import type {Exercise} from "@actin/pwa-layer/types/ce.types"
 import jalali from "jalaali-js"
 import {numberToWords} from "@persian-tools/persian-tools"
 import done_animation from "~/assets/lottie/done.json"
@@ -12,7 +12,6 @@ const isReady = shallowRef(false)
 const route = useRoute()
 const router = useRouter()
 const today = shallowRef(new Date())
-const toast = useNuxtApp().$showToast
 
 const exerciseTrack = ref({
   status: "onReady",
@@ -67,7 +66,7 @@ watchEffect(async () => {
       isReady.value = true
     } catch (error) {
       console.error('Error fetching or streaming the video:', error)
-      toast.error("خطا در هنگام بارگزاری ویدیو تمرین.")
+      useToast.error("خطا در هنگام بارگزاری ویدیو تمرین.")
     }
   }
 })
@@ -94,9 +93,9 @@ watch(exerciseDoneComputed, () => {
       if (value.data.status === 200)
         isDoneCompleted.value = 2
 
-      else toast.error("خطا از سمت سرور!")
+      else useToast.error("خطا از سمت سرور!")
     }).catch((reason) => {
-      toast.error("خطا از سمت سرور!")
+      useToast.error("خطا از سمت سرور!")
       console.log(reason)
     })
   }

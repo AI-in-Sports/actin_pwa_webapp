@@ -14,15 +14,14 @@ const {data} = useLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
 
 onMounted(() => {
   const res = useRoute().query.res
-  const toast = useNuxtApp().$showToast
 
   switch (res) {
     case "pg_err":
-      toast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
+      useToast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
       break
 
     case "ex_ntf":
-      toast.warning("برنامه اصلاحی مورد نظر یافت نشد!")
+      useToast.warning("برنامه اصلاحی مورد نظر یافت نشد!")
       break
   }
 })
@@ -34,7 +33,7 @@ useHead({title: "اکتین - برنامه تمرینی"})
   <div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack overflow-auto">
     <section v-if="[0, 1, 2, 3].includes(data?.mode!)" class="flex flex-col max-w-[400px] w-full ">
       <h1 class="font-semibold text-[21px]">
-        {{ user.fullName }}
+        {{ user.first_name }}
         عزیز
       </h1>
 

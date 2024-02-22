@@ -3,7 +3,6 @@ definePageMeta({
   middleware: "auth"
 })
 
-const toast = useNuxtApp().$showToast
 const code = useState(() => "")
 const isSubmit = ref(false)
 
@@ -36,12 +35,12 @@ const submitForm = async () => {
   code.value = code.value.replace(/\D/g,'')
 
   if (code.value.length < 6) {
-    toast.error("لطفا کد را کامل وارد کنید!")
+    useToast.error("لطفا کد را کامل وارد کنید!")
     isSubmit.value = false
     return
   }
 
-  const loading = useNuxtApp().$showToast.loading("در حال بررسی کد...")
+  const loading = useToast.loading("در حال بررسی کد...")
 
   const session = localStorage.getItem("loginSession")
 
@@ -62,13 +61,13 @@ const submitForm = async () => {
       retry("/?act=lg_exp")
 
     else if (error.value.data.status === 401)
-      useNuxtApp().$closeLoading(loading, "کد ورود اشتباه است!")
+      updateToast(loading, "کد ورود اشتباه است!")
 
     else if (error.value.data.status === 404 && error.value.data['msg'] === "un") {
       retry("/?act=usr_inv")
     }
 
-    else useNuxtApp().$closeLoading(loading, "کد ورود اشتباه است!")
+    else updateToast(loading, "کد ورود اشتباه است!")
   }
   else {
     const response = data.value as {
