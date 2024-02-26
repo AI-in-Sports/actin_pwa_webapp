@@ -18,6 +18,7 @@ const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
 const route = useRoute()
 
 const user = useAuthStore().user
+const phone = useAuthStore().phone
 
 /*const pagination = shallowRef({el: '.swiper-pagination', type: 'bullets'})
 const slides = shallowRef([s1, s2, s3, s4, s5])*/
@@ -79,88 +80,90 @@ useHead({title: "اکتین - صفحه اصلی"})
       v-if="profileStatus === 0" is-open title="مرحله ۱ از ۶"
       full-screen :component="userPersonalData"/>
 
-  <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] overflow-auto h-full">
-    <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
-      <div class="flex flex-row justify-center items-center gap-x-4 w-full">
-        <PrimaryProfile />
+  <div class="flex w-full overflow-auto justify-center">
+    <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] h-full">
+      <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
+        <div class="flex flex-row justify-center items-center gap-x-4 w-full">
+          <PrimaryProfile />
 
-        <div class="flex flex-col gap-y-2">
-          <p class="text-mainBlack text-2xl font-semibold">
-            رومینا یکانی
-          </p>
+          <div class="flex flex-col gap-y-2" v-if="profileStatus !== 0">
+            <p class="text-mainBlack text-2xl font-semibold">
+              {{ user.first_name }} {{ user.last_name }}
+            </p>
 
-          <p class="text-mainSubDead text-base">
-            ۰۹۱۲۳۴۵۶۷۸۹
-          </p>
-        </div>
-
-        <div class="bg-white rounded-full pr-12">
-          <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
-        </div>
-      </div>
-      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
-        <p class="text-base text-center text-mainBlack font-semibold">
-          برای دریافت برنامه تمرینی ابتدا باید پروفایل
-          <br>
-          خود را تکمیل کنید.
-        </p>
-
-        <div class="flex flex-col justify-center items-center gap-y-3 w-full">
-          <div class="bg-white w-full h-2 rounded">
-            <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
+            <p class="text-mainSubDead text-base">
+              {{ phone }}
+            </p>
           </div>
 
-          <p class="text-mainBlack text-xs">
-            ۵ مرحله دیگر تا تکمیل پروفایل
-          </p>
+          <div class="bg-white rounded-full pr-12">
+            <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
+          </div>
         </div>
+        <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
+          <p class="text-base text-center text-mainBlack font-semibold">
+            برای دریافت برنامه تمرینی ابتدا باید پروفایل
+            <br>
+            خود را تکمیل کنید.
+          </p>
 
-        <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
-          تکمیل پروفایل
+          <div class="flex flex-col justify-center items-center gap-y-3 w-full">
+            <div class="bg-white w-full h-2 rounded">
+              <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
+            </div>
 
-          <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
-        </PrimaryButton>
+            <p class="text-mainBlack text-xs">
+              ۵ مرحله دیگر تا تکمیل پروفایل
+            </p>
+          </div>
+
+          <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
+            تکمیل پروفایل
+
+            <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
+          </PrimaryButton>
+        </div>
       </div>
-    </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        علائم حیاتی
-      </h3>
+      <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+          علائم حیاتی
+        </h3>
 
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
+        <p class="text-[#9E9E9E] text-base">
+          در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+          برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+        </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
-    </div>
+        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش لاغری
-      </h3>
+      <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+          گزارش لاغری
+        </h3>
 
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
+        <p class="text-[#9E9E9E] text-base">
+          در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+          برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+        </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
-    </div>
+        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش اسکلتی- عضلانی
-      </h3>
+      <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+          گزارش اسکلتی- عضلانی
+        </h3>
 
-      <p class="text-[#9E9E9E] text-base">
-       در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
-        <br>
-        ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
+        <p class="text-[#9E9E9E] text-base">
+          در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
+          <br>
+          ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+        </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      </div>
     </div>
   </div>
 </template>
