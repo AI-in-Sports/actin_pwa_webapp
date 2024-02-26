@@ -82,117 +82,107 @@ useHead({title: "اکتین - صفحه اصلی"})
       v-if="profileStatus === 0" is-open title="مرحله ۱ از ۶"
       full-screen :component="userPersonalData"/>
 
-  <div class="flex w-full overflow-auto justify-center">
-    <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] h-full">
-      <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
-        <div class="flex flex-row justify-center items-center gap-x-4 w-full">
-          <PrimaryProfile />
+  <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6">
+    <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
+      <div class="flex flex-row justify-center items-center gap-x-4 w-full">
+        <PrimaryProfile />
 
-          <div class="flex flex-col gap-y-2" v-if="profileStatus !== 0">
-            <p class="text-mainBlack text-2xl font-semibold">
-              {{ user.first_name }} {{ user.last_name }}
-            </p>
-
-            <p class="text-mainSubDead text-base">
-              {{ phone }}
-            </p>
-          </div>
-
-        <div class="bg-white rounded-full pr-12">
-          <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
-        </div>
-      </div>
-
-      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="isReportUnavailable">
-        <p class="text-base text-center text-mainBlack font-semibold">
-          برای دریافت برنامه تمرینی ابتدا باید پروفایل
-          <br>
-          خود را تکمیل کنید.
-        </p>
-          <div class="bg-white rounded-full pr-12">
-            <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
-          </div>
-        </div>
-        <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
-          <p class="text-base text-center text-mainBlack font-semibold">
-            برای دریافت برنامه تمرینی ابتدا باید پروفایل
-            <br>
-            خود را تکمیل کنید.
+        <div class="flex flex-col gap-y-2 flex-grow" v-if="profileStatus !== 0">
+          <p class="text-mainBlack text-2xl font-semibold">
+            {{ user.first_name }} {{ user.last_name }}
           </p>
 
-          <div class="flex flex-col justify-center items-center gap-y-3 w-full">
-            <div class="bg-white w-full h-2 rounded">
-              <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
-            </div>
-
-            <p class="text-mainBlack text-xs">
-              ۵ مرحله دیگر تا تکمیل پروفایل
-            </p>
-          </div>
-
-          <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
-            تکمیل پروفایل
-
-            <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
-          </PrimaryButton>
-        </div>
-  <div class="flex flex-col gap-y-5 w-full" v-else>
-        <div class="flex flex-row justify-between items-center gap-x-2">
-          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-            <p class="text-mainSubDead text-xs">
-              سن
-            </p>
-
-            <p class="text-mainBlack text-lg font-semibold">
-              ۲۶
-            </p>
-          </div>
-
-          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-            <p class="text-mainSubDead text-xs">
-              قد
-            </p>
-
-            <p class="text-mainBlack text-lg font-semibold" dir="ltr">
-              ۱۶۵ cm
-            </p>
-          </div>
-
-          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-            <p class="text-mainSubDead text-xs">
-              وزن
-            </p>
-
-            <p class="text-mainBlack text-lg font-semibold" dir="ltr">
-              ۶۰ kg
-            </p>
-          </div>
-        </div>
-
-        <PrimaryBorderButton class="flex justify-center items-center gap-x-2" @click="$router.push('/profile')">
-          <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">
-            edit
-          </MaterialSymbols>
-
-      <p class="font-medium">
-            ویرایش پروفایل
+          <p class="text-mainSubDead text-base">
+            {{ phone }}
           </p>
-        </PrimaryBorderButton>
+        </div>
+
+      <div class="bg-white rounded-full">
+        <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
       </div>
     </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="isReportUnavailable">
-        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-          علائم حیاتی
-        </h3>
+    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="isReportUnavailable">
+      <p class="text-base text-center text-mainBlack font-semibold">
+        برای دریافت برنامه تمرینی ابتدا باید پروفایل
+        <br>
+        خود را تکمیل کنید.
+      </p>
 
-        <p class="text-[#9E9E9E] text-base">
-          در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-          برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      <div class="flex flex-col justify-center items-center gap-y-3 w-full">
+        <div class="bg-white w-full h-2 rounded">
+          <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
+        </div>
+
+        <p class="text-mainBlack text-xs">
+          ۵ مرحله دیگر تا تکمیل پروفایل
         </p>
-
-        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
       </div>
+
+      <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
+        تکمیل پروفایل
+
+        <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
+      </PrimaryButton>
+    </div>
+
+    <div class="flex flex-col gap-y-5 w-full" v-else>
+      <div class="flex flex-row justify-between items-center gap-x-2">
+        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-xs">
+            سن
+          </p>
+
+          <p class="text-mainBlack text-lg font-semibold">
+            ۲۶
+          </p>
+        </div>
+
+        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-xs">
+            قد
+          </p>
+
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">
+            ۱۶۵ cm
+          </p>
+        </div>
+
+        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-xs">
+            وزن
+          </p>
+
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">
+            ۶۰ kg
+          </p>
+        </div>
+      </div>
+
+      <PrimaryBorderButton class="flex justify-center items-center gap-x-2" @click="$router.push('/profile')">
+        <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">
+          edit
+        </MaterialSymbols>
+
+        <p class="font-medium">
+          ویرایش پروفایل
+        </p>
+      </PrimaryBorderButton>
+    </div>
+
+  </div>
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="isReportUnavailable">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        علائم حیاتی
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else>
       <div class="flex justify-between items-center">
@@ -245,34 +235,34 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-      <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-          گزارش لاغری
-        </h3>
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش لاغری
+      </h3>
 
-        <p class="text-[#9E9E9E] text-base">
-          در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-          برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-        </p>
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
 
-        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
-      </div>
-
-      <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-        <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-          گزارش اسکلتی - عضلانی
-        </h3>
-
-        <p class="text-[#9E9E9E] text-base">
-          در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
-          <br>
-          ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-        </p>
-
-        <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
-      </div>
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
-  </div>
+
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش اسکلتی - عضلانی
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
+        <br>
+        ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+</div>
+
 </template>
 
 <style scoped>
