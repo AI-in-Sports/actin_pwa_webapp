@@ -11,6 +11,8 @@ definePageMeta({
   middleware: ["normal-auth"]
 })
 
+const isReportUnavailable = shallowRef(true)
+
 useAuthStore().$persist()
 
 const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
@@ -79,7 +81,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       v-if="profileStatus === 0" is-open title="مرحله ۱ از ۶"
       full-screen :component="userPersonalData"/>
 
-  <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] overflow-auto h-full">
+  <div class="flex flex-col justify-center items-center gap-y-8 mt-6 w-full max-w-[400px] ">
     <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
         <PrimaryProfile />
@@ -98,7 +100,8 @@ useHead({title: "اکتین - صفحه اصلی"})
           <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
         </div>
       </div>
-      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full">
+
+      <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="isReportUnavailable">
         <p class="text-base text-center text-mainBlack font-semibold">
           برای دریافت برنامه تمرینی ابتدا باید پروفایل
           <br>
@@ -121,9 +124,53 @@ useHead({title: "اکتین - صفحه اصلی"})
           <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
         </PrimaryButton>
       </div>
+
+      <div class="flex flex-col gap-y-5 w-full" v-else>
+        <div class="flex flex-row justify-between items-center gap-x-2">
+          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+            <p class="text-mainSubDead text-xs">
+              سن
+            </p>
+
+            <p class="text-mainBlack text-lg font-semibold">
+              ۲۶
+            </p>
+          </div>
+
+          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+            <p class="text-mainSubDead text-xs">
+              قد
+            </p>
+
+            <p class="text-mainBlack text-lg font-semibold" dir="ltr">
+              ۱۶۵ cm
+            </p>
+          </div>
+
+          <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
+            <p class="text-mainSubDead text-xs">
+              وزن
+            </p>
+
+            <p class="text-mainBlack text-lg font-semibold" dir="ltr">
+              ۶۰ kg
+            </p>
+          </div>
+        </div>
+
+        <PrimaryBorderButton class="flex justify-center items-center gap-x-2" @click="$router.push('/profile')">
+          <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">
+            edit
+          </MaterialSymbols>
+
+          <p class="font-medium">
+            ویرایش پروفایل
+          </p>
+        </PrimaryBorderButton>
+      </div>
     </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="isReportUnavailable">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
@@ -134,6 +181,57 @@ useHead({title: "اکتین - صفحه اصلی"})
       </p>
 
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else>
+      <div class="flex justify-between items-center">
+        <h3 class="text-mainBlack text-[21px] font-semibold">
+          علائم حیاتی
+        </h3>
+
+        <p class="text-sm text-[#727272]">
+          ۱۳ اردیبهشت ۱۴۰۲
+        </p>
+      </div>
+
+      <div class="flex flex-col px-6">
+        <div class="flex justify-between items-center py-4">
+          <p class="text-base text-mainBlack font-semibold">
+            وضعیت فشارخون
+          </p>
+
+          <div class="px-2 py-1 bg-[#E8F5E9] rounded-full">
+            <p class="text-base text-[#008060] font-semibold" dir="ltr">
+              ۱۲۰/ ۸۰
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center py-4">
+          <p class="text-base text-mainBlack font-semibold">
+            وضعیت ضربان قلب
+          </p>
+
+          <div class="px-2 py-1 bg-[#FFEBEE] rounded-full">
+            <p class="text-base text-[#B3261E] font-semibold" dir="ltr">
+              ۶۸ <span class="text-xs font-normal ml-1.5">BPM</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center py-4">
+          <p class="text-base text-mainBlack font-semibold">
+            وضعیت اکسیژن خون
+          </p>
+
+          <div class="px-2 py-1 bg-[#FFF8E1] rounded-full">
+            <p class="text-xs text-[#916A00]" dir="ltr">
+              به زودی
+            </p>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
@@ -151,7 +249,7 @@ useHead({title: "اکتین - صفحه اصلی"})
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش اسکلتی- عضلانی
+        گزارش اسکلتی - عضلانی
       </h3>
 
       <p class="text-[#9E9E9E] text-base">
