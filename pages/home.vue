@@ -4,14 +4,12 @@ import s2 from "~/assets/slides/2.jpg"
 import s3 from "~/assets/slides/3.jpg"
 import s4 from "~/assets/slides/4.jpg"
 import s5 from "~/assets/slides/5.jpg"*/
-//import type {Reservation, Report, SurveyStatusResponse} from "~/types/Responses"
+import type {Reservation, Report, SurveyStatusResponse} from "~/types/Responses"
 
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
 })
-
-const isReportUnavailable = shallowRef(true)
 
 useAuthStore().$persist()
 
@@ -31,33 +29,28 @@ const logout = () => {
 }
 
 const profileStatus = useState(() => 0)
-/*const reports_data = useState(() => [] as Report[])
+const reports_data = useState()
+/*
 const reservations_data = useState(() => [] as Reservation[])
-const isSurvey = shallowRef(false)*/
+const isSurvey = shallowRef(false)
+*/
 
 await useLazyAsyncData('home_data', async () => {
-  const [/*reservations, reports, survey*/profileComplete] = await Promise.all([
+  const [profileComplete, latestReport] = await Promise.all([
     useSSRFetch<{complete: number}>("/profile/complete_status", {
       auth: true
   }),
-   /* useSSRFetch<Reservation[]>("/reservation/getAll", {
+    /*useSSRFetch<Reservation[]>("/reservation/getAll", {
       auth: true
-    }),
-    useSSRFetch<Report[]>("/report/getAll", {
-      auth: true,
-      transform: (input: Report[]) => {
-        return input.map(item => ({
-          testId: item.testId,
-          date: new Date(item.date as string)
-        }))
-      }
-    }),
-    useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+    }),*/
+  useSSRFetch<Report>("/report/get/latest", {auth: true}),
+  /*  useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
       auth: true
     })*/
   ])
 
   profileStatus.value = profileComplete.data.value!.complete
+  reports_data.value = latestReport.data.value! as Report
 /*  isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
 
   reports_data.value = reports.data.value!
@@ -102,7 +95,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="isReportUnavailable">
+    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profileStatus > 0">
       <p class="text-base text-center text-mainBlack font-semibold">
         برای دریافت برنامه تمرینی ابتدا باید پروفایل
         <br>
@@ -126,7 +119,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       </PrimaryButton>
     </div>
 
-    <div class="flex flex-col gap-y-5 w-full" v-else>
+    <div class=" flex-col gap-y-5 w-full hidden">
       <div class="flex flex-row justify-between items-center gap-x-2">
         <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
           <p class="text-mainSubDead text-xs">
@@ -171,7 +164,7 @@ useHead({title: "اکتین - صفحه اصلی"})
     </div>
 
   </div>
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="isReportUnavailable">
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reports_data">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
