@@ -6,10 +6,13 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
+  gtag: {
+    id: 'G-VYZEM75972'
+  },
   modules: [
     "@vite-pwa/nuxt", "nuxt3-leaflet", "nuxt-swiper",
     "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt",
-    "@nuxt/image"
+    "@nuxt/image", "nuxt-gtag"
   ],
   image: {dir: 'assets/'},
   css: [
