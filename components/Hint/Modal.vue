@@ -13,7 +13,7 @@ defineProps<{
 
       <slot/>
 
-      <PrimaryButton class="!font-medium" @click="$emit('toggleModal')">بستن راهنما</PrimaryButton>
+      <ThemeButton class="!font-medium" @click="$emit('toggleModal')">بستن راهنما</ThemeButton>
     </div>
   </section>
 </template>

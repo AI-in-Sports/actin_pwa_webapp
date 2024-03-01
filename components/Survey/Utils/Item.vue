@@ -15,7 +15,7 @@ defineProps<{
       <p class="text-[16px] font-medium text-mainBlack">{{ title }}</p>
     </div>
 
-    <PrimaryCheckBox :checked="selected"/>
+    <ThemeCheckBox :checked="selected"/>
   </div>
 </template>
 

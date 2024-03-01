@@ -106,9 +106,9 @@ const submitForm = async () => {
 
       <form action="" dir="rtl" class="flex flex-col items-center w-full mt-[32px]" @submit.prevent="submitForm">
 
-        <VerificationCode class="mb-16" v-model:value="code" :disabled="isSubmit"/>
+        <ThemeVerificationCode class="mb-16" v-model:value="code" :disabled="isSubmit"/>
 
-        <PrimaryButton type="submit" :disabled="isSubmit">ورود</PrimaryButton>
+        <ThemeButton type="submit" :disabled="isSubmit">ورود</ThemeButton>
       </form>
 
       <div></div>

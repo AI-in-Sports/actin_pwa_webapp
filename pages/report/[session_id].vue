@@ -116,9 +116,9 @@ const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).ge
           <span class="text-mainBlack">“برنامه تمرینی منظم”</span> و یا در طی چند جلسه <span class="text-mainBlack">“فیزیوتراپی”</span>، حرکاتی را انجام دهید که منجر به اصلاح بدن شما گردد.
         </p>
 
-        <PrimaryButton class="rounded-full !font-semibold" @click="$router.push('/ce')">
+        <ThemeButton class="rounded-full !font-semibold" @click="$router.push('/ce')">
           دریافت برنامه تمرینی
-        </PrimaryButton>
+        </ThemeButton>
       </div>
     </div>
   </div>

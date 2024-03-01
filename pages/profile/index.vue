@@ -2,20 +2,20 @@
 definePageMeta({
   layout: "profile"
 })
+
+useHead({title: "پروفایل"})
 </script>
 
 <template>
   <div class="flex flex-col items-center h-full w-full max-w-[400px] px-4 mt-5">
-    <div class="relative mb-8">
-      <img src="../../assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] rounded-full">
+    <div class="relative mb-8 w-full flex justify-center">
+<!--      <img src="../../assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] object-cover rounded-full">-->
 
-      <div class="flex justify-center items-center bg-black w-7 h-7 border-[3px] border-solid	border-white absolute bottom-0 left-3 rounded-full cursor-pointer">
-        <MaterialSymbols theme="rounded" class="text-white text-base">edit</MaterialSymbols>
-      </div>
+      <PrimaryProfile large editable />
     </div>
 
     <div class="flex flex-col justify-center items-center gap-y-1 w-full">
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-90" to="/profile/personal">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-[98%]" to="/profile/personal">
         <p class="text-mainBlack text-base py-1 px-2">
           اطلاعات شخصی
         </p>
@@ -23,7 +23,7 @@ definePageMeta({
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base px-6">chevron_left</MaterialSymbols>
       </NuxtLink>
 
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-90" to="/profile/physical">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-[98%]" to="/profile/physical">
         <p class="text-mainBlack text-base py-1 px-2">
           اطلاعات جسمی
         </p>
@@ -31,7 +31,7 @@ definePageMeta({
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base px-6">chevron_left</MaterialSymbols>
       </NuxtLink>
 
-      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-90" to="/profile/exercise">
+      <NuxtLink class="flex flex-row justify-between items-center rounded-lg w-full py-2 pr-2 cursor-pointer hover:scale-[98%]" to="/profile/exercise">
         <p class="text-mainBlack text-base py-1 px-2">
           اطلاعات ورزشی
         </p>

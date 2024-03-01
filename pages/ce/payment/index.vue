@@ -71,7 +71,7 @@ useHead({title: `اکتین - پرداخت`})
       </div>
     </div>
 
-    <PrimaryButton class="mt-[32px]" :disabled="!paymentUrl" @click="pay">پرداخت</PrimaryButton>
+    <ThemeButton class="mt-[32px]" :disabled="!paymentUrl" @click="pay">پرداخت</ThemeButton>
   </div>
 </template>
 

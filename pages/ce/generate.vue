@@ -34,7 +34,7 @@ useHead({title: `اکتین - درحال تولید برنامه اصلاحی`})
 <template>
   <div class="flex flex-col items-center h-full justify-center p-[16px]">
     <ClientOnly>
-      <PrimaryCircleProgressBar :isCounting="true" :time="60" @done="doneAlert" class="h-[120px] w-[120px]"/>
+      <ThemeCircleProgressBar :isCounting="true" :time="60" @done="doneAlert" class="h-[120px] w-[120px]"/>
     </ClientOnly>
     <p class="text-[18px] text-center mb-8 font-semibold mt-[56px]">
       در حال طراحی برنامه تمرینی مناسب شما براساس نتایج تست...

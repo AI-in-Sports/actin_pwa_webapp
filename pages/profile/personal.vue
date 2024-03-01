@@ -5,21 +5,53 @@ definePageMeta({
 
 const isEditDisable = shallowRef(true)
 
+const data = ref({
+  gender: null,
+  first_name: null,
+  last_name: null,
+  date: null
+} as {
+  gender?: 'male' | 'female' | null,
+  first_name: string | null,
+  last_name: string | null,
+  date: Date | null
+})
+
+onMounted(() => {
+  const store = useAuthStore()
+
+  data.value.gender = store.user.gender === 0 ? 'male' : 'female'
+  data.value.first_name = store.user.first_name
+  data.value.last_name = store.user.last_name
+  data.value.date = store.user.birthday
+})
 </script>
 
 <template>
   <div class="flex flex-col max-w-[400px] justify-between h-full pb-4">
     <div class="flex flex-col gap-y-8 px-4 mt-5">
-      <PrimaryInput type="text" placeholder="نام" class="text-mainBlack text-base w-full" :disabled="isEditDisable"></PrimaryInput>
+      <ThemeInput
+          v-model:value="data.first_name"
+          type="text" placeholder="نام"
+          class="text-mainBlack text-base w-full"
+          :disabled="isEditDisable"/>
 
-      <PrimaryInput type="text" placeholder="نام خانوادگی" class="text-mainBlack text-base w-full" :disabled="isEditDisable"></PrimaryInput>
+      <ThemeInput
+          v-model:value="data.last_name"
+          type="text" placeholder="نام خانوادگی"
+          class="text-mainBlack text-base w-full"
+          :disabled="isEditDisable"/>
 
-      <PrimaryInput type="date" placeholder="تاریخ تولد" class="text-mainBlack text-base w-full" :disabled="isEditDisable"></PrimaryInput>
+      <ThemeInput
+          v-model:value="data.date"
+          type="date" placeholder="تاریخ تولد"
+          class="text-mainBlack text-base w-full"
+          :disabled="isEditDisable"/>
 
-      <PrimarySelect placeholder="جنسیت" :disabled="isEditDisable">
-        <option class="text-black/[0.87]">مرد</option>
-        <option class="text-black/[0.87]">زن</option>
-      </PrimarySelect>
+      <ThemeSelect placeholder="جنسیت" :disabled="isEditDisable" v-model:value="data.gender">
+        <option value="male">مرد</option>
+        <option value="female">زن</option>
+      </ThemeSelect>
     </div>
 
     <div class="px-4">
@@ -33,11 +65,11 @@ const isEditDisable = shallowRef(true)
         </p>
       </PrimaryBorderButton>
 
-      <PrimaryButton
+      <ThemeButton
           class="px-4 py-4 cursor-pointer text-base text-mainBlack font-medium"
           v-else @click="isEditDisable = !isEditDisable">
         ذخیره تغییرات
-      </PrimaryButton>
+      </ThemeButton>
     </div>
   </div>
 </template>

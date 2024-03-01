@@ -46,16 +46,16 @@ const submitProfileInfo = async () => {
         class="flex flex-col gap-8 max-w-[500px] w-full h-full items-center justify-end sm:justify-center">
       <h2 class="font-semibold text-2xl text-black/80">مشخصات فردی</h2>
 
-      <PrimaryInput v-model:value="first_name" type="text" placeholder="نام" required class="w-full"/>
+      <ThemeInput v-model:value="first_name" type="text" placeholder="نام" required class="w-full"/>
 
-      <PrimaryInput v-model:value="last_name" type="text" placeholder="نام خانوادگی" required class="w-full"/>
+      <ThemeInput v-model:value="last_name" type="text" placeholder="نام خانوادگی" required class="w-full"/>
 
-      <PrimarySelect v-model:value="gender" required placeholder="جنسیت" class="w-full">
+      <ThemeSelect v-model:value="gender" required placeholder="جنسیت" class="w-full">
         <option value="0">مرد</option>
         <option value="1">زن</option>
-      </PrimarySelect>
+      </ThemeSelect>
 
-      <PrimaryButton type="submit">بعدی</PrimaryButton>
+      <ThemeButton type="submit">بعدی</ThemeButton>
     </form>
   </div>
 </template>

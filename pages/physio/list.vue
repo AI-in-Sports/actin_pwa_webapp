@@ -9,12 +9,12 @@ const config = useRuntimeConfig()
 const physioList = ref()
 
 onMounted(async () => {
-  const loading = useToast().loading("در حال دریافت اطلاعات...")
+  const loading = useToast.loading("در حال دریافت اطلاعات...")
 
   await useAxios(true)(`${config.public.APP_BACKEND}/physio/physiotherapists`).then((value) => {
     physioList.value = value.data['physio']
 
-    useToast().clearAll()
+    useToast.clearAll()
   }).catch((e) => {
     console.log(e)
 

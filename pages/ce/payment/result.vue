@@ -57,8 +57,8 @@ useHead({title: `اکتین - ${status.value === 1 ? 'پرداخت ناموفق'
         }}</h2>
     </div>
 
-    <PrimaryButton @click="goto('/ce/payment')" v-if="status === 1">پرداخت مجدد</PrimaryButton>
-    <PrimaryButton @click="goto('/ce')" v-else>دریافت برنامه</PrimaryButton>
+    <ThemeButton @click="goto('/ce/payment')" v-if="status === 1">پرداخت مجدد</ThemeButton>
+    <ThemeButton @click="goto('/ce')" v-else>دریافت برنامه</ThemeButton>
   </div>
 </template>
 

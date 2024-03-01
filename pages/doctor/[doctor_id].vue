@@ -88,9 +88,9 @@ useHead({title: `Actin - Doctor page`})
   </div>
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]">
-    <PrimaryButton class="!font-semibold" @click="$router.replace(`/doctor/reservation/${route.params.doctor_id}`)">
+    <ThemeButton class="!font-semibold" @click="$router.replace(`/doctor/reservation/${route.params.doctor_id}`)">
       ثبت نوبت
-    </PrimaryButton>
+    </ThemeButton>
   </div>
 </template>
 

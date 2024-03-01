@@ -54,17 +54,17 @@ useHead({title: "اکتین - برنامه تمرینی"})
       </p>
 
       <div class="flex flex-col mt-[34px]">
-        <PrimaryButton
+        <ThemeButton
             @click="$router.replace('/ce/survey/')"
             v-if="data?.mode === 1 || data!.mode! === 2" class="!font-semibold !text-[16px]">
           تکمیل فرم وضعیت جسمی
-        </PrimaryButton>
+        </ThemeButton>
 
-        <PrimaryButton
+        <ThemeButton
             @click="$router.replace('/ce/payment')"
             v-if="data?.mode === 3" class="!font-semibold !text-[16px]">
           پرداخت
-        </PrimaryButton>
+        </ThemeButton>
       </div>
     </section>
 

@@ -4,7 +4,7 @@ import s2 from "~/assets/slides/2.jpg"
 import s3 from "~/assets/slides/3.jpg"
 import s4 from "~/assets/slides/4.jpg"
 import s5 from "~/assets/slides/5.jpg"*/
-import type {Reservation, Report, SurveyStatusResponse} from "~/types/Responses"
+import type {Report} from "~/types/Responses"
 
 definePageMeta({
   layout: "main",
@@ -39,13 +39,13 @@ await useLazyAsyncData('home_data', async () => {
   const [profileComplete, latestReport] = await Promise.all([
     useSSRFetch<{complete: number}>("/profile/complete_status", {
       auth: true
-  }),
+    }),
     /*useSSRFetch<Reservation[]>("/reservation/getAll", {
       auth: true
     }),*/
-  useSSRFetch<Report>("/report/get/latest", {auth: true}),
-  /*  useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
-      auth: true
+    useSSRFetch<Report>("/report/get/latest", {auth: true}),
+    /*  useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+        auth: true
     })*/
   ])
 
@@ -112,11 +112,13 @@ useHead({title: "اکتین - صفحه اصلی"})
         </p>
       </div>
 
-      <PrimaryButton class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium">
+      <ThemeButton
+          class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium"
+          @click="$router.push('/profile')">
         تکمیل پروفایل
 
         <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
-      </PrimaryButton>
+      </ThemeButton>
     </div>
 
     <div class=" flex-col gap-y-5 w-full hidden">
@@ -241,7 +243,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4">
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reports_data">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
       </h3>
@@ -253,6 +255,10 @@ useHead({title: "اکتین - صفحه اصلی"})
       </p>
 
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+    </div>
+
+    <div class="w-full flex flex-col p-2" v-else>
+      <ReportViewSelector class="w-full" :active="0"/>
     </div>
 </div>
 

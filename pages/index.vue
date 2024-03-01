@@ -76,12 +76,12 @@ useHead({title: "Actin"})
     </p>
 
     <form action="" @submit.prevent="submit" class="flex flex-col items-center w-full px-[24px] mt-[24px]">
-      <PrimaryInput
+      <ThemeInput
           placeholder="شماره تلفن" class="w-full mb-[32px] text-left"
           type="tel" dir="ltr" v-model:value="phoneNumber"
           :disabled="isSubmit" required/>
 
-      <PrimaryButton type="submit" :disabled="isSubmit">ورود</PrimaryButton>
+      <ThemeButton type="submit" :disabled="isSubmit">ورود</ThemeButton>
     </form>
   </div>
 </template>

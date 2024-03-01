@@ -220,9 +220,9 @@ const toggleExercise = () => {
           <Skeletor width="200px" v-else circle height="200px"/>
         </div>
 
-        <PrimaryButton v-if="isDoneCompleted === 2" @click="$router.replace('/ce')">
+        <ThemeButton v-if="isDoneCompleted === 2" @click="$router.replace('/ce')">
           پایان تمرین
-        </PrimaryButton>
+        </ThemeButton>
 
         <Skeletor v-else width="100%" class="self-center" height="48px" pill/>
       </section>
@@ -246,13 +246,13 @@ const toggleExercise = () => {
         </div>
 
         <div class="flex flex-col flex-grow justify-end">
-          <PrimaryButton
+          <ThemeButton
               class="flex items-center justify-center gap-[8px] !text-[16px] font-semibold"
               v-if="exerciseTrack" @click="toggleExercise">
             شروع کن
 
             <MaterialSymbols theme="rounded">chevron_left</MaterialSymbols>
-          </PrimaryButton>
+          </ThemeButton>
         </div>
       </section>
 
@@ -280,17 +280,17 @@ const toggleExercise = () => {
           </ClientOnly>
         </div>
 
-        <PrimaryButton
+        <ThemeButton
             v-if="exerciseTrack.status === 'playing'"
             class="flex items-center justify-center" @click="toggleExercise">
           <MaterialSymbols theme="rounded">pause</MaterialSymbols>
-        </PrimaryButton>
+        </ThemeButton>
 
-        <PrimaryButton
+        <ThemeButton
             v-if="exerciseTrack.status === 'paused'"
             class="flex items-center justify-center" @click="toggleExercise">
           <MaterialSymbols theme="rounded">play_arrow</MaterialSymbols>
-        </PrimaryButton>
+        </ThemeButton>
       </section>
     </article>
 

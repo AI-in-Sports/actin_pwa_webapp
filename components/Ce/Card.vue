@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {Exercise} from "~/types/CorrectiveExercise"
+import type {Exercise} from "@actin/pwa-layer/types/ce.types"
 
 const user = useAuthStore().user
 
