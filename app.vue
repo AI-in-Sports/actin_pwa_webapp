@@ -1,5 +1,14 @@
 <script lang="ts" setup>
 useLoadingIndicator().start()
+
+useHead({
+  script: [
+    {
+      async: true,
+      src: "https://www.googletagmanager.com/gtag/js?id=G-VYZEM75972"
+    }
+  ]
+})
 </script>
 
 <template>
