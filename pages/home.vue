@@ -253,7 +253,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
 
       <ReportViewSelector
-          class="w-full" :active="reportActiveTab"
+          class="w-full sticky top-5 z-30 shadow-md backdrop-blur-xl bg-[#EEEEEE]/60" :active="reportActiveTab"
           @changeView="(item: number) => reportActiveTab = item"/>
 
       <ReportSkeleton
