@@ -1,10 +1,6 @@
 <script setup lang="ts">
-/*import s1 from "~/assets/slides/1.jpg"
-import s2 from "~/assets/slides/2.jpg"
-import s3 from "~/assets/slides/3.jpg"
-import s4 from "~/assets/slides/4.jpg"
-import s5 from "~/assets/slides/5.jpg"*/
 import type {Report} from "~/types/Responses"
+import jalali from "jalaali-js"
 
 definePageMeta({
   layout: "main",
@@ -20,16 +16,20 @@ const route = useRoute()
 const user = useAuthStore().user
 const phone = useAuthStore().phone
 
-/*const pagination = shallowRef({el: '.swiper-pagination', type: 'bullets'})
-const slides = shallowRef([s1, s2, s3, s4, s5])*/
-
 const logout = () => {
   useAuthStore().logout()
   location.reload()
 }
 
 const profileStatus = useState(() => 0)
-const reports_data = useState()
+const showCompleteProfile = useState(() => false)
+
+const reportActiveTab = shallowRef(0)
+const reportData: any = useState()
+const reportViews = shallowRef([
+  resolveComponent("LazyReportFrontalView"),
+  resolveComponent("LazyReportSagitalView")
+])
 /*
 const reservations_data = useState(() => [] as Reservation[])
 const isSurvey = shallowRef(false)
@@ -50,7 +50,7 @@ await useLazyAsyncData('home_data', async () => {
   ])
 
   profileStatus.value = profileComplete.data.value!.complete
-  reports_data.value = latestReport.data.value! as Report
+  reportData.value = latestReport.data.value! as Report
 /*  isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
 
   reports_data.value = reports.data.value!
@@ -124,49 +124,33 @@ useHead({title: "اکتین - صفحه اصلی"})
     <div class=" flex-col gap-y-5 w-full hidden">
       <div class="flex flex-row justify-between items-center gap-x-2">
         <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">
-            سن
-          </p>
+          <p class="text-mainSubDead text-xs">سن</p>
 
-          <p class="text-mainBlack text-lg font-semibold">
-            ۲۶
-          </p>
+          <p class="text-mainBlack text-lg font-semibold">۲۶</p>
         </div>
 
         <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">
-            قد
-          </p>
+          <p class="text-mainSubDead text-xs">قد</p>
 
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">
-            ۱۶۵ cm
-          </p>
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">۱۶۵ cm</p>
         </div>
 
         <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">
-            وزن
-          </p>
+          <p class="text-mainSubDead text-xs">وزن</p>
 
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">
-            ۶۰ kg
-          </p>
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">۶۰ kg</p>
         </div>
       </div>
 
       <PrimaryBorderButton class="flex justify-center items-center gap-x-2" @click="$router.push('/profile')">
-        <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">
-          edit
-        </MaterialSymbols>
+        <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">edit</MaterialSymbols>
 
-        <p class="font-medium">
-          ویرایش پروفایل
-        </p>
+        <p class="font-medium">ویرایش پروفایل</p>
       </PrimaryBorderButton>
     </div>
 
   </div>
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reports_data">
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reportData">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
@@ -243,7 +227,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reports_data">
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData['report']">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
       </h3>
@@ -257,8 +241,30 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="w-full flex flex-col p-2" v-else>
-      <ReportViewSelector class="w-full" :active="0"/>
+    <div class="w-full flex flex-col p-2 pt-0" v-else>
+      <div class="w-full flex justify-between pb-6">
+        <h2 class="font-semibold text-[21px]">گزارش اسکلتی- عضلانی</h2>
+
+        <p class="text-sm text-[#727272]">
+          {{ persianNumber(jalali.toJalaali(new Date(reportData.report['date'])).jd.toString()) + " " }}
+          {{ new Date(new Date(reportData.report['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData.report['date'])).jm.toString()) }}
+        </p>
+      </div>
+
+      <ReportViewSelector
+          class="w-full" :active="reportActiveTab"
+          @changeView="(item: number) => reportActiveTab = item"/>
+
+      <ReportSkeleton
+          class="mt-[20px] w-full"
+          :test="reportActiveTab === 0 ? 'frontal' : 'sagital'"
+          :report="reportActiveTab === 0 ? reportData.report.analyze.zones.frontal : reportData.report.analyze.zones"/>
+
+      <component
+          class="w-full mt-6"
+          :is="reportViews[reportActiveTab]"
+          :report="reportActiveTab === 0 ? reportData.report.analyze.zones.frontal : reportData.report.analyze.zones"/>
     </div>
 </div>
 

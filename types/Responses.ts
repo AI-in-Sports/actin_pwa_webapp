@@ -1,6 +1,6 @@
 import type {JalaaliDateObject} from "jalaali-js"
 import type {ExerciseDays} from "~/stores/survey.types"
-import type {Exercise} from "~/types/CorrectiveExercise";
+import type {Exercise} from "@actin/pwa-layer/types/ce.types"
 
 export type Reservation = {
     name: string,
