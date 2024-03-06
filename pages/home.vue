@@ -27,6 +27,10 @@ const completeProfileSurvey = shallowRef([
   {
     component: resolveComponent("LazySurveyUserCompleteProfileHeight"),
     name: "height"
+  },
+  {
+    component: resolveComponent("LazySurveyUserCompleteProfileWeight"),
+    name: "weight"
   }
 ] as {
   component: any,
@@ -34,7 +38,7 @@ const completeProfileSurvey = shallowRef([
 }[])
 
 const submitCompleteSurvey = async () => {
-  const submitResponse = await profile.submitSurvey("extra", "birthday")
+  const submitResponse = await profile.submitSurvey("extra", completeProfileSurvey.value[completeProfileSurveyActive.value].name)
 
   if(!submitResponse)
     return useToast.error("خطا هنگام ثبت اطلاعات!")
@@ -109,17 +113,17 @@ useHead({title: "اکتین - صفحه اصلی"})
   <LazyThemeBottomSheet
       v-if="showCompleteProfile" is-open
       @onClose="showCompleteProfile = false"
-      closable header :title="`مرحله ${completeProfileSurvey.length} از ${completeProfileSurveyActive + 1}`">
+      closable header :title="`مرحله ${completeProfileSurveyActive + 1} از ${completeProfileSurvey.length}`">
     <component :is="completeProfileSurvey[completeProfileSurveyActive].component"/>
 
     <ThemeButton
-        class="mt-3" v-if="completeProfileSurvey"
+        class="mt-8" v-if="completeProfileSurveyActive === 0"
         @click="submitCompleteSurvey">بعدی</ThemeButton>
 
-    <div class="w-full flex justify-between mt-3 gap-2" v-else>
-      <PrimaryBorderButton>قبلی</PrimaryBorderButton>
+    <div class="w-full flex justify-between mt-8 gap-2" v-else>
+      <PrimaryBorderButton @click="completeProfileSurveyActive--">قبلی</PrimaryBorderButton>
 
-      <ThemeButton>بعدی</ThemeButton>
+      <ThemeButton @click="submitCompleteSurvey">بعدی</ThemeButton>
     </div>
   </LazyThemeBottomSheet>
 
@@ -279,7 +283,6 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <!-- ToDo: Fix this bitch!!! -->
     <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
@@ -312,12 +315,12 @@ useHead({title: "اکتین - صفحه اصلی"})
       <ReportSkeleton
           class="mt-[20px] w-full"
           :test="reportActiveTab === 0 ? 'frontal' : 'sagital'"
-          :report="reportActiveTab === 0 ? reportData.analyze.zones.frontal : reportData.analyze.zones"/>
+          :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
 
       <component
           class="w-full mt-6"
           :is="reportViews[reportActiveTab]"
-          :report="reportActiveTab === 0 ? reportData.analyze.zones.frontal : reportData.analyze.zones"/>
+          :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
     </div>
 </div>
 
