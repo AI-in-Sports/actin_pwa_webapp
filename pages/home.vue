@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type {Report} from "~/types/Responses"
 import jalali from "jalaali-js"
+import type {Profile} from "~/stores/profile"
+import type {ExerciseDaysType, ExercisePlaceType, SolesStatusType} from "~/stores/survey.types"
 
 definePageMeta({
   layout: "main",
@@ -9,12 +10,37 @@ definePageMeta({
 
 useAuthStore().$persist()
 
-const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
-
 const route = useRoute()
 
 const user = useAuthStore().user
 const phone = useAuthStore().phone
+const profile = useProfileStore()
+
+const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
+
+const completeProfileSurveyActive = shallowRef(0)
+const completeProfileSurvey = shallowRef([
+  {
+    component: resolveComponent("LazySurveyUserCompleteProfileBirthday"),
+    name: "birthday"
+  },
+  {
+    component: resolveComponent("LazySurveyUserCompleteProfileHeight"),
+    name: "height"
+  }
+] as {
+  component: any,
+  name: keyof Profile
+}[])
+
+const submitCompleteSurvey = async () => {
+  const submitResponse = await profile.submitSurvey("extra", "birthday")
+
+  if(!submitResponse)
+    return useToast.error("خطا هنگام ثبت اطلاعات!")
+
+  completeProfileSurveyActive.value++
+}
 
 const logout = () => {
   useAuthStore().logout()
@@ -25,36 +51,45 @@ const profileStatus = useState(() => 0)
 const showCompleteProfile = useState(() => false)
 
 const reportActiveTab = shallowRef(0)
-const reportData: any = useState()
+const reportData = useState(() => null)
 const reportViews = shallowRef([
   resolveComponent("LazyReportFrontalView"),
   resolveComponent("LazyReportSagitalView")
 ])
-/*
-const reservations_data = useState(() => [] as Reservation[])
-const isSurvey = shallowRef(false)
-*/
 
 await useLazyAsyncData('home_data', async () => {
   const [profileComplete, latestReport] = await Promise.all([
-    useSSRFetch<{complete: number}>("/profile/complete_status", {
+    useSSRFetch<{complete: number, info?: {
+        birthday?: Date
+        weight?: number
+        height?: number
+        exercise_days?: ExerciseDaysType[],
+        soles_status?: SolesStatusType,
+        exercise_place?: ExercisePlaceType[]
+      }}>("/profile/complete_status", {
       auth: true
     }),
-    /*useSSRFetch<Reservation[]>("/reservation/getAll", {
-      auth: true
-    }),*/
-    useSSRFetch<Report>("/report/get/latest", {auth: true}),
-    /*  useSSRFetch<SurveyStatusResponse>("/ce/survey/status", {
-        auth: true
-    })*/
+    useSSRFetch<{
+      status: number,
+      report?: null | any
+    }>("/report/get/latest", {auth: true}),
   ])
 
-  profileStatus.value = profileComplete.data.value!.complete
-  reportData.value = latestReport.data.value! as Report
-/*  isSurvey.value = [0, 3, 4].includes(survey.data.value?.mode!)
+  if(latestReport.data.value!.status === 200)
+    reportData.value = latestReport.data.value!.report!
 
-  reports_data.value = reports.data.value!
-  reservations_data.value = reservations.data.value!*/
+  profileStatus.value = profileComplete.data.value!.complete
+
+  const userInfo = profileComplete.data.value!.info
+
+  if (profileStatus.value === 2 && userInfo) {
+    profile.set("birthday", userInfo.birthday)
+    profile.set("weight", userInfo.weight)
+    profile.set("height", userInfo.height)
+    profile.set("exercise_days", userInfo.exercise_days)
+    profile.set("soles_status", userInfo.soles_status)
+    profile.set("exercise_place", userInfo.exercise_place)
+  }
 })
 
 onMounted(async () => {
@@ -71,8 +106,25 @@ useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
-  <ThemeBottomSheet
-      v-if="profileStatus === 0" is-open title="مرحله ۱ از ۶"
+  <LazyThemeBottomSheet
+      v-if="showCompleteProfile" is-open
+      @onClose="showCompleteProfile = false"
+      closable header :title="`مرحله ${completeProfileSurvey.length} از ${completeProfileSurveyActive + 1}`">
+    <component :is="completeProfileSurvey[completeProfileSurveyActive].component"/>
+
+    <ThemeButton
+        class="mt-3" v-if="completeProfileSurvey"
+        @click="submitCompleteSurvey">بعدی</ThemeButton>
+
+    <div class="w-full flex justify-between mt-3 gap-2" v-else>
+      <PrimaryBorderButton>قبلی</PrimaryBorderButton>
+
+      <ThemeButton>بعدی</ThemeButton>
+    </div>
+  </LazyThemeBottomSheet>
+
+  <LazyThemeBottomSheet
+      v-if="profileStatus === 0" is-open
       full-screen :component="userPersonalData"/>
 
   <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6">
@@ -114,7 +166,7 @@ useHead({title: "اکتین - صفحه اصلی"})
 
       <ThemeButton
           class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium"
-          @click="$router.push('/profile')">
+          @click="showCompleteProfile = true">
         تکمیل پروفایل
 
         <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
@@ -227,7 +279,8 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData['report']">
+    <!-- ToDo: Fix this bitch!!! -->
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
       </h3>
@@ -246,9 +299,9 @@ useHead({title: "اکتین - صفحه اصلی"})
         <h2 class="font-semibold text-[21px]">گزارش اسکلتی- عضلانی</h2>
 
         <p class="text-sm text-[#727272]">
-          {{ persianNumber(jalali.toJalaali(new Date(reportData.report['date'])).jd.toString()) + " " }}
-          {{ new Date(new Date(reportData.report['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-          {{ persianNumber(jalali.toJalaali(new Date(reportData.report['date'])).jm.toString()) }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jd.toString()) + " " }}
+          {{ new Date(new Date(reportData['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jm.toString()) }}
         </p>
       </div>
 
@@ -259,12 +312,12 @@ useHead({title: "اکتین - صفحه اصلی"})
       <ReportSkeleton
           class="mt-[20px] w-full"
           :test="reportActiveTab === 0 ? 'frontal' : 'sagital'"
-          :report="reportActiveTab === 0 ? reportData.report.analyze.zones.frontal : reportData.report.analyze.zones"/>
+          :report="reportActiveTab === 0 ? reportData.analyze.zones.frontal : reportData.analyze.zones"/>
 
       <component
           class="w-full mt-6"
           :is="reportViews[reportActiveTab]"
-          :report="reportActiveTab === 0 ? reportData.report.analyze.zones.frontal : reportData.report.analyze.zones"/>
+          :report="reportActiveTab === 0 ? reportData.analyze.zones.frontal : reportData.analyze.zones"/>
     </div>
 </div>
 
