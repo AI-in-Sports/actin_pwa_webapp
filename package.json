@@ -16,7 +16,7 @@
     "@types/node": "^20.6.0",
     "@vite-pwa/nuxt": "^0.1.1",
     "autoprefixer": "^10.4.15",
-    "nuxt": "^3.9.1",
+    "nuxt": "^3.10.3",
     "nuxt-gtag": "^2.0.1",
     "nuxt-swiper": "^1.2.2",
     "nuxt3-leaflet": "^1.0.12",
