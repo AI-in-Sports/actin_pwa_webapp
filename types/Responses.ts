@@ -1,5 +1,4 @@
-import type {JalaaliDateObject} from "jalaali-js"
-import type {ExerciseDays} from "~/stores/survey.types"
+import type {ExerciseDaysType} from "~/stores/survey.types"
 import type {Exercise} from "@actin/pwa-layer/types/ce.types"
 
 export type Reservation = {
@@ -7,11 +6,6 @@ export type Reservation = {
     date: Date,
     time: string,
     status: "OK" | "PENDING"
-}
-
-export type Report = {
-    testId: string,
-    date: string | Date | JalaaliDateObject
 }
 
 export type NormalResponse = {
@@ -25,7 +19,7 @@ export type SurveyStatusResponse = NormalResponse & {
 
 export type ExerciseResponse = {
     startDate: Date,
-    exerciseDays: ExerciseDays[]
+    exerciseDays: ExerciseDaysType[]
     currentDay: number,
     exercises: Exercise[]
 }

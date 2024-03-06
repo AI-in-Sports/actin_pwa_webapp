@@ -83,14 +83,14 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 * */
 export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
 
-export type ExerciseDays = "Saturday" | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday"
+export type ExerciseDaysType = "Saturday" | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday"
 
 export type Survey1 = {
     lastCompleted: number | null
     birthday: Date | null,
     weight: number | null,
     height: number | null,
-    exercise_days: ExerciseDays[] | null,
+    exercise_days: ExerciseDaysType[] | null,
     soles_status: SolesStatusType | null,
     exercise_place: ExercisePlaceType[] | null
 }
