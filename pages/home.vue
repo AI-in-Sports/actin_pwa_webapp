@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import jalali from "jalaali-js"
-import type {Profile} from "~/stores/profile"
-import type {ExerciseDaysType, ExercisePlaceType, SolesStatusType} from "~/stores/survey.types"
-
+import type {UserInfo} from "~/stores/profile"
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
@@ -31,10 +29,18 @@ const completeProfileSurvey = shallowRef([
   {
     component: resolveComponent("LazySurveyUserCompleteProfileWeight"),
     name: "weight"
+  },
+  {
+    component: resolveComponent("LazySurveyUserCompleteProfileSolesStatus"),
+    name: "soles_status"
+  },
+  {
+    component: resolveComponent("LazySurveyUserCompleteProfileExercisePlace"),
+    name: "exercise_place"
   }
 ] as {
   component: any,
-  name: keyof Profile
+  name: keyof UserInfo
 }[])
 
 const submitCompleteSurvey = async () => {
@@ -63,14 +69,7 @@ const reportViews = shallowRef([
 
 await useLazyAsyncData('home_data', async () => {
   const [profileComplete, latestReport] = await Promise.all([
-    useSSRFetch<{complete: number, info?: {
-        birthday?: Date
-        weight?: number
-        height?: number
-        exercise_days?: ExerciseDaysType[],
-        soles_status?: SolesStatusType,
-        exercise_place?: ExercisePlaceType[]
-      }}>("/profile/complete_status", {
+    useSSRFetch<{complete: number, info?: UserInfo}>("/profile/complete_status", {
       auth: true
     }),
     useSSRFetch<{
@@ -87,12 +86,9 @@ await useLazyAsyncData('home_data', async () => {
   const userInfo = profileComplete.data.value!.info
 
   if (profileStatus.value === 2 && userInfo) {
-    profile.set("birthday", userInfo.birthday)
-    profile.set("weight", userInfo.weight)
-    profile.set("height", userInfo.height)
-    profile.set("exercise_days", userInfo.exercise_days)
-    profile.set("soles_status", userInfo.soles_status)
-    profile.set("exercise_place", userInfo.exercise_place)
+    Object.keys(userInfo).forEach(key => {
+      profile.set("user_info", key as keyof UserInfo, userInfo[key as keyof UserInfo])
+    })
   }
 })
 

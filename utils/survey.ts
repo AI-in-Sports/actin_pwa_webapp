@@ -1,16 +1,17 @@
-import type {Survey1, SurveyState} from "~/stores/survey.types"
-import type {Ref} from "vue"
 
-export const surveyComputed = (survey: keyof SurveyState, item: keyof Survey1) => computed({
+import type {Ref} from "vue"
+import type {ProfileStore, UserInfo} from "~/stores/profile"
+
+export const surveyComputed = (survey: keyof ProfileStore, item: keyof UserInfo) => computed({
     get() {
-        return useCESurveyStore()[survey][item] as number | string[] | string | boolean
+        return useProfileStore()[survey][item] as number | string[] | string | boolean | Date | undefined
     },
     set(value) {
-        useCESurveyStore().set(survey, item, value)
+        useProfileStore().set(survey, item, value)
     }
 })
 
-export const selectItem = (survey: keyof SurveyState, state: keyof Survey1, value: string, canEmpty: boolean = true) => {
+export const selectItem = (survey: keyof ProfileStore, state: keyof UserInfo, value: string, canEmpty: boolean = true) => {
     const ref = surveyComputed(survey, state) as Ref<string[]>
 
     const index = ref.value!.indexOf(value)

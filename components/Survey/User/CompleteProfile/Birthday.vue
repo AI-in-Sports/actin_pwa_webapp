@@ -2,9 +2,9 @@
 const profile = useProfileStore()
 
 const birthday = computed({
-  get() { return new Date(profile.birthday!) },
+  get() { return new Date(profile.user_info.birthday!) },
   set(value) {
-    profile.set("birthday", value)
+    profile.set("user_info", "birthday", value)
   }
 })
 </script>

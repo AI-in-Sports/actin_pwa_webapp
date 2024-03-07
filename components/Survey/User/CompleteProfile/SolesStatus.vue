@@ -14,7 +14,7 @@ const items = shallowRef([
   }
 ])
 
-const soles_status = surveyComputed("survey1", "soles_status")
+const soles_status = surveyComputed("user_info", "soles_status")
 </script>
 
 <template>

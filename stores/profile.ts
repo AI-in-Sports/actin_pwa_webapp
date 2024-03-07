@@ -1,8 +1,11 @@
 import {defineStore} from "pinia"
 import type {ExerciseDaysType, ExercisePlaceType, SolesStatusType} from "~/stores/survey.types"
 
-export type Profile = {
-    last_completed: number
+export type ProfileStore = {
+    user_info: UserInfo
+}
+
+export type UserInfo = {
     birthday: Date | null
     height: number | null
     weight: number | null
@@ -14,25 +17,26 @@ export type Profile = {
 export const useProfileStore = defineStore('profile', {
     state: () => {
         return {
-            last_completed: 0,
-            birthday: new Date(),
-            weight: 0,
-            height: 0,
-            exercise_days: [],
-            soles_status: "normal",
-            exercise_place: ["gym"]
-        } as Profile
+            user_info: {
+                birthday: new Date(),
+                weight: 0,
+                height: 0,
+                exercise_days: [],
+                soles_status: "normal",
+                exercise_place: ["gym"]
+            }
+        } as ProfileStore
     },
     getters: {
 
     },
     actions: {
-        set(key: keyof Profile, data: any) {
-            this[key] = data
+        set(item: keyof ProfileStore, key: keyof UserInfo, data: any) {
+            this[item][key] = data
         },
 
-        submitSurvey: async (level: "identity" | "extra", ...items: (keyof Profile)[]) => {
-            const store = selectProperties(useProfileStore(), items)
+        submitSurvey: async (level: "identity" | "extra", ...items: (keyof UserInfo)[]) => {
+            const store = selectProperties(useProfileStore().user_info, items)
 
             const {data, error} = await useSSRFetch(`/profile/update/${level}`, {
                 method: "PATCH",

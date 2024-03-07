@@ -1,14 +1,7 @@
 <script setup lang="ts">
-const profile = useProfileStore()
+import type {Ref} from "vue"
 
-const height = computed({
-  get(){
-    return profile.height?.toString()
-  },
-  set(value) {
-    profile.set("height", value)
-  }
-})
+const height = surveyComputed("user_info", "height") as Ref<string>
 </script>
 
 <template>
