@@ -2,7 +2,8 @@ import {defineStore} from "pinia"
 import type {ExerciseDaysType, ExercisePlaceType, SolesStatusType} from "~/stores/survey.types"
 
 export type ProfileStore = {
-    user_info: UserInfo
+    user_info: UserInfo,
+    showCompleteProfileModal: boolean
 }
 
 export type UserInfo = {
@@ -17,11 +18,12 @@ export type UserInfo = {
 export const useProfileStore = defineStore('profile', {
     state: () => {
         return {
+            showCompleteProfileModal: false,
             user_info: {
                 birthday: new Date(),
                 weight: 0,
                 height: 0,
-                exercise_days: [],
+                exercise_days: ["Saturday"],
                 soles_status: "normal",
                 exercise_place: ["gym"]
             }
@@ -31,8 +33,12 @@ export const useProfileStore = defineStore('profile', {
 
     },
     actions: {
+        toggleCompleteProfileModal ()  {
+            this.showCompleteProfileModal = !this.showCompleteProfileModal
+        },
+
         set(item: keyof ProfileStore, key: keyof UserInfo, data: any) {
-            this[item][key] = data
+            this[item as "user_info"][key] = data
         },
 
         submitSurvey: async (level: "identity" | "extra", ...items: (keyof UserInfo)[]) => {

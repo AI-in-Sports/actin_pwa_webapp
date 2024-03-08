@@ -16,49 +16,12 @@ const profile = useProfileStore()
 
 const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
 
-const completeProfileSurveyActive = shallowRef(0)
-const completeProfileSurvey = shallowRef([
-  {
-    component: resolveComponent("LazySurveyUserCompleteProfileBirthday"),
-    name: "birthday"
-  },
-  {
-    component: resolveComponent("LazySurveyUserCompleteProfileHeight"),
-    name: "height"
-  },
-  {
-    component: resolveComponent("LazySurveyUserCompleteProfileWeight"),
-    name: "weight"
-  },
-  {
-    component: resolveComponent("LazySurveyUserCompleteProfileSolesStatus"),
-    name: "soles_status"
-  },
-  {
-    component: resolveComponent("LazySurveyUserCompleteProfileExercisePlace"),
-    name: "exercise_place"
-  }
-] as {
-  component: any,
-  name: keyof UserInfo
-}[])
-
-const submitCompleteSurvey = async () => {
-  const submitResponse = await profile.submitSurvey("extra", completeProfileSurvey.value[completeProfileSurveyActive.value].name)
-
-  if(!submitResponse)
-    return useToast.error("خطا هنگام ثبت اطلاعات!")
-
-  completeProfileSurveyActive.value++
-}
-
 const logout = () => {
   useAuthStore().logout()
   location.reload()
 }
 
 const profileStatus = useState(() => 0)
-const showCompleteProfile = useState(() => false)
 
 const reportActiveTab = shallowRef(0)
 const reportData = useState(() => null)
@@ -107,23 +70,6 @@ useHead({title: "اکتین - صفحه اصلی"})
 
 <template>
   <LazyThemeBottomSheet
-      v-if="showCompleteProfile" is-open
-      @onClose="showCompleteProfile = false"
-      closable header :title="`مرحله ${completeProfileSurveyActive + 1} از ${completeProfileSurvey.length}`">
-    <component :is="completeProfileSurvey[completeProfileSurveyActive].component"/>
-
-    <ThemeButton
-        class="mt-8" v-if="completeProfileSurveyActive === 0"
-        @click="submitCompleteSurvey">بعدی</ThemeButton>
-
-    <div class="w-full flex justify-between mt-8 gap-2" v-else>
-      <PrimaryBorderButton @click="completeProfileSurveyActive--">قبلی</PrimaryBorderButton>
-
-      <ThemeButton @click="submitCompleteSurvey">بعدی</ThemeButton>
-    </div>
-  </LazyThemeBottomSheet>
-
-  <LazyThemeBottomSheet
       v-if="profileStatus === 0" is-open
       full-screen :component="userPersonalData"/>
 
@@ -166,7 +112,7 @@ useHead({title: "اکتین - صفحه اصلی"})
 
       <ThemeButton
           class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium"
-          @click="showCompleteProfile = true">
+          @click="profile.toggleCompleteProfileModal()">
         تکمیل پروفایل
 
         <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
