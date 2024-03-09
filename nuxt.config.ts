@@ -16,7 +16,10 @@ export default defineNuxtConfig({
   ],
   image: {dir: 'assets/'},
   css: [
-    "@fortawesome/fontawesome-svg-core/styles.css"
+    "@fortawesome/fontawesome-svg-core/styles.css",
+    "vue3-toastify/dist/index.css",
+    "vue-skeletor/dist/vue-skeletor.css",
+    "vue-advanced-cropper/dist/style.css"
   ],
   postcss: {
     plugins: {
