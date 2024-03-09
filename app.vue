@@ -54,9 +54,7 @@ const submitCompleteSurvey = async () => {
   if((completeProfileSurveyActive.value + 1) !== completeProfileSurvey.value.length)
     completeProfileSurveyActive.value++
   else {
-    profile.toggleCompleteProfileModal()
-    completeProfileSurveyActive.value = 0
-    useToast.success("اطلاعات شما با موفقیت ذخیره شد!")
+    location.reload()
   }
 }
 </script>

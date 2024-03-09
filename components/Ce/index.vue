@@ -3,7 +3,7 @@ import type {ExerciseResponse} from "~/types/Responses"
 import { numberToWords } from "@persian-tools/persian-tools"
 import jalali from "jalaali-js"
 import type {Ref} from "vue"
-import type {ExerciseDays} from "~/stores/survey.types"
+import type {ExerciseDaysType} from "~/stores/survey.types"
 
 const isReady = ref(false)
 
@@ -16,7 +16,7 @@ const {data} = useSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
     startDate: string,
     currentDay: number,
     exercises: any[],
-    exerciseDays: ExerciseDays[]
+    exerciseDays: ExerciseDaysType[]
   }): ExerciseResponse => {
     return {
       ...input,
@@ -25,12 +25,11 @@ const {data} = useSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   }
 })
 
-const getDateDay = (date: Date) => date.toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDays
+const getDateDay = (date: Date) => date.toLocaleDateString('en-US', { weekday: 'long' }) as ExerciseDaysType
 const isDateToday = (date: Date) => date.getDay() === new Date().getDay()
 
 onMounted(() => {
   const res = useRoute().query.res
-  const toast = useNuxtApp().$showToast
 
   const today = new Date()
   const currentDay = today.getDay()
@@ -50,7 +49,7 @@ onMounted(() => {
 
   switch (res) {
     case "pg_err":
-      toast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
+      useToast.warning("برای ایجاد برنامه ابتدا فرم وضعیت جسمی را تکمیل نمایید!")
       break
   }
 })

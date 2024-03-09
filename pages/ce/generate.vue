@@ -6,7 +6,7 @@ definePageMeta({
   layout: "empty"
 })
 
-const {data} = useLazySSRFetch<SurveyStatusResponse>("/ce/survey/status", {
+const {data} = useLazySSRFetch<SurveyStatusResponse>("/ce/exercise/status", {
   auth: true,
 })
 
