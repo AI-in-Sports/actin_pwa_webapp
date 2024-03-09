@@ -29,9 +29,12 @@ await useLazyAsyncData('app_data', async () => {
 
   const userInfo = personalData.data.value!.info
 
-  if (profile.profile_status === 2 && userInfo) {
-    Object.keys(userInfo).forEach(key => {
-      profile.set("user_info", key as keyof UserInfo, userInfo[key as keyof UserInfo])
+  if (profile.status === 2 && userInfo) {
+    (Object.keys(userInfo) as (keyof UserInfo)[]).forEach(key => {
+      if (userInfo[key] !== null)
+        profile.setProfileCompleteSteps(profile.complete_steps + 1)
+
+      profile.set("user_info", key, userInfo[key])
     })
   }
 })
@@ -74,8 +77,10 @@ const submitCompleteSurvey = async () => {
   if(!submitResponse)
     return useToast.error("خطا هنگام ثبت اطلاعات!")
 
-  if((completeProfileSurveyActive.value + 1) !== completeProfileSurvey.value.length)
+  if((completeProfileSurveyActive.value + 1) !== completeProfileSurvey.value.length){
     completeProfileSurveyActive.value++
+    profile.setProfileCompleteSteps(profile.complete_steps + 1)
+  }
   else {
     location.reload()
   }
@@ -87,7 +92,7 @@ const submitCompleteSurvey = async () => {
   <NuxtLayout>
     <client-only>
       <LazyThemeBottomSheet
-          v-if="profile.profile_status === 0 && user.token" is-open
+          v-if="profile.status === 0 && user.token" is-open
           full-screen :component="userPersonalData"/>
 
       <LazyThemeBottomSheet

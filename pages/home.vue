@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import jalali from "jalaali-js"
+import type {UserInfo} from "~/stores/profile"
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
@@ -37,6 +38,7 @@ await useLazyAsyncData('home_data', async () => {
     reportData.value = latestReport.data.value!.report!
 })
 
+
 onMounted(async () => {
   const res = route.query.res
 
@@ -56,7 +58,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
         <PrimaryProfile />
 
-        <div class="flex flex-col gap-y-2 flex-grow" v-if="user && profile.profile_status > 0">
+        <div class="flex flex-col gap-y-2 flex-grow" v-if="user && profile.status > 0">
           <p class="text-mainBlack text-2xl font-semibold">
             {{ user.first_name }} {{ user.last_name }}
           </p>
@@ -73,7 +75,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profile.profile_status > 0">
+    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profile.complete_steps < 7">
       <p class="text-base text-center text-mainBlack font-semibold">
         برای دریافت برنامه تمرینی ابتدا باید پروفایل
         <br>
@@ -82,11 +84,11 @@ useHead({title: "اکتین - صفحه اصلی"})
 
       <div class="flex flex-col justify-center items-center gap-y-3 w-full">
         <div class="bg-white w-full h-2 rounded">
-          <div class="bg-mainYellow rounded-full h-2 w-1/5"></div>
+          <div class="bg-mainYellow rounded-full h-2" :style="{ 'width': (100 / 7) * profile.complete_steps + '%'}"></div>
         </div>
 
         <p class="text-mainBlack text-xs">
-          ۵ مرحله دیگر تا تکمیل پروفایل
+          {{ 7 - profile.complete_steps }} مرحله دیگر تا تکمیل پروفایل
         </p>
       </div>
 
@@ -99,32 +101,32 @@ useHead({title: "اکتین - صفحه اصلی"})
       </ThemeButton>
     </div>
 
-    <div class=" flex-col gap-y-5 w-full hidden">
+    <div class="flex-col gap-y-5 w-full" v-else>
       <div class="flex flex-row justify-between items-center gap-x-2">
-        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">سن</p>
+        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-base">سن</p>
 
-          <p class="text-mainBlack text-lg font-semibold">۲۶</p>
+          <p class="text-mainBlack text-lg font-semibold">{{ persianNumber(calculateAge(new Date(profile.user_info.birthday!))) }}</p>
         </div>
 
-        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">قد</p>
+        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-base">قد</p>
 
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">۱۶۵ cm</p>
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">{{ persianNumber(profile.user_info.height!) }} cm</p>
         </div>
 
-        <div class="flex flex-col justify-center items-center gap-y-1 px-2 py-1 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-xs">وزن</p>
+        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
+          <p class="text-mainSubDead text-base">وزن</p>
 
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">۶۰ kg</p>
+          <p class="text-mainBlack text-lg font-semibold" dir="ltr">{{ persianNumber(profile.user_info.weight!) }} kg</p>
         </div>
       </div>
 
-      <PrimaryBorderButton class="flex justify-center items-center gap-x-2" @click="$router.push('/profile')">
-        <MaterialSymbols theme="rounded" class="text-mainSubDead text-xl">edit</MaterialSymbols>
+<!--      <PrimaryBorderButton class="flex justify-center items-center gap-x-2 mt-4" @click="$router.push('/profile')">
+        <MaterialSymbols theme="rounded" class="text-mainSubDead text-[22px]">edit</MaterialSymbols>
 
-        <p class="font-medium">ویرایش پروفایل</p>
-      </PrimaryBorderButton>
+        <p class="font-medium text-[15px]">ویرایش پروفایل</p>
+      </PrimaryBorderButton>-->
     </div>
 
   </div>
@@ -192,19 +194,6 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش لاغری
-      </h3>
-
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
-
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
-    </div>
-
     <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
@@ -226,7 +215,7 @@ useHead({title: "اکتین - صفحه اصلی"})
         <p class="text-sm text-[#727272]">
           {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jd.toString()) + " " }}
           {{ new Date(new Date(reportData['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jm.toString()) }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jy.toString()) }}
         </p>
       </div>
 
@@ -243,6 +232,19 @@ useHead({title: "اکتین - صفحه اصلی"})
           class="w-full mt-6"
           :is="reportViews[reportActiveTab]"
           :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
+    </div>
+
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4">
+      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
+        گزارش لاغری
+      </h3>
+
+      <p class="text-[#9E9E9E] text-base">
+        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
+        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
+      </p>
+
+      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 </div>
 

@@ -3,7 +3,8 @@ import type {ExerciseDaysType, ExercisePlaceType, SolesStatusType} from "~/store
 
 export type ProfileStore = {
     user_info: UserInfo,
-    profile_status: number,
+    status: number,
+    complete_steps: number,
     showCompleteProfileModal: boolean
 }
 
@@ -19,7 +20,8 @@ export type UserInfo = {
 export const useProfileStore = defineStore('profile', {
     state: () => {
         return {
-            profile_status: -1,
+            status: -1,
+            complete_steps: 1,
             showCompleteProfileModal: false,
             user_info: {
                 birthday: new Date(),
@@ -35,9 +37,8 @@ export const useProfileStore = defineStore('profile', {
 
     },
     actions: {
-        setProfileStatus(status: number) {
-            this.profile_status = status
-        },
+        setProfileStatus(status: number) {this.status = status},
+        setProfileCompleteSteps(complete_steps: number) {this.complete_steps = complete_steps},
 
         toggleCompleteProfileModal ()  {
             this.showCompleteProfileModal = !this.showCompleteProfileModal
