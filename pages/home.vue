@@ -14,14 +14,10 @@ const user = useAuthStore().user
 const phone = useAuthStore().phone
 const profile = useProfileStore()
 
-const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
-
 const logout = () => {
   useAuthStore().logout()
   location.reload()
 }
-
-const profileStatus = useState(() => 0)
 
 const reportActiveTab = shallowRef(0)
 const reportData = useState(() => null)
@@ -31,10 +27,7 @@ const reportViews = shallowRef([
 ])
 
 await useLazyAsyncData('home_data', async () => {
-  const [profileComplete, latestReport] = await Promise.all([
-    useSSRFetch<{complete: number, info?: UserInfo}>("/profile/complete_status", {
-      auth: true
-    }),
+  const [latestReport] = await Promise.all([
     useSSRFetch<{
       status: number,
       report?: null | any
@@ -43,16 +36,6 @@ await useLazyAsyncData('home_data', async () => {
 
   if(latestReport.data.value!.status === 200)
     reportData.value = latestReport.data.value!.report!
-
-  profileStatus.value = profileComplete.data.value!.complete
-
-  const userInfo = profileComplete.data.value!.info
-
-  if (profileStatus.value === 2 && userInfo) {
-    Object.keys(userInfo).forEach(key => {
-      profile.set("user_info", key as keyof UserInfo, userInfo[key as keyof UserInfo])
-    })
-  }
 })
 
 onMounted(async () => {
@@ -69,16 +52,12 @@ useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
-  <LazyThemeBottomSheet
-      v-if="profileStatus === 0" is-open
-      full-screen :component="userPersonalData"/>
-
   <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6">
     <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
         <PrimaryProfile />
 
-        <div class="flex flex-col gap-y-2 flex-grow" v-if="profileStatus !== 0">
+        <div class="flex flex-col gap-y-2 flex-grow" v-if="profile.profile_status !== 0">
           <p class="text-mainBlack text-2xl font-semibold">
             {{ user.first_name }} {{ user.last_name }}
           </p>
@@ -93,7 +72,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profileStatus > 0">
+    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profile.profile_status > 0">
       <p class="text-base text-center text-mainBlack font-semibold">
         برای دریافت برنامه تمرینی ابتدا باید پروفایل
         <br>

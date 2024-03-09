@@ -4,19 +4,19 @@ import type {Ref} from "vue"
 const items = shallowRef([
   {
     title: "باشگاه",
-    value: "gym",
+    value: "GYM",
   },
   {
     title: "باشگاه خانگی",
-    value: "home_gym",
+    value: "HOME_GYM",
   },
   {
     title: "منزل",
-    value: "home"
+    value: "HOME"
   },
   {
     title: "محل کار",
-    value: "work"
+    value: "WORK"
   }
 ])
 

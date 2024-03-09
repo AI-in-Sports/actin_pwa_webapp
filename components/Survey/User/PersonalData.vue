@@ -39,7 +39,7 @@ const submitProfileInfo = async () => {
 </script>
 
 <template>
-  <div class="flex h-full w-full justify-center p-4 ">
+  <div class="flex h-full w-full justify-center p-4">
     <form
         ref="profileInfoForm"
         @submit.prevent="submitProfileInfo"

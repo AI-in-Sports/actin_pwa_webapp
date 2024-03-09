@@ -2,15 +2,15 @@
 const items = shallowRef([
   {
     title: "کف پای من نرمال است.",
-    value: "normal"
+    value: "NORMAL"
   },
   {
     title: "کف پای گود دارم.",
-    value: "hollow"
+    value: "HOLLOW"
   },
   {
     title: "کف پای صاف دارم.",
-    value: "flat"
+    value: "FLAT"
   }
 ])
 

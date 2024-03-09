@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {SurveyStatusResponse} from "~/types/Responses";
+import type {SurveyStatusResponse} from "~/types/Responses"
 
 definePageMeta({
   middleware: ["normal-auth"],

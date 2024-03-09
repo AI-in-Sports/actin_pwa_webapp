@@ -5,31 +5,31 @@ import type {ExerciseDaysType} from "~/stores/survey.types"
 const items = shallowRef([
   {
     title: "شنبه",
-    value: "Saturday",
+    value: "SATURDAY",
   },
   {
     title: "یکشنبه",
-    value: "Sunday",
+    value: "SUNDAY",
   },
   {
     title: "دوشنبه",
-    value: "Monday",
+    value: "MONDAY",
   },
   {
     title: "سه شنبه",
-    value: "Tuesday",
+    value: "TUESDAY",
   },
   {
     title: "چهارشنبه",
-    value: "Wednesday",
+    value: "WEDNESDAY",
   },
   {
     title: "پنجشنبه",
-    value: "Thursday",
+    value: "THURSDAY",
   },
   {
     title: "جمعه",
-    value: "Friday",
+    value: "FRIDAY",
   }
 ] as {
   title: string,

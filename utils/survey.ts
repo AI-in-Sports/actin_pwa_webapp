@@ -4,7 +4,7 @@ import type {ProfileStore, UserInfo} from "~/stores/profile"
 
 export const surveyComputed = (survey: keyof ProfileStore, item: keyof UserInfo) => computed({
     get() {
-        return useProfileStore()[survey][item] as number | string[] | string | boolean | Date | undefined
+        return useProfileStore()[survey as "user_info"][item] as number | string[] | string | boolean | Date | undefined
     },
     set(value) {
         useProfileStore().set(survey, item, value)

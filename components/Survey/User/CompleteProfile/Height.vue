@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {Ref} from "vue"
 
-const height = surveyComputed("user_info", "height") as Ref<string>
+const height = surveyComputed("user_info", "height") as Ref<number>
 </script>
 
 <template>

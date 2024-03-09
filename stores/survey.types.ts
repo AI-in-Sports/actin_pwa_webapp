@@ -22,7 +22,11 @@ export type PainPointsType =
 * flat: کف پای صاف
 * hollow: کف پای گود
 * */
-export type SolesStatusType = "normal" | "flat" | "hollow"
+export enum SolesStatusType {
+    NORMAL = 'NORMAL',
+    FLAT = 'FLAT',
+    HOLLOW = 'HOLLOW'
+}
 
 /*
 * Pain types
@@ -81,20 +85,19 @@ export type BodyPostureAtWorkType = "sitting_more" | "standing_more" | "walking_
 * home: منزل
 * work: منزل
 * */
-export type ExercisePlaceType = "gym" | "home_gym" | "home" | "work"
-
-export type ExerciseDaysType = "Saturday" | "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday"
-
-export type Survey1 = {
-    lastCompleted: number | null
-    birthday: Date | null,
-    weight: number | null,
-    height: number | null,
-    exercise_days: ExerciseDaysType[] | null,
-    soles_status: SolesStatusType | null,
-    exercise_place: ExercisePlaceType[] | null
+export enum ExercisePlaceType {
+    HOME = 'HOME',
+    WORK = 'WORK',
+    HOME_GYM = 'HOME_GYM',
+    GYM = 'GYM',
 }
 
-export type SurveyState = {
-    survey1: Survey1
+export enum ExerciseDaysType {
+    SATURDAY = 'SATURDAY',
+    SUNDAY = 'SUNDAY',
+    MONDAY = 'MONDAY',
+    TUESDAY = 'TUESDAY',
+    WEDNESDAY = 'WEDNESDAY',
+    THURSDAY = 'THURSDAY',
+    FRIDAY = 'FRIDAY',
 }
