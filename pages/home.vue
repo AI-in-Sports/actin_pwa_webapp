@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import jalali from "jalaali-js"
-import type {UserInfo} from "~/stores/profile"
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
