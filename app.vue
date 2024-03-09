@@ -3,6 +3,7 @@ import type {UserInfo} from "~/stores/profile"
 
 useLoadingIndicator().start()
 const profile = useProfileStore()
+const user = useAuthStore()
 
 const userPersonalData = resolveComponent('LazySurveyUserPersonalData')
 
@@ -86,7 +87,7 @@ const submitCompleteSurvey = async () => {
   <NuxtLayout>
     <client-only>
       <LazyThemeBottomSheet
-          v-if="profile.profile_status === 0" is-open
+          v-if="profile.profile_status === 0 && user.token" is-open
           full-screen :component="userPersonalData"/>
 
       <LazyThemeBottomSheet

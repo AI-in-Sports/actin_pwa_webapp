@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import jalali from "jalaali-js"
-import type {UserInfo} from "~/stores/profile"
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
@@ -57,7 +56,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
         <PrimaryProfile />
 
-        <div class="flex flex-col gap-y-2 flex-grow" v-if="profile.profile_status !== 0">
+        <div class="flex flex-col gap-y-2 flex-grow" v-if="profile.profile_status > 0">
           <p class="text-mainBlack text-2xl font-semibold">
             {{ user.first_name }} {{ user.last_name }}
           </p>
@@ -68,7 +67,9 @@ useHead({title: "اکتین - صفحه اصلی"})
         </div>
 
       <div class="bg-white rounded-full">
-        <MaterialSymbols theme="rounded" class="text-mainSubDead text-2xl">notifications</MaterialSymbols>
+        <MaterialSymbols
+            theme="rounded" @click="logout"
+            class="text-mainSubDead text-2xl cursor-pointer hover:text-red-500">logout</MaterialSymbols>
       </div>
     </div>
 

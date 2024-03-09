@@ -19,7 +19,7 @@ export type UserInfo = {
 export const useProfileStore = defineStore('profile', {
     state: () => {
         return {
-            profile_status: 0,
+            profile_status: -1,
             showCompleteProfileModal: false,
             user_info: {
                 birthday: new Date(),
