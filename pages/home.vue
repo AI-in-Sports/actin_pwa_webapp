@@ -20,6 +20,8 @@ const logout = () => {
 
 const reportActiveTab = shallowRef(0)
 const reportData = useState(() => null)
+const vitalSigns = useState(() => null)
+
 const reportViews = shallowRef([
   resolveComponent("LazyReportFrontalView"),
   resolveComponent("LazyReportSagitalView")
@@ -52,7 +54,7 @@ useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6">
+  <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6 !select-none">
     <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
         <PrimaryProfile />
@@ -129,7 +131,7 @@ useHead({title: "اکتین - صفحه اصلی"})
     </div>
 
   </div>
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reportData && !profile.event">
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!vitalSigns && !profile.event">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
