@@ -18,7 +18,7 @@ useHead({
 
 await useLazyAsyncData('app_data', async () => {
   const [personalData] = await Promise.all([
-    useSSRFetch<{complete: number, info?: UserInfo}>("/profile/complete_status", {
+    useSSRFetch<{complete: number, info?: UserInfo, event: boolean}>("/profile/complete_status", {
       auth: true,
       immediate: true,
       cache: "no-cache"
@@ -26,6 +26,7 @@ await useLazyAsyncData('app_data', async () => {
   ])
 
   profile.setProfileStatus(personalData.data.value!.complete)
+  profile.setEventState(personalData.data.value!.event)
 
   const userInfo = personalData.data.value!.info
 

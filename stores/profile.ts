@@ -5,7 +5,8 @@ export type ProfileStore = {
     user_info: UserInfo,
     status: number,
     complete_steps: number,
-    showCompleteProfileModal: boolean
+    showCompleteProfileModal: boolean,
+    event: boolean
 }
 
 export type UserInfo = {
@@ -22,6 +23,7 @@ export const useProfileStore = defineStore('profile', {
         return {
             status: -1,
             complete_steps: 1,
+            event: false,
             showCompleteProfileModal: false,
             user_info: {
                 birthday: new Date(),
@@ -37,6 +39,7 @@ export const useProfileStore = defineStore('profile', {
 
     },
     actions: {
+        setEventState(event: boolean) {this.event = event},
         setProfileStatus(status: number) {this.status = status},
         setProfileCompleteSteps(complete_steps: number) {this.complete_steps = complete_steps},
 

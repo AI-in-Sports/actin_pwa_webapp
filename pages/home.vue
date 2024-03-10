@@ -129,7 +129,7 @@ useHead({title: "اکتین - صفحه اصلی"})
     </div>
 
   </div>
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reportData">
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!reportData && !profile.event">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         علائم حیاتی
       </h3>
@@ -142,7 +142,7 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else>
+    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else-if="!profile.event">
       <div class="flex justify-between items-center">
         <h3 class="text-mainBlack text-[21px] font-semibold">
           علائم حیاتی
@@ -193,7 +193,11 @@ useHead({title: "اکتین - صفحه اصلی"})
       </div>
     </div>
 
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData">
+    <div v-if="profile.event">
+      <p class="w-full text-center">برنامه تمرینی شما در حال بررسی توسط اکتین هست...</p>
+    </div>
+
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData && !profile.event">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش اسکلتی - عضلانی
       </h3>
@@ -207,14 +211,14 @@ useHead({title: "اکتین - صفحه اصلی"})
       <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
     </div>
 
-    <div class="w-full flex flex-col p-2 pt-0" v-else>
+    <div class="w-full flex flex-col p-2 pt-0" v-else-if="!profile.event">
       <div class="w-full flex justify-between pb-6">
         <h2 class="font-semibold text-[21px]">گزارش اسکلتی- عضلانی</h2>
 
         <p class="text-sm text-[#727272]">
-          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jd.toString()) + " " }}
-          {{ new Date(new Date(reportData['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-          {{ persianNumber(jalali.toJalaali(new Date(reportData['date'])).jy.toString()) }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData!['date'])).jd.toString()) + " " }}
+          {{ new Date(new Date(reportData!['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
+          {{ persianNumber(jalali.toJalaali(new Date(reportData!['date'])).jy.toString()) }}
         </p>
       </div>
 
@@ -233,7 +237,7 @@ useHead({title: "اکتین - صفحه اصلی"})
           :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
     </div>
 
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4">
+    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!profile.event">
       <h3 class="text-mainBlack text-[21px] font-semibold text-center">
         گزارش لاغری
       </h3>
