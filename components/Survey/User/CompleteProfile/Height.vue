@@ -6,9 +6,9 @@ const height = surveyComputed("user_info", "height") as Ref<number>
 
 <template>
   <div class="flex flex-col justify-center items-center w-full">
-    <p class="font-semibold text-[24px] text-black/90">قد به سانتی‌متر؟</p>
+    <p class="font-semibold text-[24px] text-black/90 mb-8 text-center">قد به سانتی‌متر؟</p>
 
-    <ThemeInput class="w-full mt-8" type="number" placeholder="قد" hint="سانتی متر" v-model:value="height"></ThemeInput>
+    <ThemeInput class="w-full" type="number" placeholder="قد" hint="سانتی متر" v-model:value="height"></ThemeInput>
   </div>
 </template>
 

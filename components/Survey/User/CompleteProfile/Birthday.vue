@@ -10,7 +10,9 @@ const birthday = computed({
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col justify-center items-center w-full">
+    <p class="font-semibold text-[24px] text-black/90 mb-8 text-center">تاریخ تولد؟</p>
+
     <DatePicker
         inline auto-submit simple
         input-format="jYYYY-jMM-jDD"

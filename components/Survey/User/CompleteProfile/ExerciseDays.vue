@@ -40,12 +40,16 @@ const exercise_place = surveyComputed("user_info", "exercise_days") as Ref<strin
 </script>
 
 <template>
-  <div class="w-full grid grid-cols-3 gap-[16px] place-items-center place-content-center">
-    <SurveyUtilsItem
-        class="w-full"
-        v-for="item in items" :key="item.value" :title="item.title"
-        @click="selectItem('user_info','exercise_days', item.value, false)"
-        :selected="exercise_place!.includes(item.value)"/>
+  <div class="flex flex-col justify-center items-center w-full">
+    <p class="font-semibold text-[24px] text-black/90 mb-8 text-center">در چه روز هایی می‌خواهید تمرین کنید؟</p>
+
+    <div class="w-full grid grid-cols-3 gap-[16px] place-items-center place-content-center">
+      <SurveyUtilsItem
+          class="w-full"
+          v-for="item in items" :key="item.value" :title="item.title"
+          @click="selectItem('user_info','exercise_days', item.value, false)"
+          :selected="exercise_place!.includes(item.value)"/>
+    </div>
   </div>
 </template>
 
