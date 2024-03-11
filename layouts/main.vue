@@ -31,7 +31,7 @@ const isActive = (path: string) => {
   <main class="bg-white h-[100dvh] flex flex-col items-center text-black relative pb-[66px] overflow-auto" dir="rtl">
     <slot/>
   </main>
-  <section class="fixed inset-0 top-auto h-[66px] flex justify-center items-center shadow-[0px_-2px_6px_0px] shadow-[#0000000F] bg-white" dir="rtl">
+  <section class="fixed z-40 inset-0 top-auto h-[66px] flex justify-center items-center shadow-[0px_-2px_6px_0px] shadow-[#0000000F] bg-white" dir="rtl">
     <div class="max-w-[450px] w-full flex">
       <NuxtLink
           v-for="item in menu" :key="item.text" :to="item.to" activeClass="!text-black !font-medium"
