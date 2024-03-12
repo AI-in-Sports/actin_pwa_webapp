@@ -1,31 +1,47 @@
 <script setup lang="ts">
 import Jalali ,{type JalaaliDateObject} from "jalaali-js"
-import {ReportFrontalView, ReportSagitalView} from "#components"
-
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
 })
 
-const config = useRuntimeConfig()
 const route = useRoute()
-const isDataFetched = shallowRef(false)
-const activeViews = shallowRef([ReportFrontalView, ReportSagitalView])
-const activeView = shallowRef(1)
+const router = useRouter()
+const reportViews = shallowRef([
+  resolveComponent("LazyReportFrontalView"),
+  resolveComponent("LazyReportSagitalView")
+])
+
+const activeView = shallowRef(0)
 
 const changeView = (index: number) => {
   document.getElementById("dataSection")!.scrollTo({top: 0, behavior: "smooth"})
   activeView.value = index
 }
 
-const dataFetch = ref()
-const date = ref()
+const dataFetch = useState(() => null)
+const date = useState(() => null)
 
-const getActiveZone = computed(() => dataFetch.value.report['analyze']['zones'])
+
+await useLazyAsyncData('report_data', async () => {
+  const [latestReport] = await Promise.all([
+    useSSRFetch<{
+      status: number,
+      report?: null | any
+    }>(`/report/get/${route.params.session_id}`, {auth: true}),
+  ])
+
+  if(latestReport.data.value!.status === 200) {
+    dataFetch.value = latestReport.data.value!.report!
+    console.log(dataFetch.value)
+    date.value = (Jalali.toJalaali(new Date(dataFetch.value!['date'])) as any)
+  }
+  else if (latestReport.data.value!.status === 404)
+    router.replace("/home")
+})
+
 
 onMounted(async () => {
-  const loading = useToast.loading("در حال دریافت اطلاعات...")
-
   const act = route.query.act
 
   switch (act) {
@@ -46,54 +62,28 @@ onMounted(async () => {
       break
   }
 
-  if (route.params.session_id)
-    await useAxios(true)(`${config.public.APP_BACKEND}/report/${route.params.session_id}`).then((value) => {
-      dataFetch.value = value.data
-
-      date.value = (Jalali.toJalaali(new Date(dataFetch.value['report']['date'])) as JalaaliDateObject)
-
-      if (value.data.status === 404)
-        location.replace("/home")
-
-      isDataFetched.value = true
-      useToast.remove(loading)
-    }).catch((e) => {
-      console.log(e)
-
-      updateToast(loading, e["response"]["data"]["message"])
-    })
-
   useHead({title: `Actin - Report page`})
 })
 
-const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).getTime()}`)
+//const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).getTime()}`)
 </script>
 
 <template>
-  <ReportHeader @click="$router.replace('/home')">جزئیات گزارش</ReportHeader>
 
   <!-- Scroll section -->
-  <div id="dataSection" class="flex w-full items-center flex-col overflow-auto px-[16px] pb-[82px]">
+  <div id="dataSection" class="flex w-full items-center flex-col overflow-auto px-[16px]">
 
     <!-- Navigation -->
-    <div class="max-w-[450px] sm:w-full sm:inset-auto left-[20px] right-[20px] absolute !top-[65px] z-50 flex justify-center">
-      <div class="p-[4px] rounded-[12px] bg-[#EEEEEE]/70 shadow-md flex gap-[4px] w-full backdrop-blur-xl">
-        <div
-            v-for="(item, index) in ['گزارش روبه‌رو', 'گزارش از پهلو']" :key="item" @click="changeView(index + 1)"
-            class="w-full p-[10px] rounded-[8px] flex justify-center items-center !select-none text-[16px] text-[#212121] cursor-pointer hover:bg-white/60"
-            :class="{ 'bg-white shadow-[0px_4px_4px_0px] shadow-black/5': activeView === index + 1}">
-          {{ item }}
-        </div>
-      </div>
-    </div>
+    <ReportViewSelector
+        class="w-full max-w-[500px] sticky top-5 z-30 shadow-md backdrop-blur-xl bg-[#EEEEEE]/60"
+        :active="activeView" @changeView="(item: number) => changeView(item)"/>
 
-
-    <p class="text-center mb-[20px] mt-[78px] h-[27px] text-[#727272] text-[14px]">
-      <span v-if="dataFetch">
+    <p class="text-center mb-[18px] mt-[50px] h-[20px] text-[#727272] text-[18px]">
+      <span v-if="dataFetch && date">
         {{
-          persianNumber((date as JalaaliDateObject).jd.toString()) + " " +
-          new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['report']['date'])) + " " +
-          persianNumber((date as JalaaliDateObject).jy.toString())
+          persianNumber((date! as JalaaliDateObject).jd.toString()) + " " +
+          new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['date'])) + " " +
+          persianNumber((date! as JalaaliDateObject).jy.toString())
         }}
       </span>
 
@@ -103,8 +93,19 @@ const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).ge
       </span>
     </p>
 
-    <component v-if="dataFetch" :is="activeViews[activeView - 1]"
-               :report="activeView === 1 ? getActiveZone['frontal'] : getActiveZone"/>
+    <ClientOnly>
+      <div class="flex flex-col w-full max-w-[500px]" v-if="dataFetch !== null && date">
+        <ReportSkeleton
+            class="mt-[20px] w-full"
+            :test="activeView === 0 ? 'frontal' : 'sagital'"
+            :report="activeView === 0 ? (dataFetch as any).analyze.zones.frontal : (dataFetch as any).analyze.zones"/>
+
+        <component
+            class="w-full mt-6"
+            :is="reportViews[activeView]"
+            :report="activeView === 0 ? (dataFetch as any).analyze.zones.frontal : (dataFetch as any).analyze.zones"/>
+      </div>
+    </ClientOnly>
 
     <div class="border-t-[1px] border-[#0000001F] mt-[47px] w-full py-[16px]">
       <div class="m-auto flex flex-col items-center gap-[16px] max-w-[500px] w-full text-center">
