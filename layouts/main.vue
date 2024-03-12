@@ -11,7 +11,7 @@ const menu = shallowRef([
     to: "/home"
   },
   {
-    text: "فیزیوتراپی",
+    text: "باشگاه",
     icon: "physical_therapy",
     to: "/physio/list"
   }
