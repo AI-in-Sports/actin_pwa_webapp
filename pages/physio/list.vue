@@ -26,7 +26,7 @@ useHead({title: `Actin - Physiotherapists list`})
 </script>
 
 <template>
-  <ReportHeader @click="$router.go(-1)">لیست پزشکان</ReportHeader>
+  <ReportHeader @click="$router.go(-1)">در حال حاضر باشگاهی ثبت نام نکرده است</ReportHeader>
 
   <div v-if="physioList"  class="w-full flex justify-center overflow-auto">
     <div class="flex flex-col max-w-[500px] w-full">
