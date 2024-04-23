@@ -57,7 +57,7 @@ useHead({title: "اکتین - صفحه اصلی"})
   <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6 !select-none">
     <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
       <div class="flex flex-row justify-center items-center gap-x-4 w-full">
-        <PrimaryProfile />
+        <PrimaryProfile/>
 
         <div class="flex flex-col gap-y-2 flex-grow" v-if="user && profile.status > 0">
           <p class="text-mainBlack text-2xl font-semibold">
@@ -123,11 +123,7 @@ useHead({title: "اکتین - صفحه اصلی"})
         </div>
       </div>
 
-<!--      <PrimaryBorderButton class="flex justify-center items-center gap-x-2 mt-4" @click="$router.push('/profile')">
-        <MaterialSymbols theme="rounded" class="text-mainSubDead text-[22px]">edit</MaterialSymbols>
 
-        <p class="font-medium text-[15px]">ویرایش پروفایل</p>
-      </PrimaryBorderButton>-->
     </div>
 
   </div>

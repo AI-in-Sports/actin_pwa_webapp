@@ -33,19 +33,21 @@ useHead({title: "اکتین - برنامه تمرینی"})
 </script>
 
 <template>
-  <div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack overflow-auto">
-    <section v-if="[0, 1, 2, 3].includes(data?.mode!) || !data" class="flex flex-col max-w-[400px] w-full">
-      <h1 class="font-semibold text-[21px]">
-        {{ user.first_name }}
-        عزیز
-      </h1>
+<div class="px-[16px] py-[32px] h-full flex w-full justify-center text-mainBlack overflow-auto">
+  <section v-if="[0, 1, 2, 3].includes(data?.mode!) || !data" class="flex flex-col max-w-[400px] w-full">
+     <ClientOnly>
+       <h1 class="font-semibold text-[21px]">
+         {{ user.first_name }}
+         عزیز
+       </h1>
+     </ClientOnly>
 
-      <client-only>
+      <ClientOnly>
         <p class="text-[16px] mt-[36px] w-full">
-        <span v-if="data?.mode === 0">
-          در حال حاضر برنامه‌ی تمرینی ندارید.
-        برای دریافت برنامه ابتدا باید به یکی از مراکز مجهز به دستگاه ارزیابی اسکلتی مراجعه کنید.
-        </span>
+          <span v-if="data?.mode === 0">
+            در حال حاضر برنامه‌ی تمرینی ندارید.
+          برای دریافت برنامه ابتدا باید به یکی از مراکز مجهز به دستگاه ارزیابی اسکلتی مراجعه کنید.
+          </span>
 
           <span v-if="data?.mode === 1">
           در حال حاضر برنامه‌ی تمرینی ندارید.
@@ -59,34 +61,34 @@ useHead({title: "اکتین - برنامه تمرینی"})
           <span v-if="data?.mode === 3">
           برنامه تمرینی شما با موفقیت ایجاد شده ولی هزینه آن پرداخت نشده است.
         </span>
-        </p>
+      </p>
 
-        <div class="flex flex-col mt-[34px]">
-          <ThemeButton
-              @click="profile.toggleCompleteProfileModal()"
-              v-if="data?.mode === 1" class="!font-semibold !text-[16px]">
-            تکمیل پروفایل
-          </ThemeButton>
+      <div class="flex flex-col mt-[34px]">
+        <ThemeButton
+            @click="profile.toggleCompleteProfileModal()"
+            v-if="data?.mode === 1" class="!font-semibold !text-[16px]">
+          تکمیل پروفایل
+        </ThemeButton>
 
-          <ThemeButton
-              @click="goToGenerate"
-              v-if="data?.mode === 2" class="!font-semibold !text-[16px]">
-            دریافت برنامه
-          </ThemeButton>
+        <ThemeButton
+            @click="goToGenerate"
+            v-if="data?.mode === 2" class="!font-semibold !text-[16px]">
+          دریافت برنامه
+        </ThemeButton>
 
-          <ThemeButton
-              @click="$router.replace('/ce/payment')"
-              v-if="data?.mode === 3" class="!font-semibold !text-[16px]">
-            پرداخت
-          </ThemeButton>
-        </div>
-      </client-only>
-    </section>
+        <ThemeButton
+            @click="$router.replace('/ce/payment')"
+            v-if="data?.mode === 3" class="!font-semibold !text-[16px]">
+          پرداخت
+        </ThemeButton>
+      </div>
+    </ClientOnly>
+  </section>
 
-    <section class="w-full h-full flex justify-center items-center flex-col" v-else>
-      <Ce/>
-    </section>
-  </div>
+  <section class="w-full h-full flex justify-center items-center flex-col" v-else>
+    <Ce/>
+  </section>
+</div>
 </template>
 
 <style scoped>

@@ -8,8 +8,6 @@ const isSubmit = ref(false)
 
 const config = useRuntimeConfig()
 
-useHead({title: `ورود به حساب با کد`})
-
 const retry = (callback: string) => {
   localStorage.removeItem('loginSession')
   useAuthStore().logout()
@@ -84,13 +82,15 @@ const submitForm = async () => {
     else location.replace(`/home?act=lg_done&nocache=${(new Date()).getTime()}`)
   }
 }
+
+useHead({title: `ورود به حساب با کد`})
 </script>
 
 <template>
   <div class="h-[100dvh] w-full flex flex-col items-center px-[16px] py-[20px]" dir="rtl">
     <div class="max-w-[500px] w-full flex flex-col">
       <div class="flex w-full justify-end">
-        <FaIcon :icon="['fas', 'arrow-left']" class="cursor-pointer text-[#666666] text-[24px]" @click="$router.go(-1)"/>
+        <FaIcon :icon="['fas', 'arrow-left']" class="cursor-pointer text-[#666666] text-[24px]" @click="retry('/')"/>
       </div>
 
       <h1 class="mt-[20px] text-center font-bold text-[28px] text-black/80">کد ورود</h1>

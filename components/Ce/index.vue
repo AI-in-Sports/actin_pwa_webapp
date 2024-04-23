@@ -5,10 +5,10 @@ import jalali from "jalaali-js"
 import type {Ref} from "vue"
 import type {ExerciseDaysType} from "~/stores/survey.types"
 
-const isReady = ref(false)
+const isReady = useState(() => false)
 
-const dates: Ref<Date[]> = shallowRef([])
-const currentDate = shallowRef(new Date())
+const dates: Ref<Date[]> = useState(() => [])
+const currentDate = useState(() => new Date())
 
 const {data} = useSSRFetch<ExerciseResponse>("/ce/exercise/getAll", {
   auth: true,

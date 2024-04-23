@@ -11,7 +11,7 @@ useHead({title: "پروفایل"})
     <div class="relative mb-8 w-full flex justify-center">
 <!--      <img src="../../assets/images/profile.jpeg" alt="profile" class="w-[120px] h-[120px] object-cover rounded-full">-->
 
-      <PrimaryProfile large editable />
+      <PrimaryProfile large />
     </div>
 
     <div class="flex flex-col justify-center items-center gap-y-1 w-full">

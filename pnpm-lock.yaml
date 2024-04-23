@@ -9,8 +9,8 @@ overrides:
 
 dependencies:
   '@actin/pwa-layer':
-    specifier: ^1.9.7
-    version: 1.9.7(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
+    specifier: ^1.9.12
+    version: 1.9.12(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13)
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.4.0
     version: 6.5.1
@@ -109,8 +109,8 @@ devDependencies:
 
 packages:
 
-  /@actin/pwa-layer@1.9.7(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13):
-    resolution: {integrity: sha512-yevsKg7vkDCaf181mcwnyvVqtOek6f6Reb9XSOIDtW/yvhjc6Dt7aAAF4G2dyPYX/1HoPnrdtjjr36YgmxqMtQ==}
+  /@actin/pwa-layer@1.9.12(rollup@2.79.1)(typescript@5.3.3)(vue@3.3.13):
+    resolution: {integrity: sha512-7bawEWC7PeNVJAb+OdRhYPpIZ2EZJslFDV+Cxpg60tx6p1CiD+dYC3LmvLNISdA/xNi41Z2n93fNBOFRzYjqwQ==}
     dependencies:
       '@nuxtjs/tailwindcss': 6.11.4(rollup@2.79.1)
       '@pinia-plugin-persistedstate/nuxt': 1.2.0(@pinia/nuxt@0.5.1)(pinia@2.1.7)(rollup@2.79.1)
@@ -126,6 +126,7 @@ packages:
       tailwindcss: 3.4.1
       ts-mockito: 2.6.1
       uuid: 9.0.1
+      vue3-persian-datetime-picker: 1.2.2
       vue3-toastify: 0.2.1(vue@3.3.13)
     transitivePeerDependencies:
       - '@vue/composition-api'

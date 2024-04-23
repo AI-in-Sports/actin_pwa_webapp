@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const first_name = shallowRef('')
 const last_name = shallowRef('')
-const gender = shallowRef('')
+const gender = shallowRef('0')
 
 const profileInfoForm = ref()
 
@@ -17,8 +17,6 @@ const submitProfileInfo = async () => {
   last_name.value = last_name.value.trim()
 
   const regex = /^[a-zA-Z\s\u0600-\u06FF]{2,100}$/
-
-  console.log(first_name.value)
 
   if(!regex.test(first_name.value) || !regex.test(last_name.value))
     return useToast.error("لطفا نام و نام خانوادگی معتبر وارد کنید!")
