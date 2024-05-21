@@ -52,6 +52,9 @@ const paymentMethods = shallowRef([
           @click="selectedPaymentMethod = index"/>
       </div>
     </div>
+    <ThemeButton class="mt-auto">
+      پرداخت
+    </ThemeButton>
   </div>
 </template>
 
