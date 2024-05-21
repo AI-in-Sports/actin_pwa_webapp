@@ -20,7 +20,7 @@ const paymentMethods = shallowRef([
 </script>
 
 <template>
-  <div class="flex flex-col px-4 gap-y-8">
+  <div class="flex flex-col p-4 h-full gap-y-8">
     <div class="flex flex-col gap-y-4">
       <h3 class="text-base text-mainBlack font-semibold" dir="rtl">
         مبلغ قابل پرداخت:
@@ -51,8 +51,6 @@ const paymentMethods = shallowRef([
           :icon="method.icon" :title="method.title"
           @click="selectedPaymentMethod = index"/>
       </div>
-
-
     </div>
   </div>
 </template>
