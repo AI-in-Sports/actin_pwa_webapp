@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import check from "~/assets/icons/icon_check_circle.svg"
 import error from "~/assets/icons/icon_failed_circle.svg"
+import unknown from "~/assets/icons/icon_unknown_circle.svg"
 
 definePageMeta({
   layout: "payment"
@@ -8,16 +9,27 @@ definePageMeta({
 
 const isReady = shallowRef(false)
 const status = shallowRef(1)
+const message = shallowRef("")
+const image = shallowRef(check)
 
 onMounted(() => {
   const res = useRoute().query.res
 
   switch (res) {
     case "404" || "nv":
+      image.value = error
       status.value = 1
+      message.value = "پرداخت ناموفق بود."
       break
     case "200":
+      image.value = check
       status.value = 2
+      message.value = "پرداخت با موفقیت انجام شد."
+      break
+    case "503":
+      image.value = unknown
+      status.value = 3
+      message.value = "نتیجه پرداخت نامشخص است."
       break
   }
 
@@ -47,16 +59,17 @@ useHead({title: `اکتین - ${status.value === 1 ? 'پرداخت ناموفق'
     <div></div>
 
     <div class="w-full flex flex-col gap-y-8 items-center">
-      <img :src="status === 1 ? error : check" alt="check">
+      <img :src="image" alt="check">
 
-      <h2 class="text-[24px] text-mainBlack font-semibold">{{
-        status === 1 ?
-            "پرداخت ناموفق بود." :
-            "پرداخت با موفقیت انجام شد."
-        }}</h2>
+      <h2 class="text-[24px] text-mainBlack font-semibold">
+        {{ message }}
+      </h2>
 
-      <p class="text-sm text-center text-mainSubDead">
+      <p class="text-sm text-center text-mainSubDead" v-if="status === 1">
         درصورت کسر مبلغ تا 72 ساعت آینده به حساب شما مرجوع خواهد شد.
+      </p>
+      <p class="text-sm text-center text-mainSubDead" v-if="status === 3">
+        لطفا منتظر بمانید
       </p>
     </div>
 
