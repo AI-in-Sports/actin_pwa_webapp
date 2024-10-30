@@ -1,27 +1,8 @@
-job("Example") {
-    // run the job in a default instance in cloud
-    requirements {
-        workerPool = WorkerPools.SPACE_CLOUD
-    }
-
+job("Hello from self-hosted worker") {
     host("Run echo") {
         shellScript {
             content = """
-                echo "Hello from worker!"
-            """
-        }
-
-        shellScript {
-            content = """
-                echo "Hello again from worker one more time!"
-            """
-        }
-    }
-
-    container(displayName = "Say Hello", image = "ubuntu") {
-        shellScript {
-            content = """
-                echo "I can run shellScript only once!"
+                echo "Hello World!"
             """
         }
     }
