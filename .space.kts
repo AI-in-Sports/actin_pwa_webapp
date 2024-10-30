@@ -13,7 +13,7 @@ job("Example") {
 
         shellScript {
             content = """
-                echo "Hello from worker one more time!"
+                echo "Hello again from worker one more time!"
             """
         }
     }
