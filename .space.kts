@@ -1,9 +1,13 @@
-job("Hello from self-hosted worker") {
+job("Hello from host") {
     host("Run echo") {
         shellScript {
             content = """
-                echo "Hello World again!"
+                echo Hello World!
             """
+        }
+
+        requirements {
+            workerTags("w1")
         }
     }
 }
