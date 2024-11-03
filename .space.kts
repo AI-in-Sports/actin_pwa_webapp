@@ -1,13 +1,3 @@
-job("Hello from host") {
-    host("Run echo") {
-        shellScript {
-            content = """
-                echo Hello World!
-            """
-        }
-
-        requirements {
-            workerTags("w1")
-        }
-    }
+job("Hello World!") {
+    container(displayName = "Say Hello", image = "hello-world")
 }
