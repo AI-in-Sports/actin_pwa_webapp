@@ -1,23 +1,22 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building..',
-                docker compose -f ../docker-compose.yaml logs
+                echo 'Building..'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..',
-                docker compose -f ../docker-compose.yaml logs
+                echo 'Testing..'
+                sh 'node --version'
+
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....',
-                docker compose -f ../docker-compose.yaml logs
+                echo 'Deploying....'
             }
         }
     }
