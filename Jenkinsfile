@@ -4,19 +4,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Building..',
                 docker compose -f ../docker-compose.yaml logs
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Testing..',
                 docker compose -f ../docker-compose.yaml logs
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo 'Deploying....',
                 docker compose -f ../docker-compose.yaml logs
             }
         }
