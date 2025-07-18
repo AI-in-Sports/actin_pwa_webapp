@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  actin_webapp:
+    restart: on-failure
+    container_name: actin_webapp
+      #image: packages.actinhealth.ir/p/pwa/services/webapp:0.1
+    build:
+     context: ./actin_pwa_webapp
+     args:
+       - APP_BACKEND=https://api.actinhealth.ir
+       - DISABLE_RESERVATION=false
+    environment:
+      - APP_BACKEND=https://api.actinhealth.ir
+      - DISABLE_RESERVATION=false
+    networks:
+    - actin_network
+      
+  actin_dashboard:
+    restart: on-failure
+    container_name: actin_dashboard
+    build:
+      context: ./actin_pwa_dashboard
+      args:
+        - APP_BACKEND=https://api.actinhealth.ir
+    environment:
+      - APP_BACKEND=https://api.actinhealth.ir
+    ports:
+     - "3000:3000"
+    networks:
+    - actin_network
+
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - actin_webapp
+      - actin_dashboard
+    networks:
+      - actin_network
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+
+    networks:
+      - actin_network
+
+networks:
+  actin_network:
