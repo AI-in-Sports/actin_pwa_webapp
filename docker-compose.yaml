@@ -10,6 +10,8 @@ services:
      args:
        - APP_BACKEND=https://api.actinhealth.ir
        - DISABLE_RESERVATION=false
+     secrets:
+       - npm_token
     environment:
       - APP_BACKEND=https://api.actinhealth.ir
       - DISABLE_RESERVATION=false
@@ -23,6 +25,8 @@ services:
       context: ./actin_pwa_dashboard
       args:
         - APP_BACKEND=https://api.actinhealth.ir
+      secrets:
+        - npm_token
     environment:
       - APP_BACKEND=https://api.actinhealth.ir
     ports:
@@ -56,6 +60,12 @@ services:
 
     networks:
       - actin_network
+
+# Read token for the @actin registry, taken from the shell at build time:
+#   NPM_ACTIN_TOKEN=... docker compose build
+secrets:
+  npm_token:
+    environment: NPM_ACTIN_TOKEN
 
 networks:
   actin_network:

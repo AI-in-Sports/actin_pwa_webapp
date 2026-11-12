@@ -1,6 +1,8 @@
+# syntax=docker/dockerfile:1
 FROM node:18-alpine AS base
 
-RUN yarn global add pnpm
+# The lockfile is format 6.0, which pnpm 9+ refuses; keep pnpm on 8.
+RUN npm install -g pnpm@8.15.9
 
 ARG APP_BACKEND DISABLE_RESERVATION
 
@@ -14,7 +16,10 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml .npmrc ./
 
-RUN pnpm install --frozen-lockfile
+# The registry token is mounted only for this step and never stored in a layer:
+#   docker build --secret id=npm_token,env=NPM_ACTIN_TOKEN .
+RUN --mount=type=secret,id=npm_token,required=true \
+    NPM_ACTIN_TOKEN="$(cat /run/secrets/npm_token)" pnpm install --frozen-lockfile
 
 FROM base AS builder
 

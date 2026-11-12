@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Read token for the @actin registry (packages.actinhealth.ir), set under
+      # Settings > Secrets and variables > Actions.
+      NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN }}
+    steps:
+      - name: Registry token is configured
+        run: |
+          if [ -z "$NPM_ACTIN_TOKEN" ]; then
+            echo "::error::Add the NPM_ACTIN_TOKEN repository secret (read token for packages.actinhealth.ir)."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
