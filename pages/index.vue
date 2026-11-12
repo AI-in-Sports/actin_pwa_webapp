@@ -7,6 +7,7 @@ definePageMeta({
 const config = useRuntimeConfig()
 const isSubmit = shallowRef(false)
 const phoneNumber = shallowRef("")
+const hasPendingScan = computed(() => !!useAuthStore().reportSessionId)
 
 onMounted(() => {
   const act = useRoute().query.act
@@ -72,6 +73,10 @@ useHead({title: "Actin"})
   <div class="flex flex-col items-center justify-center h-full pb-[20%]" dir="rtl">
     <p class="mt-[24px] text-black/80 text-[16px] text-center">
       لطفا جهت ورود به حساب کاربری، شماره موبایل <br> خود را وارد نمایید.
+    </p>
+
+    <p v-if="hasPendingScan" class="mt-[12px] rounded-full bg-mainGreen/10 text-mainGreen px-[16px] py-[6px] text-[14px] text-center">
+      پس از ورود، نتایج تست آینه به حساب شما اضافه می‌شود.
     </p>
 
     <form action="" @submit.prevent="submit" class="flex flex-col items-center w-full px-[24px] mt-[24px]">

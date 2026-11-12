@@ -1,14 +1,12 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
-    if(process.server)
-    {
-        const sessionId = to.params.session_id
+/**
+ * Remembers the scanned mirror session (QR session id or 6-digit code) so that the
+ * user comes back to it after signing in (see pages/otp.vue). The page itself shows
+ * the session preview and asks the user to sign in when needed.
+ */
+export default defineNuxtRouteMiddleware((to) => {
+    const ref = to.params.session_id
 
-        const token = useAuthStore().token
+    if (!ref || Array.isArray(ref)) return navigateTo("/scan")
 
-        if(!sessionId) return navigateTo("/?act=sid_inv")
-
-        useAuthStore().set("reportSessionId", sessionId)
-
-        if (!token) return navigateTo("/")
-    }
+    useAuthStore().set("reportSessionId", ref)
 })
