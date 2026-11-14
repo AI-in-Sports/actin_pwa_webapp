@@ -1,0 +1,26 @@
+[package]
+name = "actin-app"
+version = "0.1.0"
+description = "Actin member app for iOS and Android"
+edition = "2021"
+rust-version = "1.77"
+
+[lib]
+name = "actin_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+# The camera QR reader exists only on phones; desktop builds (used for development) type the code.
+[target.'cfg(any(target_os = "android", target_os = "ios"))'.dependencies]
+tauri-plugin-barcode-scanner = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

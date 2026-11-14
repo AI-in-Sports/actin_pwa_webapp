@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Room for the notch, status bar and home indicator (viewport-fit=cover). */
+@layer utilities {
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+html, body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "The app calls the backend over HTTPS itself, so it needs only the core window APIs.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
