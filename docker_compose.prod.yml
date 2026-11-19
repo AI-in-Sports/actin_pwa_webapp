@@ -1,0 +1,59 @@
+# Production stack for the Actin PWA webapp.
+#
+# It does not build anything: the image comes from the "Publish production image"
+# GitHub Actions workflow (.github/workflows/docker-publish.yml), which runs on
+# every push/merge to main.
+#
+#   docker login ghcr.io -u <github-user> -p <PAT with read:packages>
+#   docker compose -f docker_compose.prod.yml pull
+#   docker compose -f docker_compose.prod.yml up -d
+#
+# Pin a release instead of tracking latest by exporting WEBAPP_IMAGE, e.g.:
+#   WEBAPP_IMAGE=ghcr.io/ai-in-sports/actin_pwa_webapp:sha-62bf087
+#   docker compose -f docker_compose.prod.yml up -d
+#
+# Overridable values:
+#   WEBAPP_IMAGE          image reference (default: ghcr.io/...:latest)
+#   WEBAPP_PORT           host port published for the app (default: 3000)
+#   ACTIN_NETWORK         docker network shared with the reverse proxy (default: actin_network)
+#   APP_BACKEND           public API base URL (default: https://api.actinhealth.ir)
+#   DISABLE_RESERVATION   feature flag shared with the app (default: false)
+
+name: actin-prod
+
+services:
+  actin_webapp:
+    image: ${WEBAPP_IMAGE:-ghcr.io/ai-in-sports/actin_pwa_webapp:latest}
+    container_name: actin_webapp
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      NODE_ENV: production
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: "3000"
+      APP_BACKEND: ${APP_BACKEND:-https://api.actinhealth.ir}
+      DISABLE_RESERVATION: ${DISABLE_RESERVATION:-false}
+      # Nuxt reads public runtime config from NUXT_PUBLIC_* variables at runtime.
+      NUXT_PUBLIC_APP_BACKEND: ${APP_BACKEND:-https://api.actinhealth.ir}
+      NUXT_PUBLIC_DISABLE_RESERVATION: ${DISABLE_RESERVATION:-false}
+    ports:
+      - "${WEBAPP_PORT:-3000}:3000"
+    networks:
+      - actin_network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  actin_network:
+    name: ${ACTIN_NETWORK:-actin_network}

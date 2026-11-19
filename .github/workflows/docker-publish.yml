@@ -1,0 +1,112 @@
+name: Publish production image
+
+# Every push to main is a release: this includes PR merges and local
+# "git merge development && git push origin main" flows. workflow_dispatch is
+# there for rebuilding the current main commit by hand.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: production-image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Defaults to GitHub Container Registry. To publish to another registry set
+  # the repository variables REGISTRY, IMAGE_NAME and REGISTRY_USERNAME plus the
+  # REGISTRY_PASSWORD secret.
+  REGISTRY: ${{ vars.REGISTRY || 'ghcr.io' }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME || github.repository }}
+
+jobs:
+  build-and-push:
+    name: Build and push Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      APP_BACKEND: ${{ vars.APP_BACKEND || 'https://api.actinhealth.ir' }}
+      DISABLE_RESERVATION: ${{ vars.DISABLE_RESERVATION || 'false' }}
+    steps:
+      - name: Registry token is configured
+        env:
+          NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN }}
+        run: |
+          if [ -z "$NPM_ACTIN_TOKEN" ]; then
+            echo "::error::Add the NPM_ACTIN_TOKEN repository secret (read token for the @ai-in-sports npm registry)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Compute image reference
+        id: image
+        run: echo "name=${REGISTRY,,}/${IMAGE_NAME,,}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ vars.REGISTRY_USERNAME || github.actor }}
+          password: ${{ secrets.REGISTRY_PASSWORD || secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.image.outputs.name }}
+          # latest only moves on main, so manual builds cannot overwrite it.
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=sha,prefix=sha-,format=short
+          labels: |
+            org.opencontainers.image.title=Actin PWA webapp
+            org.opencontainers.image.description=Actin Health member PWA (Nuxt 3, Node server)
+
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          # Production hosts are linux/amd64. Add docker/setup-qemu-action before
+          # this step if you ever switch to linux/arm64 (or multi-arch).
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            APP_BACKEND=${{ env.APP_BACKEND }}
+            DISABLE_RESERVATION=${{ env.DISABLE_RESERVATION }}
+            NODE_MAX_OLD_SPACE_SIZE=4096
+          secrets: |
+            npm_token=${{ secrets.NPM_ACTIN_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+      - name: Publish summary
+        run: |
+          {
+            echo "### Production image published"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Image | \`${{ steps.image.outputs.name }}\` |"
+            echo "| Tags | \`$(echo "${{ steps.meta.outputs.tags }}" | tr '\n' ' ')\` |"
+            echo "| Digest | \`${{ steps.build.outputs.digest }}\` |"
+            echo
+            echo "Deploy that exact build with:"
+            echo '```bash'
+            echo "WEBAPP_IMAGE=${{ steps.image.outputs.name }}:sha-${GITHUB_SHA::7} \\"
+            echo "  docker compose -f docker_compose.prod.yml up -d"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
