@@ -32,12 +32,12 @@ jobs:
       APP_BACKEND: ${{ vars.APP_BACKEND || 'https://api.actinhealth.ir' }}
       DISABLE_RESERVATION: ${{ vars.DISABLE_RESERVATION || 'false' }}
     steps:
-      - name: Registry token is configured
+      - name: Registry access is configured
         env:
-          NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN }}
+          NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           if [ -z "$NPM_ACTIN_TOKEN" ]; then
-            echo "::error::Add the NPM_ACTIN_TOKEN repository secret (read token for the @ai-in-sports npm registry)."
+            echo "::error::No token is available to read @ai-in-sports/actin-pwa-layer."
             exit 1
           fi
 
@@ -87,7 +87,7 @@ jobs:
             DISABLE_RESERVATION=${{ env.DISABLE_RESERVATION }}
             NODE_MAX_OLD_SPACE_SIZE=4096
           secrets: |
-            npm_token=${{ secrets.NPM_ACTIN_TOKEN }}
+            npm_token=${{ secrets.NPM_ACTIN_TOKEN || secrets.GITHUB_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: true

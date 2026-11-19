@@ -6,18 +6,40 @@ on:
     # main is covered by docker-publish.yml, which builds the release image.
     branches: [development]
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      has_layer_token: ${{ steps.check.outputs.has_layer_token }}
+    steps:
+      - name: Check optional mobile layer token
+        id: check
+        env:
+          ACTIN_LAYER_TOKEN: ${{ secrets.ACTIN_LAYER_TOKEN }}
+        run: |
+          if [ -n "$ACTIN_LAYER_TOKEN" ]; then
+            echo "has_layer_token=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_layer_token=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::ACTIN_LAYER_TOKEN is not set. Mobile tests are skipped; add a read token for AI-in-Sports/actin-pwa-layer to enable them."
+          fi
+
   build:
     runs-on: ubuntu-latest
     env:
-      # Read token for the @actin registry (packages.actinhealth.ir), set under
-      # Settings > Secrets and variables > Actions.
-      NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN }}
+      # @ai-in-sports/actin-pwa-layer is linked to this repository, so the
+      # workflow's GITHUB_TOKEN can read it. A dedicated NPM_ACTIN_TOKEN secret
+      # still wins when it is configured.
+      NPM_ACTIN_TOKEN: ${{ secrets.NPM_ACTIN_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
-      - name: Registry token is configured
+      - name: Registry access is configured
         run: |
           if [ -z "$NPM_ACTIN_TOKEN" ]; then
-            echo "::error::Add the NPM_ACTIN_TOKEN repository secret (read token for packages.actinhealth.ir)."
+            echo "::error::No token is available to read @ai-in-sports/actin-pwa-layer."
             exit 1
           fi
       - uses: actions/checkout@v4
@@ -34,21 +56,17 @@ jobs:
 
   mobile:
     # The member app in mobile/ (Tauri v2 for iOS and Android): unit tests, types and the web build.
+    # Skipped until ACTIN_LAYER_TOKEN is configured, because it depends on a private repo.
+    needs: preflight
+    if: needs.preflight.outputs.has_layer_token == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: mobile
     env:
-      # Read token for the private AI-in-Sports/actin-pwa-layer repository (same secret as the dashboard).
+      # Read token for the private AI-in-Sports/actin-pwa-layer repository.
       ACTIN_LAYER_TOKEN: ${{ secrets.ACTIN_LAYER_TOKEN }}
     steps:
-      - name: Layer token is configured
-        run: |
-          if [ -z "$ACTIN_LAYER_TOKEN" ]; then
-            echo "::error::Add the ACTIN_LAYER_TOKEN repository secret (read access to AI-in-Sports/actin-pwa-layer)."
-            exit 1
-          fi
-        working-directory: .
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
