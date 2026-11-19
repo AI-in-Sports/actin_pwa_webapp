@@ -3,7 +3,7 @@ import layerTheme from "@ai-in-sports/actin-pwa-layer/tailwind.config"
 
 export default {
     content: [
-        "./node_modules/@actin/pwa-layer/**/*.{js,vue,ts}",
+        "./node_modules/@ai-in-sports/actin-pwa-layer/**/*.{js,vue,ts}",
         "./components/**/*.{js,vue,ts}",
         "./layouts/**/*.vue",
         "./pages/**/*.vue",

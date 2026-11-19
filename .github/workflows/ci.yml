@@ -12,7 +12,7 @@ permissions:
 
 env:
   # Nuxt's production build needs more than Node's default heap on runners.
-  NODE_OPTIONS: --max-old-space-size=12288
+  NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
   preflight:

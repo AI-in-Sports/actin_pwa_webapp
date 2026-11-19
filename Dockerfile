@@ -11,7 +11,7 @@ ARG APP_BACKEND DISABLE_RESERVATION
 #   FATAL ERROR: Ineffective mark-compacts near heap limit
 #   Allocation failed - JavaScript heap out of memory
 # Raise the build arg if the image is built on a machine with more memory.
-ARG NODE_MAX_OLD_SPACE_SIZE=8192
+ARG NODE_MAX_OLD_SPACE_SIZE=4096
 
 ENV APP_BACKEND=${APP_BACKEND} \
     DISABLE_RESERVATION=${DISABLE_RESERVATION} \

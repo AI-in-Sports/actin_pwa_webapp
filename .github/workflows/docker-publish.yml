@@ -85,7 +85,7 @@ jobs:
           build-args: |
             APP_BACKEND=${{ env.APP_BACKEND }}
             DISABLE_RESERVATION=${{ env.DISABLE_RESERVATION }}
-            NODE_MAX_OLD_SPACE_SIZE=12288
+            NODE_MAX_OLD_SPACE_SIZE=4096
           secrets: |
             npm_token=${{ secrets.NPM_ACTIN_TOKEN || secrets.GITHUB_TOKEN }}
           cache-from: type=gha
