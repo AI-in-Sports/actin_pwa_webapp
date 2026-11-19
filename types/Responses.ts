@@ -1,5 +1,5 @@
 import type {ExerciseDaysType} from "~/stores/survey.types"
-import type {Exercise} from "@actin/pwa-layer/types/ce.types"
+import type {Exercise} from "@ai-in-sports/actin-pwa-layer/types/ce.types"
 
 export type Reservation = {
     name: string,

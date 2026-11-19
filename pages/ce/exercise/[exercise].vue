@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {Exercise} from "@actin/pwa-layer/types/ce.types"
+import type {Exercise} from "@ai-in-sports/actin-pwa-layer/types/ce.types"
 import jalali from "jalaali-js"
 import {numberToWords} from "@persian-tools/persian-tools"
 import done_animation from "~/assets/lottie/done.json"

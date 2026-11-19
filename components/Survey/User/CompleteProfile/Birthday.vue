@@ -20,4 +20,4 @@ const birthday = computed({
   </div>
 </template>
 
-<style lang="sass" src="@actin/pwa-layer/assets/style/birthday.sass"></style>
+<style lang="sass" src="@ai-in-sports/actin-pwa-layer/assets/style/birthday.sass"></style>
