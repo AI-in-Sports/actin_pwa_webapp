@@ -38,7 +38,7 @@ export default defineNuxtConfig({
       GIGET_AUTH: process.env.GIGET_AUTH
     }
   },
-  extends: ["@actin/pwa-layer"],
+  extends: ["@ai-in-sports/actin-pwa-layer"],
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
