@@ -3,9 +3,13 @@ node_modules
 .output
 dist
 .git
+.github
 .gitignore
+.env
+.env.*
 Dockerfile*
 docker-compose*
+docker_compose*
 npm-debug.log*
 pnpm-debug.log*
 mobile

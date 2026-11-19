@@ -3,7 +3,8 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    # main is covered by docker-publish.yml, which builds the release image.
+    branches: [development]
 
 jobs:
   build:
