@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import layerTheme from "@actin/pwa-layer/tailwind.config"
+import layerTheme from "@ai-in-sports/actin-pwa-layer/tailwind.config"
 
 export default {
     content: [
