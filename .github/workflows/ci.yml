@@ -10,6 +10,10 @@ permissions:
   contents: read
   packages: read
 
+env:
+  # Nuxt's production build needs more than Node's default heap on runners.
+  NODE_OPTIONS: --max-old-space-size=8192
+
 jobs:
   preflight:
     runs-on: ubuntu-latest
