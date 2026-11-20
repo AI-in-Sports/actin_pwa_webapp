@@ -6,7 +6,8 @@ Actin Health PWA is the member-facing progressive web app: Nuxt 4 (Vue 3,
 TypeScript), Pinia, Tailwind CSS 4 and the shared design system in
 [`@ai-in-sports/actin-pwa-layer`](https://github.com/AI-in-Sports/actin-pwa-layer).
 
-It is served by Nitro as a Node server (`pnpm build` → `.output/`), and the
+It is served by Nitro as a Node server (`pnpm build` → `.output/`) with SSR
+disabled: the member app is a SPA because the session lives in localStorage. The
 production image is built by GitHub Actions and published to GitHub Container
 Registry.
 
@@ -68,8 +69,9 @@ pnpm preview     # run the built server locally
 ### Docker
 
 The production image is published on every merge to `main`
-(`.github/workflows/docker-publish.yml`). Deploy the published image with
-`docker_compose.prod.yml`; it pulls instead of building:
+(`.github/workflows/docker-publish.yml`). Pushes to `development` publish the
+`development` tag that staging tracks, without moving `latest`. Deploy the
+published image with `docker_compose.prod.yml`; it pulls instead of building:
 
 ```bash
 docker login ghcr.io -u <github-user> -p <PAT with read:packages>

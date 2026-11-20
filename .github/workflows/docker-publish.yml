@@ -1,11 +1,14 @@
 name: Publish production image
 
 # Every push to main is a release: this includes PR merges and local
-# "git merge development && git push origin main" flows. workflow_dispatch is
-# there for rebuilding the current main commit by hand.
+# "git merge development && git push origin main" flows. Pushes to development
+# publish the `development` tag that staging tracks. workflow_dispatch is there
+# for rebuilding a branch by hand.
 on:
   push:
-    branches: [main]
+    # `latest` only moves on the default branch; development pushes produce the
+    # `development` and sha-* tags.
+    branches: [main, development]
     # The image rebuild commits the rendered compose file back to main. Skip
     # that commit so the workflow cannot trigger itself.
     paths-ignore:
