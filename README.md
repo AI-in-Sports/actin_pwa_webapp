@@ -68,8 +68,9 @@ pnpm preview     # run the built server locally
 ### Docker
 
 The production image is published on every merge to `main`
-(`.github/workflows/docker-publish.yml`). Deploy the published image with
-`docker_compose.prod.yml`; it pulls instead of building:
+(`.github/workflows/docker-publish.yml`). Pushes to `development` publish the
+`development` tag that staging tracks, without moving `latest`. Deploy the
+published image with `docker_compose.prod.yml`; it pulls instead of building:
 
 ```bash
 docker login ghcr.io -u <github-user> -p <PAT with read:packages>
