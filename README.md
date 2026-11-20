@@ -2,84 +2,94 @@
 
 ## Overview
 
-Actin Health PWA is a progressive web application (PWA) developed using **Nuxt.js**, **TypeScript**, **Pinia**, **Tailwind CSS**, and **Sass**.
+Actin Health PWA is the member-facing progressive web app: Nuxt 4 (Vue 3,
+TypeScript), Pinia, Tailwind CSS 4 and the shared design system in
+[`@ai-in-sports/actin-pwa-layer`](https://github.com/AI-in-Sports/actin-pwa-layer).
 
-## Project Structure
+It is served by Nitro as a Node server (`pnpm build` → `.output/`), and the
+production image is built by GitHub Actions and published to GitHub Container
+Registry.
 
-The project follows a standard Nuxt.js project structure, with additional configurations for TypeScript, Pinia, and styling.
+## Project structure
 
-- **assets**: Contains static assets like images, fonts, etc.
-- **components**: Reusable Vue components.
-- **layouts**: Layout components defining the overall structure of pages.
-- **middleware**: Custom middleware for handling requests before rendering pages.
-- **pages**: Vue pages representing different routes of the application.
-- **plugins**: Nuxt.js plugins for third-party libraries and custom configurations.
-- **static**: Static files that will be served as-is.
-- **store**: Pinia store for state management.
-- **styles**: Global styles and Sass files.
-- **types**: TypeScript types and interfaces.
+Nuxt 4 keeps the app code in `app/`; the shared layer supplies the design system
+and app core from `node_modules`.
 
-## Tech Stack
+- `app/assets`: images and app-specific styles.
+- `app/components`: app components. Shared `Theme*`, `Report*` and `Ds*` components come from the layer.
+- `app/layouts`, `app/middleware`, `app/plugins`: layouts, route middleware and Nuxt plugins.
+- `app/pages`: routes.
+- `app/stores`: Pinia stores (`profile`, `survey`).
+- `app/types`, `app/utils`, `app/composables`: types and helpers.
+- `public/`: files served as-is (icons, manifest, service worker assets).
+- `mobile/`: the separate Tauri v2 member app for iOS and Android.
 
-- **Nuxt.js**: The framework for building universal Vue.js applications.
-- **TypeScript**: A superset of JavaScript with static typing for improved code quality.
-- **Pinia**: A state management library for Vue.js applications.
-- **Tailwind CSS**: A utility-first CSS framework for building modern and responsive designs.
-- **Sass**: A powerful CSS preprocessor for styling.
+## Tech stack
+
+- **Nuxt 4** with the `app/` directory layout and Nitro as the server.
+- **TypeScript**.
+- **Pinia 4** for state management.
+- **Tailwind CSS 4**, configured in CSS by the layer (`@theme inline`), not by a JS preset.
+- **Sass** for the few legacy stylesheets.
 
 ## Installation
 
-1. Clone the repository:
+The layer is published to GitHub Packages, so install needs a token with
+`read:packages` for the `AI-in-Sports` organisation:
 
-   ```bash
-   # For http
-   git clone https://git.actinhealth.ir/pwa/actin_pwa_webapp.git
-   # For ssh
-   git clone ssh://git@git.actinhealth.ir:2222/pwa/actin_pwa_webapp.git
-   ```
+```bash
+export NPM_ACTIN_TOKEN=...     # PowerShell: $env:NPM_ACTIN_TOKEN = "..."
+pnpm install
+```
 
-2. Install dependencies:
-
-   ```bash
-   cd actin-health-pwa
-   pnpm install
-   ```
+`.npmrc` reads the token from `NPM_ACTIN_TOKEN`; no token is committed.
 
 ## Usage
 
 ### Development
 
-Run the development server:
-
 ```bash
-pnpm run dev
+pnpm dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000).
 
-### Production
-
-Generate a static production site:
+### Production build
 
 ```bash
-pnpm run generate
+pnpm build       # Nitro server output in .output/
+pnpm preview     # run the built server locally
 ```
 
-Serve the generated site:
+`APP_BACKEND` (default in the container: `https://api.actinhealth.ir`) and
+`DISABLE_RESERVATION` are read at build time through `runtimeConfig.public`.
+
+### Docker
+
+The production image is published on every merge to `main`
+(`.github/workflows/docker-publish.yml`). Deploy the published image with
+`docker_compose.prod.yml`; it pulls instead of building:
 
 ```bash
-pnpm run start
+docker login ghcr.io -u <github-user> -p <PAT with read:packages>
+docker compose -f docker_compose.prod.yml pull
+docker compose -f docker_compose.prod.yml up -d
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+To build locally instead:
+
+```bash
+docker build --secret id=npm_token,env=NPM_ACTIN_TOKEN \
+  --build-arg NODE_MAX_OLD_SPACE_SIZE=8192 -t actin-pwa-webapp:local .
+```
 
 ## Configuration
 
-- Nuxt.js configuration: `nuxt.config.js`
-- TypeScript configuration: `tsconfig.json`
-- Pinia auth store configuration: `store/auth.ts`
-- Pinia survey store configuration: `store/survey.ts`
-- Tailwind CSS configuration: `tailwind.config.js`
+- Nuxt configuration: `nuxt.config.ts` (`srcDir: 'app'`, `extends` the layer).
+- TypeScript configuration: `tsconfig.json` (generated by Nuxt).
+- Pinia stores: `app/stores/profile.ts`, `app/stores/survey.ts`.
+- Tailwind theme: `packages/ui/assets/style/main.css` in the layer.
+- Container: `Dockerfile` and `docker_compose.prod.yml`.
 
 ## Contributing
 
@@ -88,7 +98,3 @@ If you'd like to contribute to this project, please follow the [contribution gui
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize this README file based on your specific project details.

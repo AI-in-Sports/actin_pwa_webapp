@@ -5,19 +5,17 @@
 const devHost = process.env.TAURI_DEV_HOST
 
 export default defineNuxtConfig({
+  // Nuxt 4 app directory: pages, components, layouts and assets live in app/.
+  srcDir: 'app',
   ssr: false,
   compatibilityDate: '2026-01-01',
   devtools: { enabled: false },
   telemetry: false,
 
   // Design system (tokens, Ds* components, fonts) and app-core (auth store, OTP login, API client).
-  extends: ['@actin/pwa-layer'],
+  extends: ['@ai-in-sports/actin-pwa-layer'],
 
   css: ['~/assets/style/main.css'],
-
-  postcss: {
-    plugins: { tailwindcss: {}, autoprefixer: {} },
-  },
 
   app: {
     head: {

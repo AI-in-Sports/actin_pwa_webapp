@@ -136,7 +136,7 @@ export const toLatinDigits = (value: string) =>
 /** Latin digits to Persian, with at most one decimal for measurements. */
 export const faDigits = (value: number | string) => {
   const text = typeof value === 'number' ? String(Math.round(value * 10) / 10) : value
-  return text.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]).replace('.', '٫')
+  return text.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)] ?? d).replace('.', '٫')
 }
 
 /** "۲۳ آبان ۱۴۰۵" in the Persian calendar; empty for a missing or bad date. */
@@ -177,7 +177,7 @@ export const refFromScan = (raw: string): string | null => {
     // Not a URL: a bare session id.
   }
   const match = path.match(/(?:^|\/)scan\/([A-Za-z0-9-]{8,64})\/?$/) ?? path.match(/^([A-Za-z0-9-]{8,64})$/)
-  return match ? match[1] : null
+  return match ? (match[1] ?? null) : null
 }
 
 export type ClaimError =

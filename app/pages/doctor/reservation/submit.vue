@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ok from "@/assets/images/reservation_green.svg"
 import not_ok from "@/assets/images/reservation_red.svg"
-import jalali from "jalaali-js"
+import * as jalali from "jalaali-js"
 
 definePageMeta({
   layout: "main",

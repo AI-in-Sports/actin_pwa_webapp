@@ -1,9 +1,10 @@
 # Actin member app (iOS and Android)
 
-The consumer app from the roadmap, built with Tauri v2 mobile. The UI is a Nuxt 3
-single-page app (`ssr: false`) on the shared design system in `@actin/pwa-layer`
-(tokens, `Ds*` components, fonts) and its app-core (auth store, OTP login). It
-talks to `actin_pwa_backend` over HTTPS. Desktop builds exist only for development.
+The consumer app from the roadmap, built with Tauri v2 mobile. The UI is a Nuxt 4
+single-page app (`ssr: false`) on the shared design system in
+`@ai-in-sports/actin-pwa-layer` (tokens, `Ds*` components, fonts) and its app-core
+(auth store, OTP login). It talks to `actin_pwa_backend` over HTTPS. Desktop builds
+exist only for development.
 
 It lives next to the web app, which keeps working unchanged; when the app ships it
 replaces the web app's scan (linking) page.
@@ -30,12 +31,12 @@ Backend routes used: `GET /otp/send`, `POST /auth/login`, `GET /auth/info`,
 
 ## Run it
 
-Prerequisites: Node 20+, pnpm, Rust 1.77+. For Android: Android Studio with the SDK and
+Prerequisites: Node 22.21+ or 24.11+, pnpm 10, Rust 1.77+. For Android: Android Studio with the SDK and
 NDK, `ANDROID_HOME` and `NDK_HOME` set, and `rustup target add aarch64-linux-android
 armv7-linux-androideabi i686-linux-android x86_64-linux-android`. For iOS: a Mac with
 Xcode and `rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios`.
-`@actin/pwa-layer` is installed from the private GitHub repository pinned to a commit, so
-git needs access to it (see the dashboard README).
+`@ai-in-sports/actin-pwa-layer` is installed from GitHub Packages, so `NPM_ACTIN_TOKEN`
+must be set during install (see the dashboard README).
 
 ```bash
 pnpm install
@@ -65,12 +66,12 @@ adds the Android `CAMERA` permission itself.
 
 ## Layout
 
-- `pages/` sign-in (`index`, `verify`), `results/` list and detail, `claim`, `sharing`;
+- `app/pages/` sign-in (`index`, `verify`), `results/` list and detail, `claim`, `sharing`;
   `scan/[id]` forwards a mirror QR link to the claim screen.
-- `utils/app.ts` types and pure helpers (QR parsing, error text, result headlines,
+- `app/utils/app.ts` types and pure helpers (QR parsing, error text, result headlines,
   posture findings, consent body), tested in `tests/`.
-- `composables/useApi.ts` signed-in `$fetch`; a 401 signs out.
-- `composables/useScanner.ts` the camera QR reader (phones only).
+- `app/composables/useApi.ts` signed-in `$fetch`; a 401 signs out.
+- `app/composables/useScanner.ts` the camera QR reader (phones only).
 - `src-tauri/` the shell: keeps the webview on the app's own pages and registers the
   barcode-scanner plugin on Android and iOS.
 

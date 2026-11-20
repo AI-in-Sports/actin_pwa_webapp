@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import jalali from "jalaali-js"
+import * as jalali from "jalaali-js"
 import type {Ref} from "vue"
 
 definePageMeta({

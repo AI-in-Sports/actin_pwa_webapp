@@ -89,7 +89,6 @@ const submitCompleteSurvey = async () => {
 </script>
 
 <template>
-  <VitePwaManifest/>
   <NuxtLayout>
     <client-only>
       <LazyThemeBottomSheet

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Jalali ,{type JalaaliDateObject} from "jalaali-js"
+import * as Jalali from "jalaali-js"
+import type {JalaaliDate} from "jalaali-js"
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
@@ -81,9 +82,9 @@ onMounted(async () => {
     <p class="text-center mb-[18px] mt-[50px] h-[20px] text-[#727272] text-[18px]">
       <span v-if="dataFetch && date">
         {{
-          persianNumber((date! as JalaaliDateObject).jd.toString()) + " " +
+          persianNumber((date! as JalaaliDate).jd.toString()) + " " +
           new Intl.DateTimeFormat('fa-IR', {month: 'short'}).format(new Date(dataFetch['date'])) + " " +
-          persianNumber((date! as JalaaliDateObject).jy.toString())
+          persianNumber((date! as JalaaliDate).jy.toString())
         }}
       </span>
 

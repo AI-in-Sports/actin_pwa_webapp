@@ -1,4 +1,7 @@
 export default defineNuxtConfig({
+  // Nuxt 4 app directory: pages, components, layouts, plugins, stores and assets
+  // live in app/. The layer's own dirs stay at its package root (srcDir ".").
+  srcDir: "app",
   devtools: {
     enabled: false,
   },
@@ -6,8 +9,7 @@ export default defineNuxtConfig({
     id: 'G-VYZEM75972'
   },
   modules: [
-    "@vite-pwa/nuxt", "nuxt3-leaflet", "nuxt-swiper",
-    "@nuxt/image", "nuxt-gtag"
+    "@vite-pwa/nuxt", "@nuxt/image", "nuxt-gtag"
   ],
   image: {dir: 'assets/'},
   css: [
@@ -15,12 +17,8 @@ export default defineNuxtConfig({
     "vue-skeletor/dist/vue-skeletor.css",
     "vue-advanced-cropper/dist/style.css"
   ],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
+  // Tailwind CSS 4 runs through the layer's @tailwindcss/vite plugin; no PostCSS
+  // tailwind plugin is needed here.
   pinia: {
     storesDirs: [
       './stores/'
@@ -75,13 +73,9 @@ export default defineNuxtConfig({
         }
       ],
     },
-    workbox: {
+    generateSW: {
       navigateFallback: '/',
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
-    client: {
-      installPrompt: true,
-      periodicSyncForUpdates: 20,
-    }
   }
 })

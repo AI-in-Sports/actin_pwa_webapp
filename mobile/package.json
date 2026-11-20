@@ -1,15 +1,15 @@
 {
   "name": "actin-app",
-  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "nuxt generate",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "build": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
-    "postinstall": "nuxt prepare",
     "tauri": "tauri",
     "android:init": "tauri android init",
     "android:dev": "tauri android dev",
@@ -19,31 +19,23 @@
     "ios:build": "tauri ios build"
   },
   "dependencies": {
-    "@actin/pwa-layer": "git+https://github.com/AI-in-Sports/actin-pwa-layer.git#69527e03af0d5bc9cbc3a588eef804f3dd199cbf",
-    "@tauri-apps/api": "2.12.4",
-    "@tauri-apps/plugin-barcode-scanner": "2.5.3",
-    "vue": "3.5.45"
+    "@ai-in-sports/actin-pwa-layer": "2.0.2",
+    "@tauri-apps/api": "^2.12.5",
+    "@tauri-apps/plugin-barcode-scanner": "^2.5.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.12.4",
-    "@types/node": "^20.6.0",
-    "autoprefixer": "^10.4.20",
-    "nuxt": "^3.21.11",
-    "postcss": "^8.4.49",
-    "sass": "^1.71.1",
-    "tailwindcss": "^3.4.19",
-    "typescript": "^5.6.3",
-    "vitest": "^3.2.4",
-    "vue-tsc": "^2.1.10"
+    "@tauri-apps/cli": "^2.12.6",
+    "@types/node": "^24.7.0",
+    "nuxt": "^4.6.4",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0",
+    "vue-tsc": "^3.3.14"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
       "@parcel/watcher",
-      "vue-demi"
-    ],
-    "overrides": {
-      "pinia-plugin-persistedstate": "3.2.1"
-    }
+      "esbuild",
+      "sharp"
+    ]
   }
 }

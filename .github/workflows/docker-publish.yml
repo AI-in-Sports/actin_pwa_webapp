@@ -6,10 +6,14 @@ name: Publish production image
 on:
   push:
     branches: [main]
+    # The image rebuild commits the rendered compose file back to main. Skip
+    # that commit so the workflow cannot trigger itself.
+    paths-ignore:
+      - docker_compose.prod.yml
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 concurrency:
@@ -25,7 +29,7 @@ env:
 
 jobs:
   build-and-push:
-    name: Build and push Docker image
+    name: Build, push and pin the production image
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -68,7 +72,7 @@ jobs:
             type=sha,prefix=sha-,format=short
           labels: |
             org.opencontainers.image.title=Actin PWA webapp
-            org.opencontainers.image.description=Actin Health member PWA (Nuxt 3, Node server)
+            org.opencontainers.image.description=Actin Health member PWA (Nuxt 4, Node server)
 
       - name: Build and push
         id: build
@@ -85,13 +89,44 @@ jobs:
           build-args: |
             APP_BACKEND=${{ env.APP_BACKEND }}
             DISABLE_RESERVATION=${{ env.DISABLE_RESERVATION }}
-            NODE_MAX_OLD_SPACE_SIZE=4096
+            NODE_MAX_OLD_SPACE_SIZE=8192
           secrets: |
             npm_token=${{ secrets.NPM_ACTIN_TOKEN || secrets.GITHUB_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: true
           sbom: true
+
+      - name: Pin the built image in docker_compose.prod.yml
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}
+        run: |
+          TAG="sha-${GITHUB_SHA::7}"
+          # Rewrite the default inside ${WEBAPP_IMAGE:-...}. The override variable
+          # and the rest of the file stay untouched. Example result:
+          #   image: ${WEBAPP_IMAGE:-ghcr.io/acme/app:sha-1234567}
+          sed -i -E 's#\$\{WEBAPP_IMAGE:-[^}]*\}#${WEBAPP_IMAGE:-'"${IMAGE}:${TAG}"'}#' docker_compose.prod.yml
+          echo "Rendered image reference:"
+          grep -n "image:" docker_compose.prod.yml
+
+      - name: Upload the rendered compose file
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker_compose.prod
+          path: docker_compose.prod.yml
+
+      - name: Commit the rendered compose file
+        run: |
+          if git diff --quiet -- docker_compose.prod.yml; then
+            echo "docker_compose.prod.yml is already pinned to this build."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docker_compose.prod.yml
+          git commit -m "chore: pin production image to ${GITHUB_SHA::7} [skip ci]"
+          git push || echo "::warning::Could not push the rendered compose file (branch protection?). Download the docker_compose.prod artifact instead."
+
 
       - name: Publish summary
         run: |

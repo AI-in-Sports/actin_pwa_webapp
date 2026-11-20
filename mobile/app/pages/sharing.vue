@@ -91,14 +91,14 @@ const signOut = async () => {
       <fieldset class="flex flex-col gap-2">
         <legend class="text-body-sm font-medium mb-1">کدام نتایج</legend>
         <label v-for="t in TESTS" :key="t" class="flex items-center gap-3 min-h-11">
-          <input type="checkbox" class="size-5 accent-accent" :checked="drafts[c.center.id].categories.includes(t)" @change="toggle(drafts[c.center.id].categories, t)">
+          <input type="checkbox" class="size-5 accent-accent" :checked="drafts[c.center.id]!.categories.includes(t)" @change="toggle(drafts[c.center.id]!.categories, t)">
           <span class="text-body">{{ TEST_LABEL[t] }}</span>
         </label>
       </fieldset>
       <fieldset class="flex flex-col gap-2">
         <legend class="text-body-sm font-medium mb-1">چه کسانی</legend>
         <label v-for="a in AUDIENCES" :key="a" class="flex items-center gap-3 min-h-11">
-          <input type="checkbox" class="size-5 accent-accent" :checked="drafts[c.center.id].audiences.includes(a)" @change="toggle(drafts[c.center.id].audiences, a)">
+          <input type="checkbox" class="size-5 accent-accent" :checked="drafts[c.center.id]!.audiences.includes(a)" @change="toggle(drafts[c.center.id]!.audiences, a)">
           <span class="text-body">{{ AUDIENCE_LABEL[a] }}</span>
         </label>
       </fieldset>

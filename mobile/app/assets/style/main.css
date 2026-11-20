@@ -1,0 +1,16 @@
+/* Tailwind CSS is imported once by the layer's main.css; this file only adds
+   app-specific globals. */
+@layer utilities {
+  /* Room for the notch and home indicator. */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+html {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}

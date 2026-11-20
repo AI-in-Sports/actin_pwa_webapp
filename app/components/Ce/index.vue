@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {ExerciseResponse} from "~/types/Responses"
 import { numberToWords } from "@persian-tools/persian-tools"
-import jalali from "jalaali-js"
+import * as jalali from "jalaali-js"
 import type {Ref} from "vue"
 import type {ExerciseDaysType} from "~/stores/survey.types"
 
