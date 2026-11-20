@@ -98,6 +98,9 @@ jobs:
           sbom: true
 
       - name: Pin the built image in docker_compose.prod.yml
+        # Only a main build is a release; a manual build on a branch must not
+        # change the default image in the committed compose file.
+        if: github.ref == 'refs/heads/main'
         env:
           IMAGE: ${{ steps.image.outputs.name }}
         run: |
