@@ -31,6 +31,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
   mobile:
     # The member app in mobile/ (Tauri v2 for iOS and Android): unit tests, types and the web build.
