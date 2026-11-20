@@ -6,7 +6,8 @@ Actin Health PWA is the member-facing progressive web app: Nuxt 4 (Vue 3,
 TypeScript), Pinia, Tailwind CSS 4 and the shared design system in
 [`@ai-in-sports/actin-pwa-layer`](https://github.com/AI-in-Sports/actin-pwa-layer).
 
-It is served by Nitro as a Node server (`pnpm build` → `.output/`), and the
+It is served by Nitro as a Node server (`pnpm build` → `.output/`) with SSR
+disabled: the member app is a SPA because the session lives in localStorage. The
 production image is built by GitHub Actions and published to GitHub Container
 Registry.
 

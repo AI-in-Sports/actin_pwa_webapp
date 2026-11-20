@@ -1,4 +1,8 @@
 export default defineNuxtConfig({
+  // The member app keeps its session in localStorage and its persisted Pinia
+  // store is a client-only plugin, so it is a SPA: server-rendered pages would
+  // run the auth middleware without a token and crash. Nitro still serves it.
+  ssr: false,
   // Nuxt 4 app directory: pages, components, layouts, plugins, stores and assets
   // live in app/. The layer's own dirs stay at its package root (srcDir ".").
   srcDir: "app",

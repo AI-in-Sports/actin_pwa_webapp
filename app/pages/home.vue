@@ -28,15 +28,16 @@ const reportViews = shallowRef([
 ])
 
 await useLazyAsyncData('home_data', async () => {
-  const [latestReport] = await Promise.all([
+  const [latestReportResult] = await Promise.all([
     useSSRFetch<{
       status: number,
       report?: null | any
     }>("/report/get/latest", {auth: true}),
   ])
 
-  if(latestReport.data.value!.status === 200)
-    reportData.value = latestReport.data.value!.report!
+  const latestReport = latestReportResult.data.value
+  if (latestReport?.status === 200 && latestReport.report)
+    reportData.value = latestReport.report
 })
 
 
