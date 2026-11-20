@@ -35,8 +35,9 @@ Prerequisites: Node 22.21+ or 24.11+, pnpm 10, Rust 1.77+. For Android: Android 
 NDK, `ANDROID_HOME` and `NDK_HOME` set, and `rustup target add aarch64-linux-android
 armv7-linux-androideabi i686-linux-android x86_64-linux-android`. For iOS: a Mac with
 Xcode and `rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios`.
-`@ai-in-sports/actin-pwa-layer` is installed from GitHub Packages, so `NPM_ACTIN_TOKEN`
-must be set during install (see the dashboard README).
+`@ai-in-sports/actin-pwa-layer` is installed from GitHub Packages, so a token with
+`read:packages` must be in your user-level npmrc (see the dashboard README):
+`pnpm config set //npm.pkg.github.com/:_authToken <token>`.
 
 ```bash
 pnpm install

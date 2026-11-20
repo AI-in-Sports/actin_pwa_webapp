@@ -28,6 +28,8 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+      - name: Configure GitHub Packages auth
+        run: echo "//npm.pkg.github.com/:_authToken=${NPM_ACTIN_TOKEN}" >> "$HOME/.npmrc"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build
@@ -73,6 +75,8 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: mobile/pnpm-lock.yaml
+      - name: Configure GitHub Packages auth
+        run: echo "//npm.pkg.github.com/:_authToken=${NPM_ACTIN_TOKEN}" >> "$HOME/.npmrc"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Unit tests

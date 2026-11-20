@@ -36,9 +36,13 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml .npmrc ./
 
-# The registry token is mounted only for this step and never stored in a layer.
+# The registry token is mounted only for this step and written to the user-level
+# npmrc (pnpm 10.34+ ignores env-expanded credentials in a project .npmrc).
+# It is removed again before the layer is committed.
 RUN --mount=type=secret,id=npm_token,required=true \
-    NPM_ACTIN_TOKEN="$(cat /run/secrets/npm_token)" pnpm install --frozen-lockfile
+    sh -c 'printf "//npm.pkg.github.com/:_authToken=%s\n" "$(cat /run/secrets/npm_token)" > "$HOME/.npmrc" \
+      && pnpm install --frozen-lockfile \
+      && rm -f "$HOME/.npmrc"'
 
 FROM base AS builder
 

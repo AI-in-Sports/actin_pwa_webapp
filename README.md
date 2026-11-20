@@ -35,14 +35,15 @@ and app core from `node_modules`.
 ## Installation
 
 The layer is published to GitHub Packages, so install needs a token with
-`read:packages` for the `AI-in-Sports` organisation:
+`read:packages` for the `AI-in-Sports` organisation. pnpm 10.34+ ignores tokens in
+a project `.npmrc`, so store it in the user-level config:
 
 ```bash
-export NPM_ACTIN_TOKEN=...     # PowerShell: $env:NPM_ACTIN_TOKEN = "..."
+pnpm config set //npm.pkg.github.com/:_authToken <token>
 pnpm install
 ```
 
-`.npmrc` reads the token from `NPM_ACTIN_TOKEN`; no token is committed.
+`.npmrc` only maps `@ai-in-sports` to GitHub Packages; no token is committed.
 
 ## Usage
 
