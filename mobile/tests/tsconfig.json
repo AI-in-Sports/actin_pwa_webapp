@@ -1,0 +1,13 @@
+{
+  // Tests are plain TypeScript and run in Node without the Nuxt runtime, so
+  // they must not resolve the app's generated .nuxt/tsconfig.json.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts"]
+}
