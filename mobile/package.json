@@ -19,7 +19,7 @@
     "ios:build": "tauri ios build"
   },
   "dependencies": {
-    "@ai-in-sports/actin-pwa-layer": "2.0.2",
+    "@ai-in-sports/actin-pwa-layer": "2.0.3",
     "@tauri-apps/api": "^2.12.5",
     "@tauri-apps/plugin-barcode-scanner": "^2.5.3"
   },
