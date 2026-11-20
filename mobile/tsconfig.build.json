@@ -1,0 +1,8 @@
+{
+  // Transform-only options for Vite/Oxc (vite.tsconfig). Types are checked by
+  // `nuxt typecheck`, which uses tsconfig.json and the generated .nuxt config.
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true
+  }
+}

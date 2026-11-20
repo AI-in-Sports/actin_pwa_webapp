@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   claimErrorOf, consentBody, consentSentence, faDigits, headline, isLinkCode, latestByTest, measurementRows,
   normalizeCode, postureFindings, previewBlocker, refFromScan, trend, type LinkPreview, type Measurement,
-} from '../utils/app'
+} from '../app/utils/app'
 
 const m = (over: Partial<Measurement>): Measurement => ({
   id: 'x', type: 'heart_rate', record_kind: 'measurement', source: 'mirror', center_id: null, session_id: null,
