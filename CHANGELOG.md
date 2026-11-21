@@ -2,6 +2,15 @@
 
 All notable changes to this project are listed here.
 
+## [0.2.1] - 2026-11-20
+
+- Serve the member app as a SPA (`ssr: false`). The auth store is persisted in
+  localStorage by a client-only plugin, so a server render of `/home` ran the
+  auth middleware without a token and failed with
+  `TypeError: this.$persist is not a function` (HTTP 500).
+- Guard the home report fetch so a failed `/report/get/latest` leaves the page
+  empty instead of throwing.
+
 ## [0.2.0] - 2026-11-20
 
 - Nuxt 4: app code moved to `app/`, the shared layer is `@ai-in-sports/actin-pwa-layer` 2.0.2.
