@@ -10,6 +10,9 @@ const phoneNumber = shallowRef("")
 const hasPendingScan = computed(() => !!useAuthStore().reportSessionId)
 
 onMounted(() => {
+  // First visit without a pending mirror scan: introduce the platform before asking for a number.
+  if (!hasPendingScan.value && !hasSeenWelcome()) return navigateTo("/welcome", { replace: true })
+
   const act = useRoute().query.act
 
   switch (act) {

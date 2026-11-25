@@ -75,6 +75,9 @@ const centerText = computed(() => {
 const hasFullSagittal = computed(() =>
     !!(results.value?.posture?.dense_pose?.D1 && results.value?.posture?.dense_pose?.D2))
 
+/** Posture findings that need attention, for the next-step card. */
+const postureAttention = computed(() => postureSummary(results.value?.posture).attention.length)
+
 const hasAny = computed(() =>
     !!(results.value?.heart_rate || results.value?.body_composition || results.value?.posture))
 </script>
@@ -96,6 +99,12 @@ const hasAny = computed(() =>
           <p class="text-[15px] text-black/70 mt-[12px] leading-7">
             این نتایج پس از تایید مدیر مرکز در حساب شما نمایش داده می‌شود.
           </p>
+          <JourneyTimeline class="mt-[24px]" :steps="[
+            { text: 'اسکن در آینه انجام شد', done: true },
+            { text: 'نتایج در حساب شما ذخیره شد', done: true },
+            { text: 'تایید مرکز', done: false },
+          ]"/>
+          <ThemeButton class="mt-[24px]" @click="$router.replace('/home')">رفتن به صفحه اصلی</ThemeButton>
         </div>
       </template>
 
@@ -152,6 +161,8 @@ const hasAny = computed(() =>
         <p v-if="!hasAny" class="text-center text-[15px] text-black/70 mt-[24px]">
           برای این تست هنوز نتیجه‌ای ثبت نشده است.
         </p>
+
+        <JourneyNextSteps v-if="hasAny" :attention="postureAttention" class="mt-[8px]"/>
       </template>
     </div>
   </div>

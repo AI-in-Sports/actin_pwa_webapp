@@ -14,7 +14,8 @@ onMounted(() => {
   const res = useRoute().query.res
 
   switch (res) {
-    case "404" || "nv":
+    case "404":
+    case "nv":
       status.value = 1
       break
     case "200":
@@ -58,7 +59,10 @@ useHead({title: `اکتین - ${status.value === 1 ? 'پرداخت ناموفق'
     </div>
 
     <ThemeButton @click="goto('/ce/payment')" v-if="status === 1">پرداخت مجدد</ThemeButton>
-    <ThemeButton @click="goto('/ce')" v-else>دریافت برنامه</ThemeButton>
+    <div v-else class="w-full flex flex-col items-center gap-[12px]">
+      <p class="text-[14px] text-[#666666] text-center leading-7">برنامه تمرینی شما فعال شد و از امروز می‌توانید جلسه اول را شروع کنید.</p>
+      <ThemeButton @click="goto('/ce')">مشاهده برنامه</ThemeButton>
+    </div>
   </div>
 </template>
 

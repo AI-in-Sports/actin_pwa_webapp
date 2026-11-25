@@ -113,6 +113,8 @@ const submitCompleteSurvey = async () => {
       </LazyThemeBottomSheet>
     </client-only>
 
+    <ClientOnly><AppSplash/></ClientOnly>
+
     <NuxtLoadingIndicator color="#212121" :height="2"/>
     <NuxtPage/>
   </NuxtLayout>

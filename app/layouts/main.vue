@@ -1,19 +1,24 @@
 <script setup lang="ts">
 const menu = shallowRef([
   {
-    text: "برنامه تمرینی",
-    icon: "exercise",
-    to: "/ce"
-  },
-  {
     text: "خانه",
     icon: "home",
     to: "/home"
   },
   {
-    text: "باشگاه",
+    text: "برنامه تمرینی",
+    icon: "exercise",
+    to: "/ce"
+  },
+  {
+    text: "متخصصان",
     icon: "physical_therapy",
     to: "/physio/list"
+  },
+  {
+    text: "پیشرفت",
+    icon: "monitoring",
+    to: "/progress"
   }
 ] as {
   text: string,

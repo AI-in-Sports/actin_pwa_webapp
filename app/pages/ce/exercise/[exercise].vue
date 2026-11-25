@@ -220,8 +220,26 @@ const toggleExercise = () => {
           <Skeletor width="200px" v-else circle height="200px"/>
         </div>
 
+        <div v-if="isDoneCompleted === 2" class="w-full flex flex-col items-center gap-[16px] mb-[24px]">
+          <p class="text-[20px] font-bold text-mainBlack">آفرین! این تمرین کامل شد</p>
+          <div class="grid grid-cols-3 gap-[8px] w-full">
+            <div class="flex flex-col items-center gap-[2px] rounded-[12px] bg-surface-2 py-[10px]">
+              <p class="text-[18px] font-bold">{{ persianNumber(String(data?.sets ?? 0)) }}</p>
+              <p class="text-[12px] text-mainSubDead">ست</p>
+            </div>
+            <div class="flex flex-col items-center gap-[2px] rounded-[12px] bg-surface-2 py-[10px]">
+              <p class="text-[18px] font-bold">{{ persianNumber(String(data?.repetition ?? 0)) }}</p>
+              <p class="text-[12px] text-mainSubDead">تکرار در هر ست</p>
+            </div>
+            <div class="flex flex-col items-center gap-[2px] rounded-[12px] bg-surface-2 py-[10px]">
+              <p class="text-[18px] font-bold">{{ persianNumber(String(Math.round(((data?.duration ?? 0) * (data?.sets ?? 0)) / 60) || 1)) }}</p>
+              <p class="text-[12px] text-mainSubDead">دقیقه</p>
+            </div>
+          </div>
+        </div>
+
         <ThemeButton v-if="isDoneCompleted === 2" @click="$router.replace('/ce')">
-          پایان تمرین
+          تمرین بعدی
         </ThemeButton>
 
         <Skeletor v-else width="100%" class="self-center" height="48px" pill/>
