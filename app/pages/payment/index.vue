@@ -45,7 +45,7 @@ const paymentMethods = shallowRef([
       </h3>
 
       <div class="w-full flex flex-col gap-2">
-        <ThemePaymentCard
+        <ThemeRadioPill
           v-for="(method, index) in paymentMethods" :key="method.title"
           name="payment_method" :selected="index === selectedPaymentMethod"
           :icon="method.icon" :title="method.title"

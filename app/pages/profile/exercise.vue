@@ -36,7 +36,7 @@ const weekDays = shallowRef([
     </div>
 
     <div class="px-4">
-      <PrimaryBorderButton
+      <ThemeBorderButton
           class="flex flex-row justify-center items-center gap-x-2 py-4 cursor-pointer"
           v-if="isEditDisable" @click="isEditDisable = !isEditDisable">
         <MaterialSymbols theme="rounded" class="text-mainSubDead text-base">edit</MaterialSymbols>
@@ -44,7 +44,7 @@ const weekDays = shallowRef([
         <p class="text-base text-mainBlack font-medium">
           ویرایش
         </p>
-      </PrimaryBorderButton>
+      </ThemeBorderButton>
 
       <ThemeButton
           class="px-4 py-4 cursor-pointer text-base text-mainBlack font-medium"

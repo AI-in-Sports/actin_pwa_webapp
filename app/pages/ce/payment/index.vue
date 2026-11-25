@@ -72,7 +72,7 @@ useHead({title: `اکتین - پرداخت`})
     </div>
 
     <ThemeButton class="mt-8" :disabled="!paymentUrl" @click="pay">پرداخت</ThemeButton>
-    <PrimaryBorderButton class="mt-3" @click="$router.replace('/home')">بازگشت به صفحه اصلی</PrimaryBorderButton>
+    <ThemeBorderButton class="mt-3" @click="$router.replace('/home')">بازگشت به صفحه اصلی</ThemeBorderButton>
   </div>
 </template>
 

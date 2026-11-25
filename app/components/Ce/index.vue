@@ -7,6 +7,10 @@ import type {ExerciseDaysType} from "~/stores/survey.types"
 
 const isReady = useState(() => false)
 
+const user = useAuthStore().user
+const baseUrl = useRuntimeConfig().public.APP_BACKEND
+const thumbnailOf = (uuid: string) => `${baseUrl}/ce/files/${user.id}/thumbnail/${uuid}`
+
 const dates: Ref<Date[]> = useState(() => [])
 const currentDate = useState(() => new Date())
 
@@ -89,7 +93,8 @@ onMounted(() => {
     <article class="mt-[28px] flex flex-col gap-[12px] relative h-full">
       <CeCard
           v-for="ce in data?.exercises" :key="ce.uuid"
-          :exercise="ce" @click="$router.push(`/ce/exercise/${ce.uuid}`)"/>
+          :exercise="ce" :thumbnail="thumbnailOf(ce.uuid)"
+          @click="$router.push(`/ce/exercise/${ce.uuid}`)"/>
     </article>
   </section>
 
