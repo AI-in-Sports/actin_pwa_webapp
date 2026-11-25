@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import * as jalali from "jalaali-js"
+import type { Measurement } from "~/composables/useCare"
+
 definePageMeta({
   layout: "main",
   middleware: ["normal-auth"]
@@ -12,246 +13,186 @@ const route = useRoute()
 const user = useAuthStore().user
 const phone = useAuthStore().phone
 const profile = useProfileStore()
+const care = useCare()
 
 const logout = () => {
   useAuthStore().logout()
   location.reload()
 }
 
-const reportActiveTab = shallowRef(0)
-const reportData = useState(() => null)
-const vitalSigns = useState(() => null)
-
-const reportViews = shallowRef([
-  resolveComponent("LazyReportFrontalView"),
-  resolveComponent("LazyReportSagitalView")
-])
+/** Latest posture report (legacy /report API, also fed by mirror claims). */
+const reportData = useState<any>("home_report", () => null)
+/** Every result claimed into the account, newest first (care API). */
+const measurements = useState<Measurement[] | null>("home_measurements", () => null)
+const loaded = shallowRef(false)
 
 await useLazyAsyncData('home_data', async () => {
-  const [latestReportResult] = await Promise.all([
-    useSSRFetch<{
-      status: number,
-      report?: null | any
-    }>("/report/get/latest", {auth: true}),
+  const [latestReport, mine] = await Promise.all([
+    use$Fetch<{ status: number, report?: any }>("/report/get/latest", { auth: true }).catch(() => null),
+    care.measurements().catch(() => null),
   ])
 
-  const latestReport = latestReportResult.data.value
-  if (latestReport?.status === 200 && latestReport.report)
-    reportData.value = latestReport.report
+  if (latestReport?.status === 200 && latestReport.report) reportData.value = latestReport.report
+  measurements.value = mine
+  loaded.value = true
+  return true
 })
 
+const heartRate = computed(() => latestOf(measurements.value, "heart_rate"))
+const bodyComposition = computed(() => latestOf(measurements.value, "body_composition"))
+const latestSession = computed(() => measurements.value?.find(m => m.session_id && m.type !== "posture")?.session_id ?? null)
+
+const posture = computed(() => postureSummary(reportData.value?.analyze?.zones))
+const reportLink = computed(() => reportData.value?.session_id ? `/report/${reportData.value.session_id}` : null)
+
+const hasAnyResult = computed(() => !!(reportData.value || heartRate.value || bodyComposition.value))
+
+const stats = computed(() => {
+  const list: { label: string, value: string, unit?: string }[] = []
+  if (profile.complete_steps >= 7 && profile.user_info.birthday)
+    list.push({ label: "سن", value: persianNumber(calculateAge(new Date(profile.user_info.birthday)).toString()) })
+  if (profile.user_info.height) list.push({ label: "قد", value: persianNumber(profile.user_info.height.toString()), unit: "cm" })
+  const weight = bodyComposition.value?.data?.weight_kg ?? profile.user_info.weight
+  if (weight) list.push({ label: "وزن", value: faNumber(weight), unit: "kg" })
+  if (heartRate.value?.data?.bpm) list.push({ label: "ضربان", value: faNumber(heartRate.value.data.bpm, 0), unit: "BPM" })
+  return list
+})
 
 onMounted(async () => {
-  const res = route.query.res
-
-  switch (res) {
-    case "saved":
-      useToast.success("اطلاعات شما با موفقیت ذخیره شد!")
-      break
-  }
+  if (route.query.res === "saved") useToast.success("اطلاعات شما با موفقیت ذخیره شد!")
 })
 
 useHead({title: "اکتین - صفحه اصلی"})
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center gap-y-8 w-full max-w-[450px] pt-6 !select-none">
-    <div class="flex flex-col justify-center items-center border-b-4 border-[#F0F0F0] w-full pb-8 px-4 gap-y-6">
-      <div class="flex flex-row justify-center items-center gap-x-4 w-full">
-        <PrimaryProfile/>
+  <div class="flex flex-col items-center gap-y-6 w-full max-w-[450px] pt-6 pb-8 px-4 !select-none">
+    <!-- Who -->
+    <div class="flex flex-row items-center gap-x-4 w-full">
+      <PrimaryProfile/>
 
-        <div class="flex flex-col gap-y-2 flex-grow" v-if="user && profile.status > 0">
-          <p class="text-mainBlack text-2xl font-semibold">
-            {{ user.first_name }} {{ user.last_name }}
-          </p>
+      <div class="flex flex-col gap-y-1 flex-grow" v-if="user && profile.status > 0">
+        <p class="text-mainBlack text-2xl font-semibold">{{ user.first_name }} {{ user.last_name }}</p>
+        <p class="text-mainSubDead text-base">{{ phone }}</p>
+      </div>
+      <div v-else class="flex-grow"></div>
 
-          <p class="text-mainSubDead text-base">
-            {{ phone }}
-          </p>
-        </div>
+      <MaterialSymbols
+          theme="rounded" @click="logout"
+          class="text-mainSubDead text-2xl cursor-pointer hover:text-red-500">logout</MaterialSymbols>
+    </div>
 
-      <div class="bg-white rounded-full">
-        <MaterialSymbols
-            theme="rounded" @click="logout"
-            class="text-mainSubDead text-2xl cursor-pointer hover:text-red-500">logout</MaterialSymbols>
+    <!-- Vitals from the profile and the latest scan -->
+    <div v-if="stats.length" class="grid gap-2 w-full" :style="{ gridTemplateColumns: `repeat(${stats.length}, minmax(0, 1fr))` }">
+      <div v-for="s in stats" :key="s.label" class="flex flex-col items-center gap-y-1 p-2 bg-surface-2 rounded-lg">
+        <p class="text-mainSubDead text-sm">{{ s.label }}</p>
+        <p class="text-mainBlack text-lg font-semibold" dir="ltr">{{ s.value }} <span v-if="s.unit" class="text-xs font-normal">{{ s.unit }}</span></p>
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center gap-y-6 p-4 rounded-3xl w-full" v-if="profile.complete_steps < 7">
+    <!-- Profile completion (needed for a corrective program) -->
+    <div class="flex flex-col items-center gap-y-4 p-4 rounded-3xl w-full bg-surface-2" v-if="profile.complete_steps < 7">
       <p class="text-base text-center text-mainBlack font-semibold">
-        برای دریافت برنامه تمرینی ابتدا باید پروفایل
-        <br>
-        خود را تکمیل کنید.
+        برای دریافت برنامه تمرینی ابتدا باید پروفایل خود را تکمیل کنید.
       </p>
 
-      <div class="flex flex-col justify-center items-center gap-y-3 w-full">
+      <div class="flex flex-col items-center gap-y-2 w-full">
         <div class="bg-white w-full h-2 rounded">
           <div class="bg-mainYellow rounded-full h-2" :style="{ 'width': (100 / 7) * profile.complete_steps + '%'}"></div>
         </div>
-
-        <p class="text-mainBlack text-xs">
-          {{ 7 - profile.complete_steps }} مرحله دیگر تا تکمیل پروفایل
-        </p>
+        <p class="text-mainBlack text-xs">{{ persianNumber((7 - profile.complete_steps).toString()) }} مرحله دیگر تا تکمیل پروفایل</p>
       </div>
 
       <ThemeButton
-          class="flex flex-row justify-center items-center gap-x-2 w-full text-white text-sm text-center font-medium"
+          class="flex flex-row justify-center items-center gap-x-2 w-full text-white !text-sm text-center font-medium"
           @click="profile.toggleCompleteProfileModal()">
         تکمیل پروفایل
-
         <MaterialSymbols theme="rounded" class="text-white text-2xl">chevron_left</MaterialSymbols>
       </ThemeButton>
     </div>
 
-    <div class="flex-col gap-y-5 w-full" v-else>
-      <div class="flex flex-row justify-between items-center gap-x-2">
-        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-base">سن</p>
+    <p v-if="profile.event" class="w-full text-center">برنامه تمرینی شما در حال بررسی توسط اکتین هست...</p>
 
-          <p class="text-mainBlack text-lg font-semibold">{{ persianNumber(calculateAge(new Date(profile.user_info.birthday!))) }}</p>
-        </div>
-
-        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-base">قد</p>
-
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">{{ persianNumber(profile.user_info.height!) }} cm</p>
-        </div>
-
-        <div class="flex flex-col justify-center items-center gap-y-1 p-2 bg-[#F5F5F5] rounded-lg w-1/3">
-          <p class="text-mainSubDead text-base">وزن</p>
-
-          <p class="text-mainBlack text-lg font-semibold" dir="ltr">{{ persianNumber(profile.user_info.weight!) }} kg</p>
-        </div>
+    <template v-if="!profile.event">
+      <!-- Loading -->
+      <div v-if="!loaded" class="w-full flex flex-col gap-3">
+        <Skeletor width="100%" height="160px" class="rounded-3xl"/>
+        <Skeletor width="100%" height="96px" class="rounded-3xl"/>
       </div>
 
+      <!-- No result yet: send them to a center -->
+      <ThemeEmptyState v-else-if="!hasAnyResult" icon="body_system" title="هنوز اسکنی ثبت نشده است" class="w-full">
+        برای دریافت گزارش ترکیب بدن، وضعیت بدنی و ضربان قلب به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید و کد QR روی آینه را اسکن کنید.
+        <ThemeButton class="mt-4 !text-base" @click="$router.push('/scan')">ثبت کد آینه</ThemeButton>
+      </ThemeEmptyState>
 
-    </div>
+      <template v-else>
+        <!-- Musculoskeletal report -->
+        <section v-if="reportData" class="w-full rounded-3xl bg-surface-2 p-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[17px] font-bold text-mainBlack">گزارش اسکلتی- عضلانی</h2>
+            <DsBadge v-if="posture.attention.length" tone="danger">{{ persianNumber(posture.attention.length.toString()) }} مورد نیاز به توجه</DsBadge>
+            <DsBadge v-else tone="success">سالم</DsBadge>
+          </div>
+          <p class="text-[13px] text-mainSubDead">{{ faDate(reportData.date) }}</p>
 
+          <div v-if="posture.total" class="flex flex-col gap-2">
+            <p class="text-mainBlack">
+              <span class="text-[28px] font-bold">{{ persianNumber(posture.healthy.toString()) }}</span>
+              <span class="text-[14px] text-mainSubDead"> از {{ persianNumber(posture.total.toString()) }} ناحیه سالم</span>
+            </p>
+            <div class="w-full h-2 rounded bg-white">
+              <div class="h-2 rounded bg-mainGreen" :style="{ width: `${(posture.healthy / posture.total) * 100}%` }"></div>
+            </div>
+            <div v-if="posture.attention.length" class="flex flex-wrap gap-2 mt-1">
+              <DsBadge v-for="f in posture.attention.slice(0, 3)" :key="f.key" :tone="POSTURE_LEVEL_TONE[f.level]">{{ f.title }}</DsBadge>
+            </div>
+          </div>
+
+          <ThemeButton v-if="reportLink" class="!text-base !font-semibold mt-1" @click="$router.push(reportLink)">مشاهده گزارش</ThemeButton>
+        </section>
+
+        <!-- Body composition and heart rate from the latest mirror scan -->
+        <section v-if="bodyComposition || heartRate" class="w-full rounded-3xl border border-[#E0E0E0] p-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[17px] font-bold text-mainBlack">آخرین تست آینه</h2>
+            <p class="text-[13px] text-mainSubDead">{{ faDate((bodyComposition ?? heartRate)!.measured_at) }}</p>
+          </div>
+          <ThemeInfoRow v-if="bodyComposition?.data?.body_fat_pct != null" title="چربی بدن" :value="faNumber(bodyComposition.data.body_fat_pct)" unit="٪"/>
+          <ThemeInfoRow v-if="bodyComposition?.data?.muscle_mass_kg != null" title="توده عضلانی" :value="faNumber(bodyComposition.data.muscle_mass_kg)" unit="کیلوگرم"/>
+          <div v-if="heartRate?.data?.bpm" class="flex items-center justify-between">
+            <p class="text-base text-fg-muted">ضربان قلب</p>
+            <span :class="toneClass(restingHeartRateBand(heartRate.data.bpm).tone)" class="rounded-full px-3 py-1 text-[13px] font-medium">
+              {{ restingHeartRateBand(heartRate.data.bpm).text }}
+            </span>
+          </div>
+          <ThemeBorderButton v-if="latestSession" class="!text-base" @click="$router.push(`/mirror/${latestSession}`)">جزئیات نتایج</ThemeBorderButton>
+        </section>
+
+        <!-- Recommendation -->
+        <section class="w-full rounded-3xl bg-mainYellow/20 p-4 flex flex-col gap-2">
+          <p class="text-[12px] font-semibold text-mainBlack">پیشنهاد اکتین</p>
+          <p class="text-[15px] font-medium text-mainBlack leading-7">
+            <template v-if="posture.attention.length">
+              برنامه حرکات اصلاحی برای {{ posture.attention.slice(0, 2).map(f => f.title).join(" و ") }}
+            </template>
+            <template v-else>برای حفظ وضعیت فعلی، یک برنامه تمرینی منظم بگیرید.</template>
+          </p>
+          <div class="flex gap-2 mt-1">
+            <ThemeButton class="!text-sm !font-semibold" @click="$router.push('/ce')">برنامه تمرینی</ThemeButton>
+            <ThemeBorderButton class="!text-sm !font-semibold bg-white" @click="$router.push('/physio/list')">متخصصان</ThemeBorderButton>
+          </div>
+        </section>
+
+        <!-- Progress -->
+        <NuxtLink to="/progress" class="w-full flex items-center justify-between rounded-3xl bg-surface-2 px-4 py-4">
+          <span class="flex items-center gap-2">
+            <MaterialSymbols theme="rounded" class="text-mainBlack">monitoring</MaterialSymbols>
+            <span class="text-[15px] font-semibold text-mainBlack">پیشرفت و اسکن بعدی</span>
+          </span>
+          <MaterialSymbols theme="rounded" class="text-mainSubDead">chevron_left</MaterialSymbols>
+        </NuxtLink>
+      </template>
+    </template>
   </div>
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-if="!vitalSigns && !profile.event">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        علائم حیاتی
-      </h3>
-
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
-
-      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
-    </div>
-
-    <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else-if="!profile.event">
-      <div class="flex justify-between items-center">
-        <h3 class="text-mainBlack text-[21px] font-semibold">
-          علائم حیاتی
-        </h3>
-
-        <p class="text-sm text-[#727272]">
-          ۱۳ اردیبهشت ۱۴۰۲
-        </p>
-      </div>
-
-      <div class="flex flex-col px-6">
-        <div class="flex justify-between items-center py-4">
-          <p class="text-base text-mainBlack font-semibold">
-            وضعیت فشارخون
-          </p>
-
-          <div class="px-2 py-1 bg-[#E8F5E9] rounded-full">
-            <p class="text-base text-[#008060] font-semibold" dir="ltr">
-              ۱۲۰/ ۸۰
-            </p>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center py-4">
-          <p class="text-base text-mainBlack font-semibold">
-            وضعیت ضربان قلب
-          </p>
-
-          <div class="px-2 py-1 bg-[#FFEBEE] rounded-full">
-            <p class="text-base text-[#B3261E] font-semibold" dir="ltr">
-              ۶۸ <span class="text-xs font-normal ml-1.5">BPM</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center py-4">
-          <p class="text-base text-mainBlack font-semibold">
-            وضعیت اکسیژن خون
-          </p>
-
-          <div class="px-2 py-1 bg-[#FFF8E1] rounded-full">
-            <p class="text-xs text-[#916A00]" dir="ltr">
-              به زودی
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div v-if="profile.event">
-      <p class="w-full text-center">برنامه تمرینی شما در حال بررسی توسط اکتین هست...</p>
-    </div>
-
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!reportData && !profile.event">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش اسکلتی - عضلانی
-      </h3>
-
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از تست اسکلتی- عضلانی شما
-        <br>
-        ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
-
-      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
-    </div>
-
-    <div class="w-full flex flex-col p-2 pt-0" v-else-if="!profile.event">
-      <div class="w-full flex justify-between pb-6">
-        <h2 class="font-semibold text-[21px]">گزارش اسکلتی- عضلانی</h2>
-
-        <p class="text-sm text-[#727272]">
-          {{ persianNumber(jalali.toJalaali(new Date(reportData!['date'])).jd.toString()) + " " }}
-          {{ new Date(new Date(reportData!['date'])).toLocaleDateString("fa-IR", { month: 'long' }) + " " }}
-          {{ persianNumber(jalali.toJalaali(new Date(reportData!['date'])).jy.toString()) }}
-        </p>
-      </div>
-
-      <ReportViewSelector
-          class="w-full sticky top-5 z-30 shadow-md backdrop-blur-xl bg-[#EEEEEE]/60" :active="reportActiveTab"
-          @changeView="(item: number) => reportActiveTab = item"/>
-
-      <ReportSkeleton
-          class="mt-[20px] w-full"
-          :test="reportActiveTab === 0 ? 'frontal' : 'sagital'"
-          :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
-
-      <component
-          class="w-full mt-6"
-          :is="reportViews[reportActiveTab]"
-          :report="reportActiveTab === 0 ? (reportData as any).analyze.zones.frontal : (reportData as any).analyze.zones"/>
-    </div>
-
-    <div class="flex flex-col gap-y-8 w-full pb-8 px-4" v-if="!profile.event">
-      <h3 class="text-mainBlack text-[21px] font-semibold text-center">
-        گزارش لاغری
-      </h3>
-
-      <p class="text-[#9E9E9E] text-base">
-        در حال حاضر گزارشی از وضعیت علائم حیاتی شما ثبت نشده است.
-        برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
-      </p>
-
-      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
-    </div>
-</div>
-
 </template>
-
-<style scoped>
-
-</style>

@@ -16,6 +16,10 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const store = useAuthStore()
 const link = useMirrorLink()
+const care = useCare()
+
+/** Share the results with the specialists the center assigned (asked on the save step). */
+const shareConsent = shallowRef(true)
 
 const linkRef = route.params.session_id as string
 
@@ -135,6 +139,23 @@ const load = async () => {
   }
 }
 
+/**
+ * Records the member's sharing choice at the center that ran the scan. Consent needs a
+ * membership, so it only works once the claim is accepted; walk-ins awaiting review can
+ * choose later on the progress page. Never blocks opening the results.
+ */
+const recordConsent = async () => {
+  const center = preview.value?.center
+  if (!center) return
+  try {
+    const mine = await care.centers()
+    const match = mine.find(c => c.center.name === center.name && c.center.type === center.type)
+    if (match) await care.shareWithSpecialists(match.center.id, preview.value?.tests?.length ? preview.value.tests : undefined)
+  } catch (error) {
+    console.warn("Could not record sharing consent", error)
+  }
+}
+
 const refresh = () => {
   pollCount = 0
   phase.value = "loading"
@@ -154,7 +175,10 @@ const submitClaim = async () => {
 
   const outcome = await link.claim(linkRef, linkCode)
 
-  if (outcome.kind === "claimed") return goToResults(outcome.sessionId, "claimed")
+  if (outcome.kind === "claimed") {
+    if (shareConsent.value) await recordConsent()
+    return goToResults(outcome.sessionId, "claimed")
+  }
 
   if (outcome.kind === "needs_review") {
     store.del("reportSessionId")
@@ -231,11 +255,20 @@ const phoneText = computed(() => store.phone ? persianNumber(store.phone.toStrin
 
     <!-- Sign in first -->
     <template v-else-if="phase === 'login'">
-      <h2 class="text-[20px] font-bold">نتایج شما آماده است</h2>
-      <p class="text-[15px] text-black/70 mt-[12px] mb-[32px] leading-7">
-        برای ذخیره این نتایج در پرونده سلامت خود، با شماره موبایل وارد شوید.
+      <img src="~/assets/icons/icon_check_circle.svg" class="w-[56px]" alt="">
+      <h2 class="text-[20px] font-bold mt-[16px]">نتایج شما آماده است</h2>
+      <p class="text-[15px] text-black/70 mt-[12px] leading-7">
+        برای دیدن جزئیات و ذخیره این نتایج در پرونده سلامت خود، با شماره موبایل وارد شوید.
         پس از ورود به همین صفحه برمی‌گردید.
       </p>
+      <ul v-if="testList.length" class="w-full flex flex-col gap-[8px] mt-[20px] mb-[28px]">
+        <li v-for="test in testList" :key="test"
+            class="flex items-center justify-between rounded-[12px] bg-surface-2 px-[14px] py-[12px]">
+          <span class="text-[15px] font-semibold text-mainBlack">{{ test }}</span>
+          <MaterialSymbols theme="rounded" class="text-mainSubDead text-[20px]">lock</MaterialSymbols>
+        </li>
+      </ul>
+      <div v-else class="mb-[32px]"></div>
       <ThemeButton @click="goToLogin">ورود و ذخیره نتایج</ThemeButton>
     </template>
 
@@ -247,6 +280,13 @@ const phoneText = computed(() => store.phone ? persianNumber(store.phone.toStrin
         <span class="font-bold text-mainBlack" dir="ltr">{{ phoneText }}</span>
         اضافه می‌شود.
       </p>
+      <label class="w-full flex items-start gap-[10px] rounded-[14px] border border-[#E0E0E0] px-[14px] py-[12px] mb-[24px] text-right cursor-pointer">
+        <ThemeCheckBox :checked="shareConsent" @change="shareConsent = ($event.target as HTMLInputElement).checked" class="mt-[2px] shrink-0"/>
+        <span class="text-[14px] text-mainBlack leading-7">
+          اجازه می‌دهم متخصصانی که مرکز برای من تعیین می‌کند این نتایج را ببینند.
+          <span class="block text-[12px] text-mainSubDead">هر زمان از صفحه پیشرفت قابل تغییر است.</span>
+        </span>
+      </label>
       <ThemeButton @click="submitClaim">ذخیره نتایج</ThemeButton>
       <button class="mt-[16px] text-[14px] text-mainSubDead underline" @click="goToLogin">
         با شماره دیگری وارد می‌شوم
@@ -261,7 +301,14 @@ const phoneText = computed(() => store.phone ? persianNumber(store.phone.toStrin
         نتایج به حساب <span class="font-bold text-mainBlack" dir="ltr">{{ phoneText }}</span> اضافه می‌شود.
       </p>
       <form class="flex flex-col items-center w-full" @submit.prevent="submitClaim">
-        <ThemeVerificationCode class="mb-[32px]" v-model:value="code"/>
+        <ThemeVerificationCode class="mb-[24px]" v-model:value="code"/>
+        <label class="w-full flex items-start gap-[10px] rounded-[14px] border border-[#E0E0E0] px-[14px] py-[12px] mb-[24px] text-right cursor-pointer">
+        <ThemeCheckBox :checked="shareConsent" @change="shareConsent = ($event.target as HTMLInputElement).checked" class="mt-[2px] shrink-0"/>
+        <span class="text-[14px] text-mainBlack leading-7">
+          اجازه می‌دهم متخصصانی که مرکز برای من تعیین می‌کند این نتایج را ببینند.
+          <span class="block text-[12px] text-mainSubDead">هر زمان از صفحه پیشرفت قابل تغییر است.</span>
+        </span>
+      </label>
         <ThemeButton type="submit">ذخیره نتایج</ThemeButton>
       </form>
       <button class="mt-[16px] text-[14px] text-mainSubDead underline" @click="goToLogin">
@@ -276,6 +323,11 @@ const phoneText = computed(() => store.phone ? persianNumber(store.phone.toStrin
       <p class="text-[15px] text-black/70 mt-[12px] mb-[32px] leading-7">
         شماره شما در فهرست اعضای این مرکز نیست. نتایج ثبت شد و پس از تایید مدیر مرکز در حساب شما نمایش داده می‌شود.
       </p>
+      <JourneyTimeline class="mb-[32px]" :steps="[
+        { text: 'اسکن در آینه انجام شد', done: true },
+        { text: 'نتایج در حساب شما ذخیره شد', done: true },
+        { text: 'تایید مرکز', done: false },
+      ]"/>
       <ThemeButton @click="$router.replace('/home')">رفتن به صفحه اصلی</ThemeButton>
     </template>
 

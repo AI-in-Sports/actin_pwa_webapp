@@ -17,9 +17,10 @@ const uuid = shallowRef(route.query.uuid)
 const physio = ref()
 
 onMounted(async () => {
+  if (!uuid.value) return
   const loading = useToast.loading("در حال دریافت اطلاعات...")
 
-  await useAxios(true)(`${config.public.APP_BACKEND}/reservation/get/${uuid}`).then((value) => {
+  await useAxios(true)(`${config.public.APP_BACKEND}/reservation/get/${uuid.value}`).then((value) => {
     physio.value = value.data['data']
 
     useToast.clearAll()
@@ -30,7 +31,7 @@ onMounted(async () => {
   })
 })
 
-useHead({title: `Actin - `})
+useHead({title: `اکتین - ثبت نوبت`})
 </script>
 
 <template>
@@ -64,9 +65,9 @@ useHead({title: `Actin - `})
       </div>
     </div>
 
-    <PrimaryButton class="!font-semibold mt-[32px]" @click="$router.replace('/home')">
+    <ThemeButton class="!font-semibold mt-[32px]" @click="$router.replace('/home')">
       بازگشت به خانه
-    </PrimaryButton>
+    </ThemeButton>
   </div>
 </template>
 

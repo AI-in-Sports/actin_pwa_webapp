@@ -34,7 +34,6 @@ await useLazyAsyncData('report_data', async () => {
 
   if(latestReport.data.value!.status === 200) {
     dataFetch.value = latestReport.data.value!.report!
-    console.log(dataFetch.value)
     date.value = (Jalali.toJalaali(new Date(dataFetch.value!['date'])) as any)
   }
   else if (latestReport.data.value!.status === 404)
@@ -66,6 +65,8 @@ onMounted(async () => {
   useHead({title: `Actin - Report page`})
 })
 
+const summary = computed(() => postureSummary((dataFetch.value as any)?.analyze?.zones))
+
 //const goToSurvey = () => location.replace(`/ce/survey/?nocache=${(new Date()).getTime()}`)
 </script>
 
@@ -94,6 +95,20 @@ onMounted(async () => {
       </span>
     </p>
 
+    <section v-if="dataFetch && summary.total" class="w-full max-w-[500px] rounded-[20px] bg-surface-2 p-[16px] mb-[8px]">
+      <div class="flex items-center justify-between">
+        <h2 class="text-[16px] font-bold text-mainBlack">خلاصه گزارش</h2>
+        <p class="text-[14px] text-mainSubDead">
+          {{ persianNumber(summary.healthy.toString()) }} از {{ persianNumber(summary.total.toString()) }} ناحیه سالم
+        </p>
+      </div>
+      <div v-if="summary.attention.length" class="flex flex-wrap gap-[8px] mt-[12px]">
+        <DsBadge v-for="f in summary.attention" :key="f.key" :tone="POSTURE_LEVEL_TONE[f.level]">
+          {{ f.title }}: {{ POSTURE_LEVEL_TEXT[f.level] }}
+        </DsBadge>
+      </div>
+    </section>
+
     <ClientOnly>
       <div class="flex flex-col w-full max-w-[500px]" v-if="dataFetch !== null && date">
         <ReportSkeleton
@@ -108,20 +123,8 @@ onMounted(async () => {
       </div>
     </ClientOnly>
 
-    <div class="border-t-[1px] border-[#0000001F] mt-[47px] w-full py-[16px]">
-      <div class="m-auto flex flex-col items-center gap-[16px] max-w-[500px] w-full text-center">
-        <img src="~/assets/images/icon_character_physio.png" alt="physio">
-
-        <h2 class="font-bold text-[20px] text-mainBlack">شما نیاز به حرکات اصلاحی نیاز دارید.</h2>
-
-        <p class="text-[14px] text-[#9E9E9E]">جهت اصلاح وضعیت بدن شما،‌ نیاز است تا طبق یک
-          <span class="text-mainBlack">“برنامه تمرینی منظم”</span> و یا در طی چند جلسه <span class="text-mainBlack">“فیزیوتراپی”</span>، حرکاتی را انجام دهید که منجر به اصلاح بدن شما گردد.
-        </p>
-
-        <ThemeButton class="rounded-full !font-semibold" @click="$router.push('/ce')">
-          دریافت برنامه تمرینی
-        </ThemeButton>
-      </div>
+    <div class="mt-[32px] mb-[24px] w-full max-w-[500px]">
+      <JourneyNextSteps :attention="summary.attention.length"/>
     </div>
   </div>
 </template>
