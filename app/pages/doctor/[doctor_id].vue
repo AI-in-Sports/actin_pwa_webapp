@@ -76,6 +76,15 @@ useHead({title: `Actin - Doctor page`})
       </div>
     </div>
 
+    <div class="w-full px-[16px] mt-[20px]">
+      <div class="flex items-start gap-[8px] rounded-[12px] bg-mainBlue/10 px-[12px] py-[10px]">
+        <MaterialSymbols theme="rounded" class="text-mainBlue text-[20px]">verified_user</MaterialSymbols>
+        <p class="text-[13px] text-mainBlue leading-6">
+          پس از ثبت نوبت، نتایج آینه شما فقط با رضایت شما در اختیار متخصص قرار می‌گیرد تا جلسه اول از روی داده‌ها شروع شود.
+        </p>
+      </div>
+    </div>
+
     <div class="flex w-full px-[18px] mt-[28px] flex-col pb-[82px]">
       <div class="flex border-b-[1px] border-b-[#F2F2F2] mb-[16px]">
         <div v-for="item in tabs" :key="item.title" class="w-fit text-[14px] text-[#212121] font-semibold border-b-[#212121] border-b-2 pb-[8px]">
@@ -89,7 +98,7 @@ useHead({title: `Actin - Doctor page`})
 
   <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[450px]">
     <ThemeButton class="!font-semibold" @click="$router.replace(`/doctor/reservation/${route.params.doctor_id}`)">
-      ثبت نوبت
+      دریافت نوبت
     </ThemeButton>
   </div>
 </template>

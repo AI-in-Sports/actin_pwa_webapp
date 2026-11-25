@@ -10,6 +10,19 @@ All notable changes to this project are listed here.
   (was `PrimaryBorderButton`), `ThemeChip`, `ThemeRadioPill` (was `ThemePaymentCard`),
   `ThemeBottomSheet` and `CeCard` (the exercise thumbnail is passed in).
 - `@vite-pwa/nuxt` 2.0.4, mobile `vitest` 5.1.2.
+- The member journey end to end, as shown to the executive team: a launch splash and a
+  first-run welcome; a locked preview of the tests before sign-in; a sharing-consent
+  choice when saving mirror results (recorded through `/care/v1/me/centers/:id/consent`);
+  a status timeline while the center reviews a claim; a home summary built from real
+  results (`/care/v1/me/measurements`) instead of the placeholder vital signs; a report
+  summary with two next steps (program or specialist); a new `/progress` page with trends,
+  scan history, the next suggested scan and per-center sharing; the center's assigned
+  specialists on the specialists page; and a 4-tab bottom bar (home, program, specialists,
+  progress).
+- Fix the reservation confirm and "back home" buttons, which used a `PrimaryButton`
+  component that does not exist and rendered as an inert tag; the reservation day list
+  across month ends; and the reservation detail request, which sent `[object Object]`
+  as the id.
 
 ## [0.2.1] - 2026-11-20
 

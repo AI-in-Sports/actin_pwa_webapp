@@ -27,13 +27,13 @@ const times = shallowRef([
 
 const isSubmit = shallowRef(false)
 
-for (let i = 0; i < 7; i++) {
-  const lastDate = dates.value[dates.value.length - 1]
-
-  const date = dates.value.length > 0 ? new Date(new Date().setDate(lastDate.getDate() + 1)) : new Date()
-
-  dates.value.push(date)
-}
+// Today and the next six days. Adding to today's date (not the previous day's day-of-month)
+// keeps the list right across month ends.
+dates.value = Array.from({ length: 7 }, (_, i) => {
+  const date = new Date()
+  date.setDate(date.getDate() + i)
+  return date
+})
 
 onMounted(async () => {
   const loading = useToast.loading("در حال دریافت اطلاعات...")
@@ -73,6 +73,7 @@ const reserve = async () => {
       location.href = value.data.url
   }).catch((reason) => {
     console.log(reason)
+    isSubmit.value = false
 
     useToast.error("فرایند با خطا مواجه شد!")
   })
@@ -106,7 +107,7 @@ useHead({title: `Actin - Doctor reservation page`})
       </div>
     </div>
 
-    <p class="px-[17px] mt-[16px] text-[14px] text-[#727272]">بازه مورد نظر نوب خود را تعیین کنید. پس از بررسی همکاران، زمان دقیق به صورت تلفنی با شما هماهنگ می‌شود.</p>
+    <p class="px-[17px] mt-[16px] text-[14px] text-[#727272]">بازه مورد نظر نوبت خود را تعیین کنید. پس از بررسی همکاران، زمان دقیق به صورت تلفنی با شما هماهنگ می‌شود.</p>
 
     <div class="px-[17px] mt-[16px] w-full max-w-[900px]">
       <div v-for="(time, index) in times" :key="time"
@@ -118,9 +119,9 @@ useHead({title: `Actin - Doctor reservation page`})
     </div>
 
     <div class="p-[16px] sm:p-0 sm:pb-[16px] w-full fixed bottom-0 max-w-[420px]">
-      <PrimaryButton class="!font-semibold" @click="reserve" :disabled="activeTime === -1">
-        تایید
-      </PrimaryButton>
+      <ThemeButton class="!font-semibold" @click="reserve" :disabled="activeTime === -1 || isSubmit">
+        ثبت درخواست نوبت
+      </ThemeButton>
     </div>
   </div>
 
