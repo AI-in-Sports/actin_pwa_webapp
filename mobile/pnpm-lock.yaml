@@ -40,7 +40,7 @@ importers:
 packages:
 
   '@ai-in-sports/actin-pwa-layer@2.1.0':
-    resolution: {integrity: sha512-wmkws+pqhcrxtqdOCKbYXRQbMP2G3JUt+8xLaXWjmCqcjes/r+hPqVWZ4//kPmaBQuiFsgkLBHzQopuLiW16Hg==}
+    resolution: {integrity: sha512-wmkws+pqhcrxtqdOCKbYXRQbMP2G3JUt+8xLaXWjmCqcjes/r+hPqVWZ4//kPmaBQuiFsgkLBHzQopuLiW16Hg==, tarball: https://npm.pkg.github.com/download/@ai-in-sports/actin-pwa-layer/2.1.0/8cb92ba93be4c922cda6d80f5b8efcc072d842ce}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==, tarball: https://package-mirror.liara.ir/repository/npm/api/npm/npm/@babel/code-frame/-/code-frame-7.29.7.tgz}
