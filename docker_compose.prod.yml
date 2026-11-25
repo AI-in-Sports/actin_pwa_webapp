@@ -23,7 +23,7 @@ name: actin-prod
 
 services:
   actin_webapp:
-    image: ${WEBAPP_IMAGE:-ghcr.io/ai-in-sports/actin_pwa_webapp:sha-0d09749}
+    image: ${WEBAPP_IMAGE:-ghcr.io/ai-in-sports/actin_pwa_webapp:sha-5170aa1}
     container_name: actin_webapp
     restart: unless-stopped
     pull_policy: always
