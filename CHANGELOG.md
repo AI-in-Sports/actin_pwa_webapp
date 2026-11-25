@@ -2,6 +2,15 @@
 
 All notable changes to this project are listed here.
 
+## [Unreleased]
+
+- Layer 2.1.0 and Nuxt 4.7 (web app and `mobile/`). Layer 2.0.4 fixes the Tailwind
+  source paths, so the layer's dialogs and bottom sheets render over the page.
+- Shared components now come from the layer instead of local copies: `ThemeBorderButton`
+  (was `PrimaryBorderButton`), `ThemeChip`, `ThemeRadioPill` (was `ThemePaymentCard`),
+  `ThemeBottomSheet` and `CeCard` (the exercise thumbnail is passed in).
+- `@vite-pwa/nuxt` 2.0.4, mobile `vitest` 5.1.2.
+
 ## [0.2.1] - 2026-11-20
 
 - Serve the member app as a SPA (`ssr: false`). The auth store is persisted in

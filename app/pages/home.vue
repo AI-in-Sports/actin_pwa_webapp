@@ -138,7 +138,7 @@ useHead({title: "اکتین - صفحه اصلی"})
         برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
       </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
     </div>
 
     <div class="flex flex-col gap-y-8 border-b-4 border-[#F0F0F0] w-full pb-8 px-4" v-else-if="!profile.event">
@@ -207,7 +207,7 @@ useHead({title: "اکتین - صفحه اصلی"})
         ثبت نشده است. برای دریافت تست به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
       </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
     </div>
 
     <div class="w-full flex flex-col p-2 pt-0" v-else-if="!profile.event">
@@ -246,7 +246,7 @@ useHead({title: "اکتین - صفحه اصلی"})
         برای دریافت وضعیت به یکی از مراکز دارای آینه هوشمند اکتین مراجعه کنید.
       </p>
 
-      <PrimaryBorderButton>مشاهده مراکز</PrimaryBorderButton>
+      <ThemeBorderButton>مشاهده مراکز</ThemeBorderButton>
     </div>
 </div>
 

@@ -106,7 +106,7 @@ const submitCompleteSurvey = async () => {
             @click="submitCompleteSurvey">بعدی</ThemeButton>
 
         <div class="w-full flex justify-between mt-8 gap-2" v-else>
-          <PrimaryBorderButton @click="completeProfileSurveyActive--">قبلی</PrimaryBorderButton>
+          <ThemeBorderButton @click="completeProfileSurveyActive--">قبلی</ThemeBorderButton>
 
           <ThemeButton @click="submitCompleteSurvey">بعدی</ThemeButton>
         </div>
